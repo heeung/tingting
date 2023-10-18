@@ -12,6 +12,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.alsif.tingting.concert.entity.concerthall.ConcertHallSeat;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

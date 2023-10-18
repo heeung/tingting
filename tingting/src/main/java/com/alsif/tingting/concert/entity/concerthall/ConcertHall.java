@@ -1,4 +1,4 @@
-package com.alsif.tingting.concert.entity;
+package com.alsif.tingting.concert.entity.concerthall;
 
 import java.util.ArrayList;
 import java.util.List;

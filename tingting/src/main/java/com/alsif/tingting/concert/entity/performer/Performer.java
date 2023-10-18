@@ -1,4 +1,4 @@
-package com.alsif.tingting.concert.entity;
+package com.alsif.tingting.concert.entity.performer;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

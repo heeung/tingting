@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.alsif.tingting.concert.entity.concerthall.ConcertHall;
+import com.alsif.tingting.concert.entity.performer.ConcertPerformer;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

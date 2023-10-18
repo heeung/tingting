@@ -1,4 +1,4 @@
-package com.alsif.tingting.concert.entity;
+package com.alsif.tingting.concert.entity.performer;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.alsif.tingting.concert.entity.Concert;
 
 import lombok.AccessLevel;
 import lombok.Builder;
