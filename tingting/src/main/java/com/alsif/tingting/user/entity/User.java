@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.alsif.tingting.global.entity.BaseEntity;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "user")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +48,9 @@ public class User {
 	public String toString() {
 		return "User {"
 			+ "seq=" + seq
-			+ ", email=" + email
+			+ ", email='" + email + '\''
 			+ ", money=" + money
 			+ ", deletedDate=" + deletedDate
-			+ "}";
+			+ '}';
 	}
 }
