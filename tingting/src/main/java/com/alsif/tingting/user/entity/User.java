@@ -26,18 +26,14 @@ public class User extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long seq;
 
-	@Column(nullable = false)
+	@Column(unique = true, nullable = false)
 	private String email;
-
-	@Column(nullable = false)
-	private Long money;
 
 	private LocalDateTime deletedDate;
 
 	@Builder
-	public User(String email, Long money) {
+	public User(String email) {
 		this.email = email;
-		this.money = money;
 	}
 
 	public void updateDeletedDate(LocalDateTime date) {
@@ -49,7 +45,6 @@ public class User extends BaseEntity {
 		return "User {"
 			+ "seq=" + seq
 			+ ", email='" + email + '\''
-			+ ", money=" + money
 			+ ", deletedDate=" + deletedDate
 			+ '}';
 	}
