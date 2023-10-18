@@ -1,6 +1,8 @@
 package com.alsif.tingting.concert.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -45,6 +48,15 @@ public class Concert {
 
 	@Column(nullable = false)
 	private LocalDateTime holdCloseDate;
+
+	@OneToMany(mappedBy = "concert")
+	private final List<ConcertDetail> concertDetails = new ArrayList<>();
+
+	@OneToMany(mappedBy = "concert")
+	private final List<ConcertPerformer> concertPerformers = new ArrayList<>();
+
+	@OneToMany(mappedBy = "concert")
+	private final List<Grade> grades = new ArrayList<>();
 
 	@Builder
 	public Concert(ConcertHall concertHall, String name, String imageUrl, String info, LocalDateTime holdOpenDate,

@@ -38,6 +38,15 @@ public class ConcertPerformer {
 		this.concert = concert;
 	}
 
+	public void setConcert(Concert concert) {
+		if (this.concert != null) {
+			this.concert.getConcertPerformers().remove(this);
+		}
+
+		this.concert = concert;
+		concert.getConcertPerformers().add(this);
+	}
+
 	@Override
 	public String toString() {
 		return "ConcertPerformer {"

@@ -49,6 +49,15 @@ public class ConcertDetail {
 		this.bookCloseDate = bookCloseDate;
 	}
 
+	public void setConcert(Concert concert) {
+		if (this.concert != null) {
+			this.concert.getConcertDetails().remove(this);
+		}
+
+		this.concert = concert;
+		concert.getConcertDetails().add(this);
+	}
+
 	@Override
 	public String toString() {
 		return "ConcertDetail {"

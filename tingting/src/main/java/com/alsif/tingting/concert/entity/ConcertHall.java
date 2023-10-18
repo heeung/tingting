@@ -1,10 +1,14 @@
 package com.alsif.tingting.concert.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -30,6 +34,9 @@ public class ConcertHall {
 
 	@Column(nullable = false, length = 1)
 	private String pattern;
+
+	@OneToMany(mappedBy = "concertHall")
+	private final List<ConcertHallSeat> concertHallSeats = new ArrayList<>();
 
 	@Builder
 	public ConcertHall(String name, String city, String pattern) {
