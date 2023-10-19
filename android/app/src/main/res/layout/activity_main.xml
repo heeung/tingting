@@ -27,7 +27,7 @@
         android:layout_centerHorizontal="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu"
-        app:backgroundTint="@color/white"
+        android:background="@drawable/frame_bottom_nav"
         app:itemIconTint="@drawable/selector_bottom_nav_color"
         app:itemIconSize="@dimen/_20sdp"
         app:itemTextColor="@drawable/selector_bottom_nav_color"

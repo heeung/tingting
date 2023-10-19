@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="black">#FF000000</color>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="black">#FF444444</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#FFFFFFFF</color>
+    <color name="grey">#B2B2B2</color>
+    <color name="blue_mild">#FF74ABDE</color>
+
     <!--  바텀네비게이션 컬러  -->
     <color name="nav_selected_color">#FF74ABDE</color>
     <color name="nav_unselected_color">#FFC5C5C5</color>
+    <color name="nav_background_color">#FFFFFFFF</color>
+
+    <!--  login  -->
+    <color name="kakao_container_color">#FFFEE500</color>
+    <color name="kakao_icon_color">#E6000000</color>
+    <color name="kakao_text_color">#FF191919</color>
 </resources>
