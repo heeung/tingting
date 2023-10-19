@@ -1,6 +1,8 @@
 package com.alsif.tingting.di
 
 
+import com.alsif.tingting.BuildConfig
+import com.alsif.tingting.BuildConfig.BASE_URL
 import com.alsif.tingting.data.interceptor.AuthInterceptor
 import com.alsif.tingting.data.service.BaseService
 import com.google.gson.Gson
@@ -20,9 +22,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ServiceModule {
-
-    private const val BASE_URL = "https://jsonplaceholder.typicode.com/" // TODO Url 추가 필요
-
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()

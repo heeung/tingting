@@ -3,6 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { setUrl("https://devrepo.kakao.com/nexus/content/groups/public/") }
     }
 }
 dependencyResolutionManagement {
@@ -10,6 +11,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = java.net.URI("https://jitpack.io") }
+        maven{ url = java.net.URI("https://devrepo.kakao.com/nexus/content/groups/public/") }
     }
 }
 

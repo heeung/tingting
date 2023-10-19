@@ -1,5 +1,7 @@
 package com.alsif.tingting.data.interceptor
 
+import com.alsif.tingting.BuildConfig
+import com.alsif.tingting.BuildConfig.BASE_URL
 import com.alsif.tingting.TingtingApp
 import com.alsif.tingting.data.throwable.DataThrowable
 import com.alsif.tingting.data.model.AuthDto
@@ -122,7 +124,5 @@ class AuthInterceptor : Interceptor {
 
         private const val AUTH_TOKEN_EXPIRE_ERROR = 401 // TODO 서버에 맞게 수정
         private const val AUTH_TOKEN_ERROR = 402 // TODO 서버에 맞게 수정
-
-        private const val BASE_URL = "https://jsonplaceholder.typicode.com/" //TODO url 넣기
     }
 }

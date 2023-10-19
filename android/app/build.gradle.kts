@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -6,6 +8,9 @@ plugins {
     id ("dagger.hilt.android.plugin")
     id ("androidx.navigation.safeargs.kotlin")
 }
+
+val localProperties = Properties()
+localProperties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.alsif.tingting"
@@ -19,6 +24,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", "\"" + localProperties["api_key"] + "\"")
+        buildConfigField("String", "BASE_URL", "\"" + localProperties["base_url"] + "\"")
+
+        addManifestPlaceholders(mutableMapOf("API_KEY" to localProperties["api_key"]!!))
     }
 
     buildTypes {
@@ -28,6 +38,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            buildConfigField("String", "API_KEY", "\"" + localProperties["api_key"] + "\"")
+            buildConfigField("String", "BASE_URL", "\"" + localProperties["base_url"] + "\"")
+
+            addManifestPlaceholders(mutableMapOf("API_KEY" to localProperties["api_key"]!!))
         }
     }
     compileOptions {
@@ -96,8 +111,12 @@ dependencies {
     implementation ("androidx.room:room-ktx:$room_version")
 
 //    //카카오 로그인
-//    implementation ("com.kakao.sdk:v2-all:2.16.0") // 전체 모듈 설치, 2.11.0 버전부터 지원
-//    implementation ("com.kakao.sdk:v2-user:2.16.0") // 카카오 로그인
+    val kakao_version = "2.16.0"
+    implementation ("com.kakao.sdk:v2-all:$kakao_version") // 전체 모듈 설치, 2.11.0 버전부터 지원
+    implementation ("com.kakao.sdk:v2-user:$kakao_version") // 카카오 로그인
+    implementation ("com.kakao.sdk:v2-talk:$kakao_version") // 친구, 메시지(카카오톡)
+    implementation ("com.kakao.sdk:v2-share:$kakao_version") // 메시지(카카오톡 공유)
+    implementation ("com.kakao.sdk:v2-friend:$kakao_version") // 카카오톡 소셜 피커, 리소스 번들 파일 포함
 
     //sdp
     implementation ("com.intuit.sdp:sdp-android:1.1.0")
