@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/need_login"
-            android:layout_marginVertical="@dimen/_30sdp"
+            android:layout_marginVertical="@dimen/_40sdp"
             android:textSize="@dimen/_16sdp"
             android:textColor="@color/black"
             android:textAlignment="center" />
@@ -29,7 +29,7 @@
             android:layout_height="@dimen/_44sdp"
             android:background="@drawable/frame_button_kakao_login"
             android:layout_marginHorizontal="@dimen/_16sdp"
-            android:layout_marginVertical="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_4sdp"
             android:elevation="@dimen/_1sdp"
             android:gravity="center">
 
@@ -49,6 +49,14 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/policy"
+            android:textColor="@color/grey"
+            android:layout_gravity="center"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"/>
     </LinearLayout>
 
     <LinearLayout
