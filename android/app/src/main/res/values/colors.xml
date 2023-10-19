@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#FFFFFFFF</color>
+    <!--  바텀네비게이션 컬러  -->
+    <color name="nav_selected_color">#FF74ABDE</color>
+    <color name="nav_unselected_color">#FFC5C5C5</color>
+</resources>

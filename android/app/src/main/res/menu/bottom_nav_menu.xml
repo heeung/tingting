@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/homeFragment"
+        android:title="홈"
+        android:icon="@drawable/selector_home_icon"/>
+    <item android:id="@+id/searchFragment"
+        android:title="검색"
+        android:icon="@drawable/ic_search_outlined"/>
+    <item android:id="@+id/likedListFragment"
+        android:title="찜"
+        android:icon="@drawable/selector_like_icon"/>
+    <item android:id="@+id/reservedListFragment"
+        android:title="예매 목록"
+        android:icon="@drawable/ic_list_outlined"/>
+</menu>
