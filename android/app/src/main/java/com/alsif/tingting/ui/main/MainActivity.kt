@@ -1,9 +1,10 @@
-package com.alsif.tingting
+package com.alsif.tingting.ui.main
 
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.alsif.tingting.R
 import com.alsif.tingting.base.BaseActivity
 import com.alsif.tingting.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView

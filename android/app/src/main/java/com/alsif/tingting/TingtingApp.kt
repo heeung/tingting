@@ -23,7 +23,7 @@ class TingtingApp : Application() {
         super.onCreate()
         getHashKey()
         KakaoSdk.init(this, API_KEY)
-        disableDarkMode()
+//        disableDarkMode()
         initDataSources()
     }
 
