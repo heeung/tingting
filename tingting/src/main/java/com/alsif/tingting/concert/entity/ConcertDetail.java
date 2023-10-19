@@ -34,19 +34,10 @@ public class ConcertDetail {
 	@Column(nullable = false)
 	private LocalDateTime holdDate;
 
-	@Column(nullable = false)
-	private LocalDateTime bookOpenDate;
-
-	@Column(nullable = false)
-	private LocalDateTime bookCloseDate;
-
 	@Builder
-	public ConcertDetail(Concert concert, LocalDateTime holdDate, LocalDateTime bookOpenDate,
-		LocalDateTime bookCloseDate) {
+	public ConcertDetail(Concert concert, LocalDateTime holdDate) {
 		this.concert = concert;
 		this.holdDate = holdDate;
-		this.bookOpenDate = bookOpenDate;
-		this.bookCloseDate = bookCloseDate;
 	}
 
 	public void setConcert(Concert concert) {
@@ -62,10 +53,7 @@ public class ConcertDetail {
 	public String toString() {
 		return "ConcertDetail {"
 			+ "seq=" + seq
-			+ ", concert=" + concert
 			+ ", holdDate=" + holdDate
-			+ ", bookOpenDate=" + bookOpenDate
-			+ ", bookCloseDate=" + bookCloseDate
 			+ '}';
 	}
 }
