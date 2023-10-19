@@ -14,6 +14,9 @@ import com.alsif.tingting.concert.repository.concerthall.ConcertHallRepository;
 import com.alsif.tingting.concert.repository.concerthall.ConcertHallSeatRepository;
 import com.alsif.tingting.concert.repository.performer.ConcertPerformerRepository;
 import com.alsif.tingting.concert.repository.performer.PerformerRepository;
+import com.alsif.tingting.user.repository.PointRepository;
+import com.alsif.tingting.user.repository.UserConcertRepository;
+import com.alsif.tingting.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +36,9 @@ public class DummyService {
 	private final ConcertRepository concertRepository;
 	private final ConcertSeatInfoRepository concertSeatInfoRepository;
 	private final GradeRepository gradeRepository;
+	private final PointRepository pointRepository;
+	private final UserConcertRepository userConcertRepository;
+	private final UserRepository userRepository;
 
 	/**
 	 * 1. 가수를 넣는다. (이 행위는 데이터 넣는 첫날에만 발생함
