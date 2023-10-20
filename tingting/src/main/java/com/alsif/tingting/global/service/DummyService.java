@@ -139,13 +139,21 @@ public class DummyService {
 			LocalDateTime concertBookOpenDate = makeConcertBookOpenDate(concertHoldOpenDate);
 			LocalDateTime concertBookCloseDate = makeConcertBookCloseDate(concertHoldOpenDate);
 
-			Concert.builder()
+			Concert concert = Concert.builder()
 				.name(concertName)
 				.info(concertInfo)
 				.imageUrl(concertImageUrl)
 				.holdOpenDate(concertHoldOpenDate)
 				.holdCloseDate(concertHoldCloseDate)
+				.bookOpenDate(concertBookOpenDate)
+				.bookCloseDate(concertBookCloseDate)
 				.build();
+
+			concerts.add(concert);
+
+			for (int j = 0; j < concertHoldPeriod; j++) {
+				
+			}
 		}
 	}
 
