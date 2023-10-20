@@ -21,8 +21,6 @@ abstract class BaseBottomSheet<T : ViewBinding>(
     private lateinit var _mActivity: MainActivity
     protected val mActivity get() = _mActivity
 
-    private var isSetBackButtonValid = false
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         _mActivity = context as MainActivity
