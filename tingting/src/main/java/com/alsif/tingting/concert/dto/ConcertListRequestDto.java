@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @ToString
 @Schema(description = "콘서트 목록 요청")
