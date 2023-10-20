@@ -54,7 +54,6 @@ public class ConcertPerformer {
 		return "ConcertPerformer {"
 			+ "seq=" + seq
 			+ ", performer=" + performer
-			+ ", concert=" + concert
 			+ '}';
 	}
 }

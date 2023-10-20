@@ -52,6 +52,12 @@ public class Concert {
 	@Column(nullable = false)
 	private LocalDateTime holdCloseDate;
 
+	@Column(nullable = false)
+	private LocalDateTime bookOpenDate;
+
+	@Column(nullable = false)
+	private LocalDateTime bookCloseDate;
+
 	@OneToMany(mappedBy = "concert")
 	private final List<ConcertDetail> concertDetails = new ArrayList<>();
 
@@ -63,13 +69,15 @@ public class Concert {
 
 	@Builder
 	public Concert(ConcertHall concertHall, String name, String imageUrl, String info, LocalDateTime holdOpenDate,
-		LocalDateTime holdCloseDate) {
+		LocalDateTime holdCloseDate, LocalDateTime bookOpenDate, LocalDateTime bookCloseDate) {
 		this.concertHall = concertHall;
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.info = info;
 		this.holdOpenDate = holdOpenDate;
 		this.holdCloseDate = holdCloseDate;
+		this.bookOpenDate = bookOpenDate;
+		this.bookCloseDate = bookCloseDate;
 	}
 
 	@Override

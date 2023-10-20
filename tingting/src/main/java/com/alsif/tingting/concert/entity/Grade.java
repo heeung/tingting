@@ -55,7 +55,6 @@ public class Grade {
 	public String toString() {
 		return "Grade {"
 			+ "seq=" + seq
-			+ ", concert=" + concert
 			+ ", name='" + name + '\''
 			+ ", price=" + price
 			+ '}';
