@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="ReservedListFragment"
         android:textSize="@dimen/_20sdp"
+        style="@style/Theme.AppCompat.TextView.gSans.Black.Bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +21,8 @@
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="로그아웃"
+        android:text="@string/logout"
+        style="@style/Theme.AppCompat.TextView.gSans.White.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
