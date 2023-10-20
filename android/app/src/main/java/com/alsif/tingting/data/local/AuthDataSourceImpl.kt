@@ -23,8 +23,12 @@ class AuthDataSourceImpl(context: Context) : AuthDataSource {
      * preference에 저장되어 있는 AccessToken을 Bearer 패턴과 함께 리턴합니다.
      */
     override fun getAccessToken(): String? {
-        val accessToken = authPreference.getString(ACCESS_TOKEN, null) ?: return null
-        return BEARER + accessToken
+        val accessToken = authPreference.getString(ACCESS_TOKEN, null)
+        return if (accessToken.isNullOrEmpty()) {
+            null
+        } else {
+            BEARER + accessToken
+        }
     }
 
     /**

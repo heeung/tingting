@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Tingting</string>
+
+    <!--  login  -->
+    <string name="start_with_kakao">카카오로 시작하기</string>
+    <string name="need_login">로그인이 필요한 기능입니다.</string>
+    <string name="policy"><u>개인정보 처리방침</u></string>
+
 </resources>
