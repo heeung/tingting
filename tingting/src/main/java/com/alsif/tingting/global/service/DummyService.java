@@ -1,5 +1,8 @@
 package com.alsif.tingting.global.service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.alsif.tingting.book.repository.TicketRepository;
 import com.alsif.tingting.book.repository.TicketSeatRepository;
+import com.alsif.tingting.concert.entity.Concert;
 import com.alsif.tingting.concert.entity.concerthall.ConcertHall;
 import com.alsif.tingting.concert.entity.concerthall.ConcertHallSeat;
 import com.alsif.tingting.concert.entity.performer.Performer;
@@ -20,6 +24,8 @@ import com.alsif.tingting.concert.repository.concerthall.ConcertHallRepository;
 import com.alsif.tingting.concert.repository.concerthall.ConcertHallSeatRepository;
 import com.alsif.tingting.concert.repository.performer.ConcertPerformerRepository;
 import com.alsif.tingting.concert.repository.performer.PerformerRepository;
+import com.alsif.tingting.user.entity.Point;
+import com.alsif.tingting.user.entity.User;
 import com.alsif.tingting.user.repository.PointRepository;
 import com.alsif.tingting.user.repository.UserConcertRepository;
 import com.alsif.tingting.user.repository.UserRepository;
@@ -65,6 +71,8 @@ public class DummyService {
 	public void insertAllData() {
 		dummyList = new DummyList();
 		insertPerformers();
+		insertConcertHalls();
+		insertUsers();
 		return;
 	}
 
@@ -72,15 +80,10 @@ public class DummyService {
 	public void insertPerformers() {
 		List<String> singer = dummyList.getPerformers();
 		List<String> performersImage = dummyList.getPerformersImage();
+
 		List<Performer> performers = new ArrayList<>();
 
-		for (int i = 0; i < 100; i++) {
-			Performer performer = Performer.builder()
-				.name(singer.get(i))
-				.imageUrl(performersImage.get(i))
-				.build();
-			performers.add(performer);
-		}
+		makePerformers(singer, performersImage, performers);
 
 		performerRepository.saveAll(performers);
 
@@ -95,7 +98,6 @@ public class DummyService {
 		List<ConcertHallSeat> concertHallSeats = new ArrayList<>();
 
 		makeConcertHalls(concertHallNames, concertHallCities, concertHalls);
-
 		makeConcertHallSeats(concertHalls, concertHallSeats);
 
 		concertHallRepository.saveAll(concertHalls);
@@ -104,12 +106,47 @@ public class DummyService {
 
 	// 회원정보, 포인트(회원가입 때 주는거) 정보 넣기
 	public void insertUsers() {
+		List<String> emails = dummyList.getEmails();
 
+		List<User> users = new ArrayList<>();
+		List<Point> points = new ArrayList<>();
+
+		makeUsersAndPoints(emails, users, points);
+
+		userRepository.saveAll(users);
+		pointRepository.saveAll(points);
 	}
 
 	// 콘서트정보, 상세, 콘서트출연자
 	public void insertConcerts() {
+		List<String> concertNameHeaders = dummyList.getConcertNameHeaders();
+		List<String> concertNameMiddles = dummyList.getConcertNameMiddles();
+		List<String> concertNameTails = dummyList.getConcertNameTails();
+		List<String> concertInfos = dummyList.getConcertInfo();
+		List<String> concertImageUrls = dummyList.getConcertImageUrls();
 
+		List<Concert> concerts = new ArrayList<>();
+
+		for (int i = 0; i < 500; i++) {
+			String concertName = makeConcertName(concertNameHeaders, concertNameMiddles, concertNameTails);
+			String concertInfo = getRandomValue(concertInfos);
+			String concertImageUrl = getRandomValue(concertImageUrls);
+
+			int concertHoldPeriod = (int)(Math.random() * 5) + 1;
+
+			LocalDateTime concertHoldOpenDate = makeConcertHoldOpenDate();
+			LocalDateTime concertHoldCloseDate = makeConcertHoldCloseDate(concertHoldOpenDate, concertHoldPeriod);
+			LocalDateTime concertBookOpenDate = makeConcertBookOpenDate(concertHoldOpenDate);
+			LocalDateTime concertBookCloseDate = makeConcertBookCloseDate(concertHoldOpenDate);
+
+			Concert.builder()
+				.name(concertName)
+				.info(concertInfo)
+				.imageUrl(concertImageUrl)
+				.holdOpenDate(concertHoldOpenDate)
+				.holdCloseDate(concertHoldCloseDate)
+				.build();
+		}
 	}
 
 	// 콘서트 좌석 정보 넣기
@@ -122,8 +159,17 @@ public class DummyService {
 
 	}
 
+	private void makePerformers(List<String> singer, List<String> performersImage, List<Performer> performers) {
+		for (int i = 0; i < 100; i++) {
+			Performer performer = Performer.builder()
+				.name(singer.get(i))
+				.imageUrl(performersImage.get(i))
+				.build();
+			performers.add(performer);
+		}
+	}
 
-	private static void makeConcertHallSeats(List<ConcertHall> concertHalls, List<ConcertHallSeat> concertHallSeats) {
+	private void makeConcertHallSeats(List<ConcertHall> concertHalls, List<ConcertHallSeat> concertHallSeats) {
 		for (ConcertHall concertHall : concertHalls) {
 			for (char section = 'A'; section <= 'J'; section++) {
 				for (char seatAlphabet = 'A'; seatAlphabet <= 'J'; seatAlphabet++) {
@@ -142,7 +188,7 @@ public class DummyService {
 		}
 	}
 
-	private static void makeConcertHalls(List<String> concertHallNames, List<String> concertHallCities,
+	private void makeConcertHalls(List<String> concertHallNames, List<String> concertHallCities,
 		List<ConcertHall> concertHalls) {
 		for (String concertHallName : concertHallNames) {
 			for (String concertHallCity : concertHallCities) {
@@ -156,4 +202,70 @@ public class DummyService {
 		}
 	}
 
+	private LocalDateTime makeRandomDate() {
+		int startDate = 1_597_581_600; // 2020년 8월 16일 21시 40분 00초
+		int endDate = 1_647_581_600; // 2022년 3월 18일 14시 33분 20초
+
+		int unixTime = (int)((endDate - startDate) * Math.random()) + startDate;
+
+		return LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTime), ZoneId.of("Asia/Seoul"));
+	}
+
+	private static void makeUsersAndPoints(List<String> emails, List<User> users, List<Point> points) {
+		for (String email : emails) {
+
+			User user = User.builder()
+				.email(email)
+				.build();
+
+			Point point = Point.builder()
+				.pay(10000000L)
+				.user(user)
+				.total(10000000L)
+				.build();
+
+			users.add(user);
+			points.add(point);
+		}
+	}
+
+	private String makeConcertName(List<String> concertNameHeaders, List<String> concertNameMiddles,
+		List<String> concertNameTails) {
+		String nameHeader = getRandomValue(concertNameHeaders);
+		String nameMiddle = getRandomValue(concertNameHeaders);
+		String nameTail = getRandomValue(concertNameHeaders);
+		return String.format("%s %s %s", nameHeader, nameMiddle, nameTail);
+	}
+
+	private String getRandomValue(List<String> concertNameHeaders) {
+		String nameHeader = concertNameHeaders.get(getRandomValue(concertNameHeaders.size()));
+		return nameHeader;
+	}
+
+	private int getRandomValue(int concertNameHeaderSize) {
+		return (int)(Math.random() * concertNameHeaderSize);
+	}
+
+	private LocalDateTime makeConcertHoldOpenDate() {
+		int year = (int)(Math.random() * 10) + 2014;
+		int month = (int)(Math.random() * 12) + 1;
+		int day = (int)(Math.random() * 30) + 1;
+		if (month == 2 && day > 28) {
+			day -= 2;
+		}
+
+		return LocalDateTime.of(year, month, day, 0, 0, 0);
+	}
+
+	private LocalDateTime makeConcertHoldCloseDate(LocalDateTime concertHoldOpenDate, int concertHoldingDate) {
+		return concertHoldOpenDate.plusDays(concertHoldingDate);
+	}
+
+	private LocalDateTime makeConcertBookOpenDate(LocalDateTime concertHoldOpenDate) {
+		return concertHoldOpenDate.minusDays(14).plusHours(19);
+	}
+
+	private LocalDateTime makeConcertBookCloseDate(LocalDateTime concertHoldOpenDate) {
+		return concertHoldOpenDate.minusDays(5).plusHours(19);
+	}
 }

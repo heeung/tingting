@@ -45,6 +45,14 @@ public class ConcertHall {
 		this.pattern = pattern;
 	}
 
+	private ConcertHall(Long seq) {
+		this.seq = seq;
+	}
+	
+	public static ConcertHall makeDummyEntityBySeq(Long seq) {
+		return new ConcertHall(seq);
+	}
+
 	@Override
 	public String toString() {
 		return "ConcertHall {"

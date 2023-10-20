@@ -33,6 +33,14 @@ public class Performer {
 		this.imageUrl = imageUrl;
 	}
 
+	private Performer(Long seq) {
+		this.seq = seq;
+	}
+
+	public static Performer makeDummyEntityBySeq(Long seq) {
+		return new Performer(seq);
+	}
+
 	@Override
 	public String toString() {
 		return "Performer {"
