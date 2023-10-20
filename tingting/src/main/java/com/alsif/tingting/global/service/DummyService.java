@@ -1,11 +1,17 @@
 package com.alsif.tingting.global.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
 import com.alsif.tingting.book.repository.TicketRepository;
 import com.alsif.tingting.book.repository.TicketSeatRepository;
+import com.alsif.tingting.concert.entity.concerthall.ConcertHall;
+import com.alsif.tingting.concert.entity.concerthall.ConcertHallSeat;
+import com.alsif.tingting.concert.entity.performer.Performer;
 import com.alsif.tingting.concert.repository.ConcertDetailRepository;
 import com.alsif.tingting.concert.repository.ConcertRepository;
 import com.alsif.tingting.concert.repository.ConcertSeatInfoRepository;
@@ -39,6 +45,7 @@ public class DummyService {
 	private final PointRepository pointRepository;
 	private final UserConcertRepository userConcertRepository;
 	private final UserRepository userRepository;
+	private DummyList dummyList;
 
 	/**
 	 * 1. 가수를 넣는다. (이 행위는 데이터 넣는 첫날에만 발생함
@@ -56,16 +63,43 @@ public class DummyService {
 
 	@Transactional
 	public void insertAllData() {
+		dummyList = new DummyList();
+		insertPerformers();
 		return;
 	}
 
 	// 가수 넣기
 	public void insertPerformers() {
+		List<String> singer = dummyList.getPerformers();
+		List<String> performersImage = dummyList.getPerformersImage();
+		List<Performer> performers = new ArrayList<>();
+
+		for (int i = 0; i < 100; i++) {
+			Performer performer = Performer.builder()
+				.name(singer.get(i))
+				.imageUrl(performersImage.get(i))
+				.build();
+			performers.add(performer);
+		}
+
+		performerRepository.saveAll(performers);
+
 	}
 
 	// 콘서트홀, 콘서트홀 좌석 넣기
 	public void insertConcertHalls() {
+		List<String> concertHallNames = dummyList.getConcertHallName();
+		List<String> concertHallCities = dummyList.getConcertHallCity();
 
+		List<ConcertHall> concertHalls = new ArrayList<>();
+		List<ConcertHallSeat> concertHallSeats = new ArrayList<>();
+
+		makeConcertHalls(concertHallNames, concertHallCities, concertHalls);
+
+		makeConcertHallSeats(concertHalls, concertHallSeats);
+
+		concertHallRepository.saveAll(concertHalls);
+		concertHallSeatRepository.saveAll(concertHallSeats);
 	}
 
 	// 회원정보, 포인트(회원가입 때 주는거) 정보 넣기
@@ -87,4 +121,39 @@ public class DummyService {
 	public void insertTickets() {
 
 	}
+
+
+	private static void makeConcertHallSeats(List<ConcertHall> concertHalls, List<ConcertHallSeat> concertHallSeats) {
+		for (ConcertHall concertHall : concertHalls) {
+			for (char section = 'A'; section <= 'J'; section++) {
+				for (char seatAlphabet = 'A'; seatAlphabet <= 'J'; seatAlphabet++) {
+					for (int seatNumber = 1; seatNumber <= 20; seatNumber++) {
+						ConcertHallSeat concertHallSeat = ConcertHallSeat.builder()
+							.section(String.valueOf(section))
+							.seat(String.valueOf(seatAlphabet) + seatNumber)
+							.build();
+						concertHallSeat.setConcertHall(concertHall);
+
+						concertHallSeats.add(concertHallSeat);
+
+					}
+				}
+			}
+		}
+	}
+
+	private static void makeConcertHalls(List<String> concertHallNames, List<String> concertHallCities,
+		List<ConcertHall> concertHalls) {
+		for (String concertHallName : concertHallNames) {
+			for (String concertHallCity : concertHallCities) {
+				ConcertHall concertHall = ConcertHall.builder()
+					.name(concertHallName)
+					.city(concertHallCity)
+					.pattern("A")
+					.build();
+				concertHalls.add(concertHall);
+			}
+		}
+	}
+
 }
