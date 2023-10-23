@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 import com.alsif.tingting.book.repository.TicketRepository;
 import com.alsif.tingting.book.repository.TicketSeatRepository;
 import com.alsif.tingting.concert.entity.Concert;
+import com.alsif.tingting.concert.entity.ConcertDetail;
+import com.alsif.tingting.concert.entity.Grade;
 import com.alsif.tingting.concert.entity.concerthall.ConcertHall;
 import com.alsif.tingting.concert.entity.concerthall.ConcertHallSeat;
+import com.alsif.tingting.concert.entity.performer.ConcertPerformer;
 import com.alsif.tingting.concert.entity.performer.Performer;
 import com.alsif.tingting.concert.repository.ConcertDetailRepository;
 import com.alsif.tingting.concert.repository.ConcertRepository;
@@ -126,6 +129,8 @@ public class DummyService {
 		List<String> concertImageUrls = dummyList.getConcertImageUrls();
 
 		List<Concert> concerts = new ArrayList<>();
+		List<ConcertDetail> concertDetails = new ArrayList<>();
+		List<Grade> grades = new ArrayList<>();
 
 		for (int i = 0; i < 500; i++) {
 			String concertName = makeConcertName(concertNameHeaders, concertNameMiddles, concertNameTails);
@@ -134,12 +139,13 @@ public class DummyService {
 
 			int concertHoldPeriod = (int)(Math.random() * 5) + 1;
 
-			LocalDateTime concertHoldOpenDate = makeConcertHoldOpenDate();
+			LocalDateTime concertHoldOpenDate = makeRandomConcertHoldOpenDate();
 			LocalDateTime concertHoldCloseDate = makeConcertHoldCloseDate(concertHoldOpenDate, concertHoldPeriod);
 			LocalDateTime concertBookOpenDate = makeConcertBookOpenDate(concertHoldOpenDate);
 			LocalDateTime concertBookCloseDate = makeConcertBookCloseDate(concertHoldOpenDate);
 
 			Concert concert = Concert.builder()
+				.concertHall(ConcertHall.makeDummyEntityBySeq((long)(Math.random() * 96) + 1))
 				.name(concertName)
 				.info(concertInfo)
 				.imageUrl(concertImageUrl)
@@ -149,11 +155,39 @@ public class DummyService {
 				.bookCloseDate(concertBookCloseDate)
 				.build();
 
-			concerts.add(concert);
+			ConcertPerformer concertPerformer = ConcertPerformer.builder()
+				.performer(Performer.makeDummyEntityBySeq((long)(Math.random() * 100) + 1))
+				.build();
+			concertPerformer.setConcert(concert);
 
 			for (int j = 0; j < concertHoldPeriod; j++) {
-				
+				ConcertDetail concertDetail = ConcertDetail.builder()
+					.holdDate(concertHoldOpenDate.plusDays(j).plusHours(19))
+					.build();
+				concertDetail.setConcert(concert);
+				concertDetails.add(concertDetail);
 			}
+
+			int gradeRandom = (int)(Math.random() * 2) + 1;
+			long priceRandom = (long)(Math.random() * 2) + 5;
+			for (int j = 0; j < gradeRandom; j++) {
+				Grade grade;
+				if (j == 0) {
+					grade = Grade.builder()
+						.price(priceRandom * 11000L)
+						.name("일반")
+						.build();
+				} else {
+					grade = Grade.builder()
+						.price((priceRandom + 2) * 11000L)
+						.name("VIP")
+						.build();
+				}
+				grade.setConcert(concert);
+				grades.add(grade);
+			}
+
+			concerts.add(concert);
 		}
 	}
 
@@ -210,6 +244,7 @@ public class DummyService {
 		}
 	}
 
+	// user의 createdate가 default라서 이거 안씀 일단
 	private LocalDateTime makeRandomDate() {
 		int startDate = 1_597_581_600; // 2020년 8월 16일 21시 40분 00초
 		int endDate = 1_647_581_600; // 2022년 3월 18일 14시 33분 20초
@@ -239,22 +274,19 @@ public class DummyService {
 
 	private String makeConcertName(List<String> concertNameHeaders, List<String> concertNameMiddles,
 		List<String> concertNameTails) {
-		String nameHeader = getRandomValue(concertNameHeaders);
-		String nameMiddle = getRandomValue(concertNameHeaders);
-		String nameTail = getRandomValue(concertNameHeaders);
-		return String.format("%s %s %s", nameHeader, nameMiddle, nameTail);
+		return String.format("%s %s %s", getRandomValue(concertNameHeaders), getRandomValue(concertNameMiddles),
+			getRandomValue(concertNameTails));
 	}
 
-	private String getRandomValue(List<String> concertNameHeaders) {
-		String nameHeader = concertNameHeaders.get(getRandomValue(concertNameHeaders.size()));
-		return nameHeader;
+	private String getRandomValue(List<String> list) {
+		return list.get(getRandomListIndex(list.size()));
 	}
 
-	private int getRandomValue(int concertNameHeaderSize) {
-		return (int)(Math.random() * concertNameHeaderSize);
+	private int getRandomListIndex(int listSize) {
+		return (int)(Math.random() * listSize);
 	}
 
-	private LocalDateTime makeConcertHoldOpenDate() {
+	private LocalDateTime makeRandomConcertHoldOpenDate() {
 		int year = (int)(Math.random() * 10) + 2014;
 		int month = (int)(Math.random() * 12) + 1;
 		int day = (int)(Math.random() * 30) + 1;
