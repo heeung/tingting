@@ -30,4 +30,70 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 			+ "WHERE :current <= c.bookOpenDate "
 			+ "ORDER BY c.bookOpenDate ASC")
 	Page<ConcertBaseDto> findAllConcertSoon(@Param("current") LocalDateTime current, Pageable pageable);
+
+	@Query(
+		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
+			+ "FROM Concert c "
+			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
+			+ "WHERE ch.city = :place AND c.name LIKE %:searchWord% AND c.holdOpenDate >= :startDate AND c.holdCloseDate < :endDate "
+			+ "ORDER BY c.holdOpenDate ASC")
+	Page<ConcertBaseDto> findAllConcertByPlaceAndSearchWordAndDate(
+		@Param("place") String place, @Param("searchWord") String searchWord,
+		@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
+
+	@Query(
+		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
+			+ "FROM Concert c "
+			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
+			+ "WHERE ch.city = :place AND c.name LIKE %:searchWord% "
+			+ "ORDER BY c.holdOpenDate ASC")
+	Page<ConcertBaseDto> findAllConcertByPlaceAndSearchWord(
+		@Param("place") String place, @Param("searchWord") String searchWord, Pageable pageable);
+
+	@Query(
+		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
+			+ "FROM Concert c "
+			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
+			+ "WHERE ch.city = :place AND c.holdOpenDate >= :startDate AND c.holdCloseDate < :endDate "
+			+ "ORDER BY c.holdOpenDate ASC")
+	Page<ConcertBaseDto> findAllConcertByPlaceAndDate(
+		@Param("place") String place, @Param("startDate") LocalDateTime startDate,
+		@Param("endDate") LocalDateTime endDate, Pageable pageable);
+
+	@Query(
+		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
+			+ "FROM Concert c "
+			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
+			+ "WHERE ch.city = :place "
+			+ "ORDER BY c.holdOpenDate ASC")
+	Page<ConcertBaseDto> findAllConcertByPlace(
+		@Param("place") String place, Pageable pageable);
+
+	@Query(
+		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
+			+ "FROM Concert c "
+			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
+			+ "WHERE c.name LIKE %:searchWord% AND c.holdOpenDate >= :startDate AND c.holdCloseDate < :endDate "
+			+ "ORDER BY c.holdOpenDate ASC")
+	Page<ConcertBaseDto> findAllConcertBySearchWordAndDate(
+		@Param("searchWord") String searchWord, @Param("startDate") LocalDateTime startDate,
+		@Param("endDate") LocalDateTime endDate, Pageable pageable);
+
+	@Query(
+		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
+			+ "FROM Concert c "
+			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
+			+ "WHERE c.name LIKE %:searchWord% "
+			+ "ORDER BY c.holdOpenDate ASC")
+	Page<ConcertBaseDto> findAllConcertBySearchWord(
+		@Param("searchWord") String searchWord, Pageable pageable);
+
+	@Query(
+		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
+			+ "FROM Concert c "
+			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
+			+ "WHERE c.holdOpenDate >= :startDate AND c.holdCloseDate < :endDate "
+			+ "ORDER BY c.holdOpenDate ASC")
+	Page<ConcertBaseDto> findAllConcertByDate(
+		@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
 }
