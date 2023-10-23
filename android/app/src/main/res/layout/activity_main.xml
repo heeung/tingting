@@ -39,6 +39,7 @@
                 android:background="@drawable/frame_search_bar">
 
                 <EditText
+                    android:id="@+id/edittext_search"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -47,6 +48,7 @@
                     style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
                     android:layout_marginEnd="@dimen/_4sdp"
                     android:background="@color/white"
+                    android:focusable="false"
                     />
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
