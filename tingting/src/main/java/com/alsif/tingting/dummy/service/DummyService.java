@@ -75,14 +75,14 @@ public class DummyService {
 	 * 3. 회원정보, 포인트 정보 넣기
 	 * 4. 콘서트 정보, 상세, 콘서트 출연자 넣기
 	 * 5. 콘서트 좌석 정보 넣기
-	 * 6. 예매 티켓 정보 넣기
+	 * 6. 예매 티켓 정보 넣기(보류)
 	 *
 	 * 근데 여기서 중요한건 현재 메서드별로 리턴값 void로 해놨는데, 특정 메서드는 분리 및 합체 되면서
 	 * 리턴값을 엔티티를 받아다가 그걸로 추가적으로 매핑하거나 하는 연산이 필요할 수도 있음.
-	 * 이상
+	 * -> 전역변수 선언하는 걸로 수정
 	 */
 
-	@Transactional
+	// @Transactional
 	public void insertAllData() {
 		dummyList = new DummyList();
 		init();
@@ -107,18 +107,23 @@ public class DummyService {
 	}
 
 	// 가수 넣기
+	@Transactional
 	public void insertPerformers() {
+		log.info("insertPerformers 시작");
 		List<String> singer = dummyList.getPerformers();
 		List<String> performersImage = dummyList.getPerformersImage();
 
 		makePerformers(singer, performersImage);
 
 		performerRepository.saveAll(performers);
+		log.info("insertPerformers 종료");
 
 	}
 
 	// 콘서트홀, 콘서트홀 좌석 넣기
+	@Transactional
 	public void insertConcertHalls() {
+		log.info("insertConcertHalls 시작");
 		List<String> concertHallNames = dummyList.getConcertHallName();
 		List<String> concertHallCities = dummyList.getConcertHallCity();
 
@@ -127,20 +132,26 @@ public class DummyService {
 
 		concertHallRepository.saveAll(concertHalls);
 		concertHallSeatRepository.saveAll(concertHallSeats);
+		log.info("insertConcertHalls 종료");
 	}
 
 	// 회원정보, 포인트(회원가입 때 주는거) 정보 넣기
+	@Transactional
 	public void insertUsers() {
+		log.info("insertUsers 시작");
 		List<String> emails = dummyList.getEmails();
 
 		makeUsersAndPoints(emails);
 
 		userRepository.saveAll(users);
 		pointRepository.saveAll(points);
+		log.info("insertUsers 종료");
 	}
 
 	// 콘서트정보, 상세, 콘서트출연자, 등급
+	@Transactional
 	public void insertConcerts() {
+		log.info("insertConcerts 시작");
 		List<String> concertNameHeaders = dummyList.getConcertNameHeaders();
 		List<String> concertNameMiddles = dummyList.getConcertNameMiddles();
 		List<String> concertNameTails = dummyList.getConcertNameTails();
@@ -154,10 +165,13 @@ public class DummyService {
 		concertDetailRepository.saveAll(concertDetails);
 		concertPerformerRepository.saveAll(concertPerformers);
 		gradeRepository.saveAll(grades);
+		log.info("insertConcerts 종료");
 	}
 
 	// 콘서트 좌석 정보 넣기
+	@Transactional
 	public void insertConcertSeatInfos() {
+		log.info("insertConcertSeatInfos 시작");
 		for (Concert concert : concerts) {
 			List<ConcertDetail> concertDetailsByConcert = concert.getConcertDetails();
 			List<Grade> gradesByConcert = concert.getGrades();
@@ -202,6 +216,7 @@ public class DummyService {
 		}
 
 		concertSeatInfoRepository.saveAll(concertSeatInfos);
+		log.info("insertConcertSeatInfos 종료");
 	}
 
 	// 예매 티켓 정보 넣기

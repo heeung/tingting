@@ -17,6 +17,7 @@ public class DummyController {
 
 	@GetMapping("/dummy")
 	public void dummy() {
+		log.info("컨트롤러 시작");
 		dummyService.insertAllData();
 	}
 }
