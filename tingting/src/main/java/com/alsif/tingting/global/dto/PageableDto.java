@@ -1,9 +1,8 @@
-package com.alsif.tingting.user.dto;
+package com.alsif.tingting.global.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,12 +10,11 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
-@Schema(description = "찜 목록 요청")
-public class FavoriteListRequestDto {
+@Schema(description = "페이지네이션 요청")
+public class PageableDto {
 
 	@Schema(description = "검색할 페이지", type = "Integer", example = "1")
 	private Integer currentPage;

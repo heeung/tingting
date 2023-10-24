@@ -1,5 +1,7 @@
 package com.alsif.tingting.concert.dto;
 
+import com.alsif.tingting.global.dto.PageableDto;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,18 +13,11 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
 @Schema(description = "콘서트 목록 요청")
-public class ConcertListRequestDto {
-
-	@Schema(description = "검색할 페이지", type = "Integer", example = "1", required = true)
-	private Integer currentPage;
-
-	@Schema(description = "페이지 당 콘서트 개수", type = "Integer", example = "18", required = true)
-	private Integer itemCount;
+public class ConcertListRequestDto extends PageableDto {
 
 	@Schema(description = "예매중: now, 예매임박: soon", type = "String", example = "now")
 	private String orderBy;
@@ -38,4 +33,16 @@ public class ConcertListRequestDto {
 
 	@Schema(description = "검색 키워드", type = "String", example = "임영웅")
 	private String searchWord;
+
+	@Builder
+	public ConcertListRequestDto(Integer currentPage, Integer itemCount, String orderBy, String startDate,
+		String endDate,
+		String place, String searchWord) {
+		super(currentPage, itemCount);
+		this.orderBy = orderBy;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.place = place;
+		this.searchWord = searchWord;
+	}
 }
