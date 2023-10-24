@@ -4,12 +4,15 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.alsif.tingting.book.entity.Ticket;
+import com.alsif.tingting.book.entity.TicketSeat;
 import com.alsif.tingting.book.repository.TicketRepository;
 import com.alsif.tingting.book.repository.TicketSeatRepository;
 import com.alsif.tingting.concert.entity.Concert;
@@ -67,6 +70,10 @@ public class DummyService {
 	List<Grade> grades;
 	List<ConcertPerformer> concertPerformers;
 	List<ConcertSeatInfo> concertSeatInfos;
+	List<Ticket> tickets;
+	List<TicketSeat> ticketSeats;
+
+
 
 	/**
 	 * 1. 가수를 넣는다. (이 행위는 데이터 넣는 첫날에만 발생함
@@ -221,7 +228,87 @@ public class DummyService {
 
 	// 예매 티켓 정보 넣기
 	// TODO: 보류
+	@Transactional
 	public void insertTickets() {
+		log.info("insertTicket 함수 내부");
+		tickets = new ArrayList<>();
+		ticketSeats = new ArrayList<>();
+		points = new ArrayList<>();
+
+		List<User> users = userRepository.findAll();
+		List<ConcertDetail> concertDetails = concertDetailRepository.findAll();
+		List<ConcertSeatInfo> concertSeatInfos = concertSeatInfoRepository.findAll();
+
+
+		int userSize = users.size();
+		int concertDetailSize = concertDetails.size();
+		int concertSeatInfoSize = concertSeatInfos.size();
+
+		for(int i = 0 ; i < 100 ; i++) {
+			System.out.println(i + " .... " );
+			Ticket ticket = Ticket.builder()
+				.user(getRandomValue(users))
+				.concertDetail(getRandomValue(concertDetails))
+				.build();
+
+			// concertSeatInfo 돌면서 좌석 있는곳에 true
+			// concertDetail이 동일한 곳에
+
+
+			User choiceUser = ticket.getUser();
+			ConcertDetail choiceConcertDetail = ticket.getConcertDetail();
+
+			ConcertSeatInfo concertSeatInfo = null;
+			while(true){
+				concertSeatInfo = getRandomValue(concertSeatInfos);
+				if(concertSeatInfo.getConcertDetail().equals(choiceConcertDetail) && !concertSeatInfo.getBook()){
+					break;
+				}
+			}
+
+
+			// 포인트 만들기
+			// 근데 포인트할때 그 좌석의 가격을 알아야함
+			// 나의 제일 최근 포인트를 알아야함
+			// 포인트를 돌면서 회원이 동일하고 생성일이 가장 최근인 row 찾아서 그때의 포인트 누적 찾기
+
+			List<Point> pointsList = pointRepository.findAll();
+
+			// 내 포인트의 최근찾기
+			List<Point> myPoint = new ArrayList<>();
+			for(Point point : pointsList){
+				if(point.getUser().equals(choiceUser)){
+					myPoint.add(point);
+				}
+			}
+			myPoint.sort(Comparator.comparing(Point::getCreatedDate));
+			Long latestPoint = myPoint.get(myPoint.size()-1).getTotal();
+
+			Point point = Point.builder()
+				.user(choiceUser)
+				.ticket(ticket)
+				.pay(concertSeatInfo.getGrade().getPrice())
+				.total(latestPoint-concertSeatInfo.getGrade().getPrice())
+				.build();
+
+
+			TicketSeat ticketSeat = TicketSeat.builder()
+				.ticket(ticket)
+				.concertSeatInfo(concertSeatInfo)
+				.build();
+
+			concertSeatInfo.setBook();
+
+			tickets.add(ticket);
+			ticketSeats.add(ticketSeat);
+			points.add(point);
+
+
+		}
+		ticketRepository.saveAll(tickets);
+		ticketSeatRepository.saveAll(ticketSeats);
+		pointRepository.saveAll(points);
+		log.info("insertTicket 함수 종료");
 
 	}
 

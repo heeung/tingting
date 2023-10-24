@@ -20,4 +20,10 @@ public class DummyController {
 		log.info("컨트롤러 시작");
 		dummyService.insertAllData();
 	}
+
+	@GetMapping("/dummy/tickets")
+	public void dummy2(){
+		log.info("티켓 컨트롤러 시작");
+		dummyService.insertTickets();
+	}
 }

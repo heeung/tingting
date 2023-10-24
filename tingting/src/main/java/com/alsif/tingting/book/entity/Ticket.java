@@ -60,6 +60,10 @@ public class Ticket extends BaseEntity {
 		this.deletedDate = date;
 	}
 
+	public void setSeq(long seq){
+		this.seq = seq;
+	}
+
 	@Override
 	public String toString() {
 		return "Ticket {"
