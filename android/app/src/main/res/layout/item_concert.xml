@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_concert"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_260sdp"
+    android:layout_height="@dimen/_240sdp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="@dimen/_12sdp"
