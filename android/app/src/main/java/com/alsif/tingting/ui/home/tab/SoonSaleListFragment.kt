@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alsif.tingting.R
@@ -11,6 +12,7 @@ import com.alsif.tingting.base.BaseFragment
 import com.alsif.tingting.data.model.ConcertDto
 import com.alsif.tingting.data.model.request.ConcertListRequestDto
 import com.alsif.tingting.databinding.FragmentSoonSaleListBinding
+import com.alsif.tingting.ui.home.HomeFragmentDirections
 import com.alsif.tingting.ui.home.HomeFragmentViewModel
 import com.alsif.tingting.ui.home.tab.recyclerview.ConcertPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +29,7 @@ class SoonSaleListFragment: BaseFragment<FragmentSoonSaleListBinding>(FragmentSo
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+        setClickListeners()
         subscribe()
 //        getConcertList()
 //        binding.recyclerSoonSale.smoothScrollToPosition(0)
@@ -36,6 +39,16 @@ class SoonSaleListFragment: BaseFragment<FragmentSoonSaleListBinding>(FragmentSo
         super.onResume()
         getConcertList()
         binding.recyclerSoonSale.smoothScrollToPosition(0)
+    }
+
+    private fun setClickListeners() {
+        concertAdapter.itemClickListner = object: ConcertPagingAdapter.ItemClickListener {
+            override fun onClick(view: View, concert: ConcertDto) {
+//                viewModel.getConcertDetail(concert.concertSeq, TEST_USERSEQ)
+                val action = HomeFragmentDirections.actionHomeFragmentToConcertDetailFragment(concert.concertSeq)
+                findNavController().navigate(action)
+            }
+        }
     }
 
     private fun getConcertList() {
@@ -57,5 +70,9 @@ class SoonSaleListFragment: BaseFragment<FragmentSoonSaleListBinding>(FragmentSo
                 concertAdapter.submitData(it)
             }
         }
+    }
+
+    companion object {
+        private const val TEST_USERSEQ = 1
     }
 }

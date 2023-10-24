@@ -1,5 +1,6 @@
 package com.alsif.tingting.data.repository
 
+import com.alsif.tingting.data.model.ConcertDetailDto
 import com.alsif.tingting.data.model.ConcertDto
 import com.alsif.tingting.data.model.request.ConcertListRequestDto
 import com.alsif.tingting.data.model.response.ConcertListResponseDto
@@ -26,5 +27,12 @@ class HomeRepositoryImpl @Inject constructor(
                 searchWord = concertListRequestDto.searchWord,
             )
         }
+    }
+
+    /**
+     * GET 콘서트 상세
+     */
+    override suspend fun getConcertDetail(concertSeq: Int, userSeq: Int): ConcertDetailDto {
+        return handleApi { homeService.getConcertDetail(concertSeq, userSeq) }
     }
 }

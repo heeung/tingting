@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.alsif.tingting.ui.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_concertDetailFragment"
+            app:destination="@id/concertDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/likedListFragment"
         android:name="com.alsif.tingting.ui.likedlist.LikedListFragment"
@@ -20,4 +24,12 @@
         android:id="@+id/searchFragment"
         android:name="com.alsif.tingting.ui.search.SearchFragment"
         android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/concertDetailFragment"
+        android:name="com.alsif.tingting.ui.concertdetail.ConcertDetailFragment"
+        android:label="ConcertDetailFragment">
+        <argument
+        android:name="concertSeq"
+        app:argType="integer" />
+    </fragment>
 </navigation>

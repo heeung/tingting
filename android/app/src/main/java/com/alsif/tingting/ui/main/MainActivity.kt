@@ -89,6 +89,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 R.id.searchFragment -> {
                     binding.layoutAppbar.visibility = View.GONE
                 }
+                R.id.concertDetailFragment -> {
+                    binding.layoutAppbar.visibility = View.GONE
+                }
                 else -> {
                     binding.layoutAppbar.visibility = View.VISIBLE
                 }

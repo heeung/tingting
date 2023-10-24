@@ -1,6 +1,7 @@
 package com.alsif.tingting.ui.home.tab.recyclerview
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.paging.PagingDataAdapter
@@ -31,6 +32,9 @@ class ConcertPagingAdapter : PagingDataAdapter<ConcertDto, ConcertPagingAdapter.
             binding.textviewTitle.text = concert.name
             binding.textviewCity.text = concert.concertHallCity
             binding.textviewDate.text = "${concert.holdOpenDate.subSequence(0, 10)} ~ ${concert.holdCloseDate.subSequence(0, 10)}"
+            binding.itemConcert.setOnClickListener {
+                itemClickListner.onClick(it, concert)
+            }
         }
     }
 
@@ -50,4 +54,8 @@ class ConcertPagingAdapter : PagingDataAdapter<ConcertDto, ConcertPagingAdapter.
         holder.binding.itemConcert.animation = AnimationUtils.loadAnimation(holder.binding.itemConcert.context, R.anim.list_item_anim_fade_in)
     }
 
+    lateinit var itemClickListner: ItemClickListener
+    interface ItemClickListener {
+        fun onClick(view: View, concertDto: ConcertDto)
+    }
 }
