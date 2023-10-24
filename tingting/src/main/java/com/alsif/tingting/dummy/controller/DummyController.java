@@ -21,11 +21,11 @@ public class DummyController {
 		dummyService.insertAllData();
 	}
 
-	@GetMapping("/dummy/tickets")
-	public void dummy2(){
-		log.info("티켓 컨트롤러 시작");
-		dummyService.insertTickets();
-	}
+	// @GetMapping("/dummy/tickets")
+	// public void dummy2(){
+	// 	log.info("티켓 컨트롤러 시작");
+	// 	dummyService.insertTickets();
+	// }
 
 	@GetMapping("/dummy/favorite")
 	public void dummy3(){
@@ -37,5 +37,11 @@ public class DummyController {
 	public void dummy4(){
 		log.info("찜목록");
 		dummyService.insertTickets2();
+	}
+
+	@GetMapping("/test")
+	public void dummy5(){
+		log.info("리팩토링 더미");
+		dummyService.insertTicketRefact();
 	}
 }
