@@ -1,0 +1,41 @@
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    width: 10.4375rem;
+    height: 16.1875rem;
+    flex-shrink: 0;
+    margin: 0.5rem;
+}
+
+.img {
+    width: 100%;
+    height: 80%;
+}
+
+.concertInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.concertName {
+    text-align: center;
+    min-height: 1rem;
+    font-weight: 1000;
+}
+
+.concertDate {
+    text-align: center;
+    min-height: 1rem;
+    font-weight: 1000;
+
+}
+
+.concertLocate {
+    text-align: center;
+    min-height: 1rem;
+    font-weight: 1000;
+
+}
