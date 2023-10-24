@@ -15,15 +15,20 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alsif.tingting.concert.dto.ConcertBaseDto;
 import com.alsif.tingting.concert.dto.ConcertDetailBaseDto;
 import com.alsif.tingting.concert.dto.ConcertDetailResponseDto;
+import com.alsif.tingting.concert.dto.ConcertFavoriteRequestDto;
+import com.alsif.tingting.concert.dto.ConcertFavoriteResponseDto;
 import com.alsif.tingting.concert.dto.ConcertListRequestDto;
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
 import com.alsif.tingting.concert.dto.performer.PerformerBaseDto;
+import com.alsif.tingting.concert.entity.Concert;
 import com.alsif.tingting.concert.entity.ConcertDetail;
 import com.alsif.tingting.concert.repository.ConcertDetailRepository;
 import com.alsif.tingting.concert.repository.ConcertPerformerRepository;
 import com.alsif.tingting.concert.repository.ConcertRepository;
 import com.alsif.tingting.global.constant.ErrorCode;
 import com.alsif.tingting.global.exception.CustomException;
+import com.alsif.tingting.user.entity.User;
+import com.alsif.tingting.user.entity.UserConcert;
 import com.alsif.tingting.user.repository.UserConcertRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -176,5 +181,33 @@ public class ConcertService {
 		log.info(concertDetailBaseDtos.toString());
 
 		return concertDetailResponseDto;
+	}
+
+	/*
+		콘서트 찜 요청
+	 */
+	@Transactional
+	public ConcertFavoriteResponseDto addToFavorites(ConcertFavoriteRequestDto concertFavoriteRequestDto) {
+
+		boolean favorite = userConcertRepository.existsByUser_SeqAndConcert_Seq(
+			concertFavoriteRequestDto.getUserSeq(), concertFavoriteRequestDto.getConcertSeq());
+		log.info("favorite: {}", favorite);
+
+		if (favorite) {
+			userConcertRepository.deleteByUser_SeqAndConcert_Seq(
+				concertFavoriteRequestDto.getUserSeq(), concertFavoriteRequestDto.getConcertSeq()
+			);
+		} else {
+			userConcertRepository.save(UserConcert.builder()
+				.concert(Concert.constructBySeq(concertFavoriteRequestDto.getConcertSeq()))
+				.user(User.constructBySeq(concertFavoriteRequestDto.getUserSeq()))
+				.build());
+		}
+
+		favorite = userConcertRepository.existsByUser_SeqAndConcert_Seq(
+			concertFavoriteRequestDto.getUserSeq(), concertFavoriteRequestDto.getConcertSeq());
+		log.info("favorite: {}", favorite);
+
+		return ConcertFavoriteResponseDto.builder().favorite(favorite).build();
 	}
 }

@@ -9,4 +9,6 @@ import com.alsif.tingting.user.entity.UserConcert;
 public interface UserConcertRepository extends JpaRepository<UserConcert, Long> {
 
 	boolean existsByUser_SeqAndConcert_Seq(Long userSeq, Long concertSeq);
+
+	void deleteByUser_SeqAndConcert_Seq(Long userSeq, Long concertSeq);
 }

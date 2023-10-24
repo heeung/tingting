@@ -36,6 +36,14 @@ public class User extends BaseEntity {
 		this.email = email;
 	}
 
+	public static User constructBySeq(Long seq) {
+		return new User(seq);
+	}
+
+	private User(Long seq) {
+		this.seq = seq;
+	}
+
 	public void updateDeletedDate(LocalDateTime date) {
 		this.deletedDate = date;
 	}

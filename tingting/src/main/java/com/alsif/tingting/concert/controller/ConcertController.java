@@ -5,11 +5,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alsif.tingting.concert.dto.ConcertDetailResponseDto;
+import com.alsif.tingting.concert.dto.ConcertFavoriteRequestDto;
+import com.alsif.tingting.concert.dto.ConcertFavoriteResponseDto;
 import com.alsif.tingting.concert.dto.ConcertListRequestDto;
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
 import com.alsif.tingting.concert.service.ConcertService;
@@ -63,5 +67,22 @@ public class ConcertController {
 
 		log.info("===== 콘서트 상세 정보 불러오기 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
 		return new ResponseEntity<>(concertDetailResponseDto, HttpStatus.OK);
+	}
+
+	@Operation(summary = "콘서트 찜하기")
+	@PostMapping("/favorite")
+	ResponseEntity<ConcertFavoriteResponseDto> addToFavorites(
+		@RequestBody ConcertFavoriteRequestDto concertFavoriteRequestDto) {
+		log.info("===== 콘서트 찜하기 요청 시작, url={}, {} =====",
+			"/concerts", concertFavoriteRequestDto.toString());
+
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		ConcertFavoriteResponseDto concertFavoriteResponseDto = concertService.addToFavorites(
+			concertFavoriteRequestDto);
+		stopWatch.stop();
+
+		log.info("===== 콘서트 찜하기 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
+		return new ResponseEntity<>(concertFavoriteResponseDto, HttpStatus.OK);
 	}
 }
