@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { bannerImg } from '../assets/Images/index.js'
 import styles from './Home.module.css'
 import Search from '../components/search/Search.js'
 import ConcertList from '../components/concertlist/ConcertList.js'
+import Carousel from '../components/carousel/MyCarousel.js';
 function Home(){
     const [category,setCategory] = useState("reservationNow");
 
@@ -13,9 +13,7 @@ function Home(){
         <div
         className={styles.container}>
             {/* 배너 이후에 캐러셀로 대체 */}
-            <img
-            className={styles.banner}
-            src={bannerImg} alt="loginBackground" />
+            <Carousel/>
             {/* 검색 컴포넌트 */}
             <Search/>
                 <div

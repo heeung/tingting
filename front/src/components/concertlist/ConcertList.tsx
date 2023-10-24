@@ -9,10 +9,11 @@ export default function ConcertList(){
     return(
         <div
             className={styles.container}>    
-            {lst.map(()=>{
-
+            {lst.map((item:number)=>{
                 return <div 
-                className={styles.concertList}>
+                className={styles.concertList}
+                key={item}
+                >
                     <ConcertInfo
                     />
                 </div>
