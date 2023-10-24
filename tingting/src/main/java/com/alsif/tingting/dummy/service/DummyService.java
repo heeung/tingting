@@ -33,6 +33,7 @@ import com.alsif.tingting.concert.repository.performer.ConcertPerformerRepositor
 import com.alsif.tingting.concert.repository.performer.PerformerRepository;
 import com.alsif.tingting.user.entity.Point;
 import com.alsif.tingting.user.entity.User;
+import com.alsif.tingting.user.entity.UserConcert;
 import com.alsif.tingting.user.repository.PointRepository;
 import com.alsif.tingting.user.repository.UserConcertRepository;
 import com.alsif.tingting.user.repository.UserRepository;
@@ -72,6 +73,8 @@ public class DummyService {
 	List<ConcertSeatInfo> concertSeatInfos;
 	List<Ticket> tickets;
 	List<TicketSeat> ticketSeats;
+
+	List<UserConcert> userConcerts;
 
 
 
@@ -310,6 +313,23 @@ public class DummyService {
 		pointRepository.saveAll(points);
 		log.info("insertTicket 함수 종료");
 
+	}
+
+	// 찜
+	@Transactional
+	public void makeFavorite(){
+		List<User> users = userRepository.findAll();
+		List<Concert> concerts = concertRepository.findAll();
+		userConcerts = new ArrayList<>();
+		for(int i = 0 ; i < 100 ; i++){
+			UserConcert userConcert = UserConcert.builder()
+				.user(getRandomValue(users))
+				.concert(getRandomValue(concerts))
+				.build();
+
+			userConcerts.add(userConcert);
+		}
+		userConcertRepository.saveAll(userConcerts);
 	}
 
 	private void makePerformers(List<String> singer, List<String> performersImage) {

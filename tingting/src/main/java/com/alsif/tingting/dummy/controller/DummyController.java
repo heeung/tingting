@@ -26,4 +26,10 @@ public class DummyController {
 		log.info("티켓 컨트롤러 시작");
 		dummyService.insertTickets();
 	}
+
+	@GetMapping("/dummy/favorite")
+	public void dummy3(){
+		log.info("찜목록");
+		dummyService.makeFavorite();
+	}
 }
