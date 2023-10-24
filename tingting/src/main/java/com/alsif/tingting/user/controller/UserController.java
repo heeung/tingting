@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
-import com.alsif.tingting.user.dto.FavoriteListRequestDto;
+import com.alsif.tingting.global.dto.PageableDto;
+import com.alsif.tingting.user.dto.TicketListResponseDto;
 import com.alsif.tingting.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,20 +31,39 @@ public class UserController {
 
 	@Operation(summary = "찜 목록")
 	@Parameters(value = {
-		@Parameter(required = true, name = "userSeq", description = "회원 PK")
+		@Parameter(required = true, name = "userSeq", description = "회원 PK (ex. 1)")
 	})
 	@GetMapping("/{userSeq}/favorite")
 	ResponseEntity<ConcertListResponseDto> findFavoriteList(@PathVariable("userSeq") Long userSeq,
-		FavoriteListRequestDto favoriteListRequestDto) {
+		PageableDto pageableDto) {
 		log.info("===== 콘서트 찜 목록 요청 시작, url={}, userSeq: {}, {} =====",
-			"/concerts", userSeq, favoriteListRequestDto.toString());
+			"/concerts", userSeq, pageableDto.toString());
 
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
-		ConcertListResponseDto concertListResponseDto = userService.findFavoriteList(userSeq, favoriteListRequestDto);
+		ConcertListResponseDto concertListResponseDto = userService.findFavoriteList(userSeq, pageableDto);
 		stopWatch.stop();
 
 		log.info("===== 콘서트 찜 목록 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
 		return new ResponseEntity<>(concertListResponseDto, HttpStatus.OK);
+	}
+
+	@Operation(summary = "예매 내역")
+	@Parameters(value = {
+		@Parameter(required = true, name = "userSeq", description = "회원 PK (ex. 435)")
+	})
+	@GetMapping("/{userSeq}/ticket")
+	ResponseEntity<TicketListResponseDto> findTicketList(@PathVariable("userSeq") Long userSeq,
+		PageableDto pageableDto) {
+		log.info("===== 콘서트 예매 내역 요청 시작, url={}, userSeq: {}, {} =====",
+			"/concerts", userSeq, pageableDto.toString());
+
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		TicketListResponseDto ticketListResponseDto = userService.findTicketList(userSeq, pageableDto);
+		stopWatch.stop();
+
+		log.info("===== 콘서트 예매 내역 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
+		return new ResponseEntity<>(ticketListResponseDto, HttpStatus.OK);
 	}
 }
