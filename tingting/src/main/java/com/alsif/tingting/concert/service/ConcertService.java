@@ -3,6 +3,8 @@ package com.alsif.tingting.concert.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,11 +13,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alsif.tingting.concert.dto.ConcertBaseDto;
+import com.alsif.tingting.concert.dto.ConcertDetailBaseDto;
+import com.alsif.tingting.concert.dto.ConcertDetailResponseDto;
 import com.alsif.tingting.concert.dto.ConcertListRequestDto;
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
+import com.alsif.tingting.concert.dto.performer.PerformerBaseDto;
+import com.alsif.tingting.concert.entity.ConcertDetail;
+import com.alsif.tingting.concert.repository.ConcertDetailRepository;
+import com.alsif.tingting.concert.repository.ConcertPerformerRepository;
 import com.alsif.tingting.concert.repository.ConcertRepository;
 import com.alsif.tingting.global.constant.ErrorCode;
 import com.alsif.tingting.global.exception.CustomException;
+import com.alsif.tingting.user.repository.UserConcertRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 public class ConcertService {
 
 	private final ConcertRepository concertRepository;
+	private final UserConcertRepository userConcertRepository;
+	private final ConcertPerformerRepository concertPerformerRepository;
+	private final ConcertDetailRepository concertDetailRepository;
 
 	/*
 		콘서트 목록 불러오기
@@ -125,12 +137,44 @@ public class ConcertService {
 		return returnConcertListResponseDto(requestDto, concertBaseDtos);
 	}
 
+	/*
+		ConcertListResponseDto 생성
+	 */
 	private ConcertListResponseDto returnConcertListResponseDto(ConcertListRequestDto requestDto,
 		Page<ConcertBaseDto> concertBaseDtos) {
-		return ConcertListResponseDto.builder()
+		ConcertListResponseDto concertListResponseDto = ConcertListResponseDto.builder()
 			.totalPage(concertBaseDtos.getTotalPages())
 			.currentPage(requestDto.getCurrentPage())
 			.concerts(concertBaseDtos.getContent())
 			.build();
+		log.info("콘서트 목록: {}", concertListResponseDto);
+		return concertListResponseDto;
+	}
+
+	/*
+		콘서트 상세 정보 불러오기
+	 */
+	public ConcertDetailResponseDto findConcertDetail(Long concertSeq, Long userSeq) {
+
+		ConcertDetailResponseDto concertDetailResponseDto
+			= concertRepository.findByConcertDetailsByConcertSeq(concertSeq);
+		log.info(concertDetailResponseDto.toString());
+
+		boolean favorite = userConcertRepository.existsByUser_SeqAndConcert_Seq(userSeq, concertSeq);
+		concertDetailResponseDto.setFavorite(favorite);
+		log.info("favorite: {}", favorite);
+
+		List<PerformerBaseDto> performerBaseDtos = concertPerformerRepository.findAllByConcertSeq(concertSeq);
+		concertDetailResponseDto.setPerformers(performerBaseDtos);
+		log.info(performerBaseDtos.toString());
+
+		List<ConcertDetailBaseDto> concertDetailBaseDtos = concertDetailRepository.findAllByConcert_Seq(concertSeq)
+			.stream()
+			.map(ConcertDetail::convertToConcertDetailBaseDto)
+			.collect(Collectors.toList());
+		concertDetailResponseDto.setConcertDetails(concertDetailBaseDtos);
+		log.info(concertDetailBaseDtos.toString());
+
+		return concertDetailResponseDto;
 	}
 }
