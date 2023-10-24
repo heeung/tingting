@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.alsif.tingting.concert.dto.ConcertBaseDto;
+import com.alsif.tingting.concert.dto.ConcertDetailResponseDto;
 import com.alsif.tingting.concert.entity.Concert;
 
 @Repository
@@ -96,4 +97,11 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 			+ "ORDER BY c.holdOpenDate ASC")
 	Page<ConcertBaseDto> findAllConcertByDate(
 		@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
+
+	@Query(
+		"SELECT NEW com.alsif.tingting.concert.dto.ConcertDetailResponseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city, c.info, c.bookOpenDate, c.bookCloseDate) "
+			+ "FROM Concert c "
+			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
+			+ "WHERE c.seq = :concertSeq")
+	ConcertDetailResponseDto findByConcertDetailsByConcertSeq(@Param("concertSeq") Long concertSeq);
 }

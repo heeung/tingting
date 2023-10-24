@@ -80,6 +80,14 @@ public class Concert {
 		this.bookCloseDate = bookCloseDate;
 	}
 
+	public static Concert constructBySeq(Long seq) {
+		return new Concert(seq);
+	}
+
+	private Concert(Long seq) {
+		this.seq = seq;
+	}
+
 	@Override
 	public String toString() {
 		return "Concert {"
