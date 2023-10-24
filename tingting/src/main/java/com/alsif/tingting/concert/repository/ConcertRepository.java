@@ -104,4 +104,13 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
 			+ "WHERE c.seq = :concertSeq")
 	ConcertDetailResponseDto findByConcertDetailsByConcertSeq(@Param("concertSeq") Long concertSeq);
+
+	@Query(
+		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
+			+ "FROM Concert c "
+			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
+			+ "JOIN UserConcert uc ON (c.seq = uc.concert.seq) "
+			+ "WHERE uc.user.seq = :userSeq "
+			+ "ORDER BY c.holdOpenDate DESC")
+	Page<ConcertBaseDto> findAllConcertFavorite(@Param("userSeq") Long userSeq, Pageable pageable);
 }
