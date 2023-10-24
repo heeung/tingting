@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--  appbar  -->
+    <style name="CustomAppbar" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="appBarLayoutStyle">@color/white</item>
+    </style>
+
     <!-- g sans black medium -->
     <style name="Theme.AppCompat.TextView.gSans.Black.Medium" parent="@style/Widget.AppCompat.TextView">
         <item name="android:textColor">@color/black</item>

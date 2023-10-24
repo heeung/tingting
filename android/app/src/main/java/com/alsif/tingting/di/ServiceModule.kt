@@ -1,10 +1,9 @@
 package com.alsif.tingting.di
 
 
-import com.alsif.tingting.BuildConfig
 import com.alsif.tingting.BuildConfig.BASE_URL
 import com.alsif.tingting.data.interceptor.AuthInterceptor
-import com.alsif.tingting.data.service.BaseService
+import com.alsif.tingting.data.service.HomeService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -49,7 +48,7 @@ object ServiceModule {
 
     @Singleton
     @Provides
-    fun provideMainAPIService(
+    fun provideHomeService(
         retrofit: Retrofit
-    ) : BaseService = retrofit.create(BaseService::class.java)
+    ) : HomeService = retrofit.create(HomeService::class.java)
 }

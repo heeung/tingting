@@ -2,51 +2,74 @@ package com.alsif.tingting.ui.home
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import com.alsif.tingting.R
 import com.alsif.tingting.base.BaseFragment
+import com.alsif.tingting.data.model.request.ConcertListRequestDto
 import com.alsif.tingting.databinding.FragmentHomeBinding
 import com.alsif.tingting.ui.home.viewpager.AdsViewPagerAdapter
+import com.alsif.tingting.ui.home.viewpager.TabViewPagerAdapter
 import com.alsif.tingting.util.extension.setCurrentItemWithDuration
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.lang.Math.ceil
 
+
 private const val TAG = "HomeFragment"
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home) {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, com.alsif.tingting.R.layout.fragment_home) {
 
     private val viewModel: HomeFragmentViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        subscribe()
         initAdsPager()
+        initTabLayout()
     }
 
     private fun setClickListeners() {
 
     }
 
+    private fun subscribe() {
+        lifecycleScope.launch {
+            viewModel.error.collectLatest {
+                mActivity.showToast(it.message.toString())
+            }
+        }
+    }
+
+    private fun initTabLayout() {
+        // 탭과 뷰페이저 연결
+        val tabLayout = binding.tabCategory
+        val tabLayoutMediator = TabLayoutMediator(tabLayout, tabPager()) { tab, position ->
+            if (position == 0) {
+                tab.text = ON_SALE
+            } else {
+                tab.text = SOON_SALE
+            }
+        }
+        tabLayoutMediator.attach()
+    }
+
+    private fun tabPager(): ViewPager2 {
+        val viewPager2 = binding.viewpagerCategory
+        viewPager2.adapter = TabViewPagerAdapter(this)
+        viewPager2.currentItem = 0
+        return viewPager2
+    }
+
     private fun initAdsPager() {
         binding.adsPager.viewPager.adapter = AdsViewPagerAdapter(viewModel.pagerList)
         binding.adsPager.viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        binding.adsPager.txtCurrentBanner.text = getString(R.string.viewpager2_banner, 1, viewModel.pagerList.size)
+        binding.adsPager.txtCurrentBanner.text = getString(com.alsif.tingting.R.string.viewpager2_banner, 1, viewModel.pagerList.size)
         infiniteScrollPager()
     }
 
@@ -57,7 +80,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind
                 super.onPageSelected(position)
                 viewModel.bannerPosition = position
 
-                binding.adsPager.txtCurrentBanner.text = getString(R.string.viewpager2_banner, (viewModel.bannerPosition % viewModel.pagerList.size) + 1, viewModel.pagerList.size)
+                binding.adsPager.txtCurrentBanner.text = getString(com.alsif.tingting.R.string.viewpager2_banner, (viewModel.bannerPosition % viewModel.pagerList.size) + 1, viewModel.pagerList.size)
             }
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
@@ -98,5 +121,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind
     override fun onPause() {
         viewModel.job.cancel()
         super.onPause()
+    }
+
+    companion object {
+        private const val ON_SALE = "예매 중"
+        private const val SOON_SALE = "예매 임박"
     }
 }

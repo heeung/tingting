@@ -13,4 +13,7 @@
     <!--  viewpager  -->
     <string name="viewpager2_banner">%1$d / %2$d 모두보기</string>
 
+    <!--  home  -->
+    <string name="on_sale">예매 중</string>
+    <string name="soon_sale">예매 임박</string>
 </resources>

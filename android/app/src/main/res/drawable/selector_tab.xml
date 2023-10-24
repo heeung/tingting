@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 선택된 탭 -->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/black" /> <!-- 선택된 탭의 배경색 -->
+        </shape>
+    </item>
+    <!-- 선택되지 않은 탭 -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" /> <!-- 선택되지 않은 탭의 배경색 -->
+        </shape>
+    </item>
+</selector>

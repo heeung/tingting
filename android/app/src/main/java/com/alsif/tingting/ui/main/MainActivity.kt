@@ -84,7 +84,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         navController.setGraph(graph, intent.extras)
 
         // searchFragment만 appBar없애주기
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.searchFragment -> {
                     binding.layoutAppbar.visibility = View.GONE
