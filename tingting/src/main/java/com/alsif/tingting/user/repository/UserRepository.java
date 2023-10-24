@@ -7,4 +7,5 @@ import com.alsif.tingting.user.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+	User findBySeq(Long seq);
 }

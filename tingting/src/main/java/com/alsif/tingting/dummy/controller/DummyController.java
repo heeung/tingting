@@ -32,4 +32,10 @@ public class DummyController {
 		log.info("찜목록");
 		dummyService.makeFavorite();
 	}
+
+	@GetMapping("/dummy/seats")
+	public void dummy4(){
+		log.info("찜목록");
+		dummyService.insertTickets2();
+	}
 }
