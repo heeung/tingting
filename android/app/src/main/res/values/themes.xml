@@ -3,6 +3,8 @@
     <style name="Base.Theme.Tingting" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="android:colorBackground">@color/white</item>
+        <item name="tabBackground">@color/white</item>
+
         <!--  statusbar color  -->
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>

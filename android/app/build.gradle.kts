@@ -135,4 +135,7 @@ dependencies {
 
     // gson
     implementation ("com.google.code.gson:gson:2.8.9")
+
+    //paging
+    implementation ("androidx.paging:paging-runtime:3.1.1")
 }

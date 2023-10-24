@@ -1,6 +1,7 @@
 package com.alsif.tingting.ui.likedlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,22 +18,20 @@ import com.alsif.tingting.ui.main.MainActivity
 import com.alsif.tingting.ui.main.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val TAG = "LikedListFragment"
 @AndroidEntryPoint
 class LikedListFragment : BaseFragment<FragmentLikedListBinding>(FragmentLikedListBinding::bind, R.layout.fragment_liked_list) {
     private val viewModel: LikedListFragmentViewModel by viewModels()
     private val sharedViewModel: MainActivityViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mActivity.requireLogin()
+    }
+
+    override fun onDestroy() {
+        Log.d(TAG, "onDestroy: 프레그먼트가 destroy 되었습니다.")
+        super.onDestroy()
     }
 }

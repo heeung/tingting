@@ -1,6 +1,7 @@
 package com.alsif.tingting.ui.reservedlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,18 +19,11 @@ import com.alsif.tingting.ui.main.MainActivityViewModel
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val TAG = "ReservedListFragment"
 @AndroidEntryPoint
 class ReservedListFragment : BaseFragment<FragmentReservedListBinding>(FragmentReservedListBinding::bind, R.layout.fragment_reserved_list) {
     private val viewModel: ReservedListFragmentViewModel by viewModels()
     private val sharedViewModel: MainActivityViewModel by activityViewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,5 +36,10 @@ class ReservedListFragment : BaseFragment<FragmentReservedListBinding>(FragmentR
                 // TODO 홈으로 가기
             }
         }
+    }
+
+    override fun onDestroy() {
+        Log.d(TAG, "onDestroy: 프레그먼트가 destroy 되었습니다.")
+        super.onDestroy()
     }
 }

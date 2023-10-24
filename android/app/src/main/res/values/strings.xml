@@ -5,5 +5,15 @@
     <string name="start_with_kakao">카카오로 시작하기</string>
     <string name="need_login">로그인이 필요한 기능입니다.</string>
     <string name="policy"><u>개인정보 처리방침</u></string>
+    <string name="logout">로그아웃</string>
 
+    <!--  search  -->
+    <string name="search_hint">보고싶으신 공연이 있으신가요?</string>
+
+    <!--  viewpager  -->
+    <string name="viewpager2_banner">%1$d / %2$d 모두보기</string>
+
+    <!--  home  -->
+    <string name="on_sale">예매 중</string>
+    <string name="soon_sale">예매 임박</string>
 </resources>

@@ -1,14 +1,21 @@
 package com.alsif.tingting.ui.main
 
+import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.navigation.ui.setupWithNavController
 import com.alsif.tingting.R
 import com.alsif.tingting.base.BaseActivity
@@ -37,11 +44,30 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         initNavController()
         setBottomNavigationView()
         subscribe()
+        setClickListeners()
     }
 
-    private fun setBottomNavigationView(){
+    private fun setClickListeners() {
+        binding.layoutSearchBar.setOnClickListener {
+            navController.navigate(R.id.searchFragment)
+        }
+        binding.edittextSearch.setOnClickListener {
+            navController.navigate(R.id.searchFragment)
+        }
+    }
+
+    private fun setBottomNavigationView() {
         bottomNavigationView = binding.bottomNavigation
         bottomNavigationView.setupWithNavController(navController)
+
+        // bottomNav에 있는 아이템에 강제로 navigate시 다시 클릭이 안되는 문제 해결 코드..
+        bottomNavigationView.setOnItemSelectedListener {
+            navController.navigate(it.itemId, args = null, navOptions {
+                launchSingleTop = true
+                popUpTo(it.itemId)
+            })
+            true
+        }
     }
 
     private fun initNavController() {
@@ -56,6 +82,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         val navController = navHostFragment.navController
         navController.setGraph(graph, intent.extras)
+
+        // searchFragment만 appBar없애주기
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.searchFragment -> {
+                    binding.layoutAppbar.visibility = View.GONE
+                }
+                else -> {
+                    binding.layoutAppbar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     fun showLoginBottomSheet() {
