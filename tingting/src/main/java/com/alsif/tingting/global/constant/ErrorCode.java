@@ -9,7 +9,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
 
-	BAD_REQUEST_ORDERBY(HttpStatus.BAD_REQUEST, "잘못된 매개변수 요청");
+	BAD_REQUEST_ORDERBY(HttpStatus.BAD_REQUEST, "잘못된 매개변수 요청"),
+	BAD_REQUEST_CONCERT_SEQ(HttpStatus.BAD_REQUEST, "잘못된 매개변수 요청");
 
 	private final HttpStatus httpStatus;
 	private final String message;
