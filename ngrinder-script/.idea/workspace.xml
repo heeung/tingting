@@ -4,76 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f21fbbd-638a-454f-81ea-04ffb48cdf75" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/groovy/Test1.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/checkstyleidea-libs/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/groovy_4_0_14.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-ant-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-ant-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-astbuilder-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-astbuilder-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-cli-commons-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-cli-commons-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-cli-picocli-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-cli-picocli-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-console-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-console-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-contracts-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-contracts-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-datetime-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-datetime-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-dateutil-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-dateutil-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-docgenerator-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-docgenerator-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-ginq-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-ginq-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-groovydoc-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-groovydoc-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-groovysh-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-groovysh-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-jmx-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-jmx-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-json-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-json-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-jsr223-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-jsr223-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-macro-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-macro-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-macro-library-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-macro-library-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-nio-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-nio-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-servlet-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-servlet-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-sql-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-sql-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-swing-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-swing-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-templates-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-templates-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-test-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-test-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-test-junit5-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-test-junit5-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-testng-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-testng-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-toml-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-toml-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-typecheckers-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-typecheckers-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-xml-4.0.14-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/groovy-xml-4.0.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ngrinder-script.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.groovy" beforeDir="false" />
+    <list default="true" id="5f21fbbd-638a-454f-81ea-04ffb48cdf75" name="Changes" comment="setting: groovy project change">
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/book/BookApiTest.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/book/SeatChoiceApiTest.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/book/SectionChoiceApiTest.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/book/ValidateSeatApiTest.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/concert/ConcertDetailApiTest.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/concert/ConcertSearchApiTest.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,6 +21,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="2XF9MjVpoKqWEzI0RODM8gDY954" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -94,7 +34,11 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/SSAFY/Downloads/naver-checkstyle-rules.xml",
+    "last_opened_file_path": "C:/Users/SSAFY/workspace/자율프로젝트/그루비용/S09P31D209/ngrinder-script/src/main/groovy/concert",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "settings.editor.selected.configurable": "org.infernus.idea.checkstyle.CheckStyleConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
@@ -107,11 +51,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1698213916371</updated>
-      <workItem from="1698213917377" duration="166000" />
+      <workItem from="1698213917377" duration="533000" />
     </task>
+    <task id="LOCAL-00001" summary="setting: groovy project change">
+      <option name="closed" value="true" />
+      <created>1698214279870</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1698214279870</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="setting: groovy project change" />
+    <option name="LAST_COMMIT_MESSAGE" value="setting: groovy project change" />
   </component>
 </project>
