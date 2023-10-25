@@ -11,5 +11,7 @@ import com.alsif.tingting.user.entity.Point;
 public interface PointRepository extends JpaRepository<Point, Long> {
 
 
-	List<Point> findAllByUserSeq(Long seq);
+	List<Point> findAllByUser_Seq(Long seq);
+
+	Point findTop1ByUserSeqOrderByCreatedDateDesc(Long seq);
 }

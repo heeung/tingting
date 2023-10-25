@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -230,12 +231,11 @@ public class DummyService {
 		log.info("insertConcertSeatInfos 종료");
 	}
 
-	/*
+
 	// 예매 티켓 정보 넣기
 	// TODO: 보류
 	@Transactional
 	public void insertTickets() {
-		log.info("insertTicket 함수 내부");
 		tickets = new ArrayList<>();
 		ticketSeats = new ArrayList<>();
 		points = new ArrayList<>();
@@ -250,7 +250,7 @@ public class DummyService {
 		int concertSeatInfoSize = concertSeatInfos.size();
 
 		for(int i = 0 ; i < 100 ; i++) {
-			System.out.println(i + " .... " );
+
 			Ticket ticket = Ticket.builder()
 				.user(getRandomValue(users))
 				.concertDetail(getRandomValue(concertDetails))
@@ -302,7 +302,7 @@ public class DummyService {
 				.concertSeatInfo(concertSeatInfo)
 				.build();
 
-			concertSeatInfo.setBook();
+			concertSeatInfo.updateStatus();
 
 			tickets.add(ticket);
 			ticketSeats.add(ticketSeat);
@@ -316,99 +316,12 @@ public class DummyService {
 		log.info("insertTicket 함수 종료");
 
 	}
-*/
 
-	// 하나의 예매에서 여러개의 좌석을 넣는 함수
-	@Transactional
-	public void insertTickets2() {
-		List<User> user = userRepository.findAll();
-		List<ConcertDetail> concertDetails = concertDetailRepository.findAll();
-		// List<ConcertSeatInfo> concertSeatInfos = concertSeatInfoRepository.findAll();
 
-		User user1 = userRepository.findBySeq(435L);
-
-		// 티켓 하나를 만드는데 두개 이상의 좌석이 들어가도록
-		// 티켓 만들기
-		log.info("티켓만들기 시작");
-		Ticket ticket = Ticket.builder()
-			.user(user1)
-			.concertDetail(getRandomValue(concertDetails))
-			.build();
-		ticketRepository.save(ticket);
-
-		log.info("내가 만든 티켓이 무슨 공연을 예매한 티켓인가 : {} : ", ticket.getConcertDetail().getConcert().getName());
-		log.info("concertDetail 의 seq : {} , 즉 내가 만든 티켓의 상세 공연정보 pk", ticket.getConcertDetail().getSeq());
-		// 티켓산 유저와 해당 티켓의 상세 행사정보
-		User choiceUser = ticket.getUser(); // 유저
-		ConcertDetail concertDetail = ticket.getConcertDetail();
-		log.info("concertDetail 의 seq : {}", concertDetail.getSeq());
-
-		// 내가 예매한 행사의 전체 좌석 얻기
-		List<ConcertSeatInfo> concertSeatInfoList = concertSeatInfoRepository.findConcertSeatInfoByConcertDetail_Seq(
-			concertDetail.getSeq());
-		log.info("리스트 안에 seq잘 들어간거 맞는지 확인 : {} ", concertSeatInfoList.get(0).getSeq());
-		log.info("그니까 여기 리스트에 들어간 좌석들이, 상세정보seq가 위에나온 seq랑 동일해야된다...");
-
-		//  내가 예매한 행사의 전체 좌석 리스트를 seq 순으로 정렬
-		concertSeatInfoList.sort(Comparator.comparing(ConcertSeatInfo::getSeq));
-
-		// 두개 이상의 좌석 추가하기
-		List<TicketSeat> userBuyManySeats = new ArrayList<>();
-		int buyCnt = 3;
-
-		List<Point> myPointList = pointRepository.findAllByUserSeq(choiceUser.getSeq());
-		myPointList.sort(Comparator.comparing(Point::getCreatedDate));
-
-		Point tmp = myPointList.get(myPointList.size() - 1);
-		log.info("내 기존 포인트 : {}", tmp);
-
-		for (ConcertSeatInfo seatInfo : concertSeatInfoList) {
-			// 내 기존 포인트 확인
-			myPointList = pointRepository.findAllByUserSeq(choiceUser.getSeq());
-			myPointList.sort(Comparator.comparing(Point::getCreatedDate));
-			Point latestPoint = myPointList.get(myPointList.size() - 1);
-			log.info("내 기존 포인트 : {}", latestPoint);
-
-			if (buyCnt == 0)
-				break;
-			if (seatInfo.getBook() == false) {
-				log.info("좌석 몇개 샀나요 !!!!!!!!!!!!이거 몇갠지 세셈");
-				TicketSeat ticketSeat = TicketSeat.builder()
-					.ticket(ticket)
-					.concertSeatInfo(seatInfo)
-					.build();
-				userBuyManySeats.add(ticketSeat); // 구매하고
-				seatInfo.setBook();
-				buyCnt--;
-
-				// 해당 좌석 정보
-				Long price = seatInfo.getGrade().getPrice();
-				log.info("내가 예매한 좌석 가격 : {} ", price);
-
-				// 포인트
-				Point point = Point.builder()
-					.ticket(ticket)
-					.user(choiceUser)
-					.pay(price)
-					.total(latestPoint.getTotal() - price)
-					.build();
-				pointRepository.save(point);
-
-			}
-		}
-
-		log.info("좌석 다 사고 남은 포인트 : {} ");
-
-		// 예매좌석정보에 콘서트 좌석정보넣을 때 여러개의 좌석정보 넣기
-		// 좌석 붙어있도록
-		ticketSeatRepository.saveAll(userBuyManySeats);
-
-	}
 
 	// TODO : 예매 정보 추가 리팩토링
 	@Transactional
 	public void insertTicketRefact() {
-		log.info("insertTicketRefact 함수 내부");
 		tickets = new ArrayList<>();        // 새로 만든 티켓들을 넣을 배열
 		ticketSeats = new ArrayList<>();    // 새로 만든 예매 좌석 정보 넣을 배열
 		points = new ArrayList<>();            // 새로 만든 포인트 넣을 배열
@@ -416,11 +329,13 @@ public class DummyService {
 		List<User> users = userRepository.findAll();
 		List<ConcertDetail> concertDetails = concertDetailRepository.findAll();
 		List<ConcertSeatInfo> concertSeatInfos = concertSeatInfoRepository.findAll();
+		Ticket ticket = null;
+
+
 
 		// 티켓 백장 만들기
 		for (int i = 0; i < 1; i++) {
-			System.out.println(i + " .... ");
-			Ticket ticket = Ticket.builder()
+			ticket = Ticket.builder()
 				.user(getRandomValue(users))
 				.concertDetail(getRandomValue(concertDetails))
 				.build();
@@ -438,8 +353,9 @@ public class DummyService {
 			// 한개의 예매할 때 3개 좌석 선택
 			int cnt = 3;
 			for (ConcertSeatInfo concertSeatInfo : concertSeatInfoList) {
-				if (cnt == 0)
+				if (cnt == 0) {
 					break;
+				}
 				if (!concertSeatInfo.getBook()) {
 					// 예매 좌석 정보
 					TicketSeat ticketSeat = TicketSeat.builder()
@@ -448,7 +364,7 @@ public class DummyService {
 						.build();
 
 					// 해당 콘서트 좌석 정보 예매 완료
-					concertSeatInfo.setBook();
+					concertSeatInfo.updateStatus();
 
 					ticket.addTicketSeats(ticketSeat);
 					ticketSeats.add(ticketSeat);
@@ -465,10 +381,8 @@ public class DummyService {
 			}
 
 			// 나의 최근 포인트
-			List<Point> myPointList = pointRepository.findAllByUserSeq(choiceUser.getSeq());
-			myPointList.sort(Comparator.comparing(Point::getCreatedDate));
-			Point latestPoint = myPointList.get(myPointList.size() - 1);
-			long latestTotal = latestPoint.getTotal();
+			long latestTotal = pointRepository.findTop1ByUserSeqOrderByCreatedDateDesc(choiceUser.getSeq()).getTotal();
+
 
 			// 포인트 추가
 			Point point = Point.builder()
@@ -488,7 +402,7 @@ public class DummyService {
 		pointRepository.saveAll(points);
 		ticketSeatRepository.saveAll(ticketSeats);
 
-		log.info("insertTicket 함수 종료");
+
 	}
 
 

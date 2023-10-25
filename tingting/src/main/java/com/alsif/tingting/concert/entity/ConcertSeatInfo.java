@@ -45,7 +45,7 @@ public class ConcertSeatInfo {
 	@Column(nullable = false)
 	private Boolean book;
 
-	public void setBook(){
+	public void updateStatus(){
 		this.book = !this.book;
 	}
 
