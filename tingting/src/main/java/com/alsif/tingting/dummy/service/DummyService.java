@@ -437,18 +437,18 @@ public class DummyService {
 			// 예매좌석정보 생성
 			// 한개의 예매할 때 3개 좌석 선택
 			int cnt = 3;
-			for (ConcertSeatInfo concertSeat : concertSeatInfoList) {
+			for (ConcertSeatInfo concertSeatInfo : concertSeatInfoList) {
 				if (cnt == 0)
 					break;
-				if (!concertSeat.getBook()) {
+				if (!concertSeatInfo.getBook()) {
 					// 예매 좌석 정보
 					TicketSeat ticketSeat = TicketSeat.builder()
 						.ticket(ticket)
-						.concertSeatInfo(concertSeat)
+						.concertSeatInfo(concertSeatInfo)
 						.build();
 
 					// 해당 콘서트 좌석 정보 예매 완료
-					concertSeat.setBook();
+					concertSeatInfo.setBook();
 
 					ticket.addTicketSeats(ticketSeat);
 					ticketSeats.add(ticketSeat);
