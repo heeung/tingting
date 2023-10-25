@@ -38,13 +38,12 @@ class SoonSaleListFragment: BaseFragment<FragmentSoonSaleListBinding>(FragmentSo
     override fun onResume() {
         super.onResume()
         getConcertList()
-        binding.recyclerSoonSale.smoothScrollToPosition(0)
+//        binding.recyclerSoonSale.smoothScrollToPosition(0)
     }
 
     private fun setClickListeners() {
         concertAdapter.itemClickListner = object: ConcertPagingAdapter.ItemClickListener {
             override fun onClick(view: View, concert: ConcertDto) {
-//                viewModel.getConcertDetail(concert.concertSeq, TEST_USERSEQ)
                 val action = HomeFragmentDirections.actionHomeFragmentToConcertDetailFragment(concert.concertSeq)
                 findNavController().navigate(action)
             }
@@ -70,9 +69,5 @@ class SoonSaleListFragment: BaseFragment<FragmentSoonSaleListBinding>(FragmentSo
                 concertAdapter.submitData(it)
             }
         }
-    }
-
-    companion object {
-        private const val TEST_USERSEQ = 1
     }
 }

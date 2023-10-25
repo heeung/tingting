@@ -49,7 +49,7 @@ class MainActivityViewModel @Inject constructor(
             _isLogined.emit(true)
         }
     }
-    fun logoutEvent() {
+    private fun logoutEvent() {
         viewModelScope.launch {
             _isLogined.emit(false)
         }

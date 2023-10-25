@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alsif.tingting.R
@@ -12,6 +13,7 @@ import com.alsif.tingting.base.BaseFragment
 import com.alsif.tingting.data.model.ConcertDto
 import com.alsif.tingting.data.model.request.ConcertListRequestDto
 import com.alsif.tingting.databinding.FragmentOnSaleListBinding
+import com.alsif.tingting.ui.home.HomeFragmentDirections
 import com.alsif.tingting.ui.home.HomeFragmentViewModel
 import com.alsif.tingting.ui.home.tab.recyclerview.ConcertPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +30,7 @@ class OnSaleListFragment: BaseFragment<FragmentOnSaleListBinding>(FragmentOnSale
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+        setClickListeners()
         subscribe()
 //        getConcertList()
 //        binding.recyclerSoonSale.smoothScrollToPosition(0)
@@ -36,7 +39,16 @@ class OnSaleListFragment: BaseFragment<FragmentOnSaleListBinding>(FragmentOnSale
     override fun onResume() {
         super.onResume()
         getConcertList()
-        binding.recyclerOnSale.smoothScrollToPosition(0)
+//        binding.recyclerOnSale.smoothScrollToPosition(0)
+    }
+
+    private fun setClickListeners() {
+        concertAdapter.itemClickListner = object: ConcertPagingAdapter.ItemClickListener {
+            override fun onClick(view: View, concert: ConcertDto) {
+                val action = HomeFragmentDirections.actionHomeFragmentToConcertDetailFragment(concert.concertSeq)
+                findNavController().navigate(action)
+            }
+        }
     }
 
     private fun getConcertList() {

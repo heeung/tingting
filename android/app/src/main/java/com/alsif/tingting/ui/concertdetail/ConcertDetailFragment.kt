@@ -9,6 +9,7 @@ import com.alsif.tingting.R
 import com.alsif.tingting.base.BaseFragment
 import com.alsif.tingting.databinding.FragmentConcertDetailBinding
 import com.alsif.tingting.ui.home.HomeFragmentViewModel
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -31,8 +32,17 @@ class ConcertDetailFragment: BaseFragment<FragmentConcertDetailBinding>(Fragment
 
     private fun subscribe() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.concertDetail.collect() {
-                binding.title.text = it.name
+            viewModel.concertDetail.collect { concertDetail ->
+                Glide.with(binding.imageConcert)
+                    .load(concertDetail.imageUrl)
+                    .into(binding.imageConcert)
+                binding.apply {
+                    textviewTitle.text = concertDetail.name
+                    textviewContent.text = concertDetail.info
+                    textviewCity.text = "장소 : " + concertDetail.concertHallCity + " / " + concertDetail.concertHallName
+                    textviewDate.text = "일시 : " + concertDetail.holdOpenDate + " ~ " + concertDetail.holdCloseDate
+                    textviewPerformer.text = concertDetail.performers[0].performerName
+                }
             }
         }
     }

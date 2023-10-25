@@ -10,7 +10,9 @@
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_concertDetailFragment"
-            app:destination="@id/concertDetailFragment" />
+            app:destination="@id/concertDetailFragment"
+            app:enterAnim="@anim/enter_from_bottom"
+            app:popExitAnim="@anim/exit_to_bottom" />
     </fragment>
     <fragment
         android:id="@+id/likedListFragment"

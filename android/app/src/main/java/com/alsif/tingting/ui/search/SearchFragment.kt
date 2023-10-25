@@ -18,6 +18,9 @@ import com.alsif.tingting.databinding.FragmentSearchBinding
 import com.alsif.tingting.ui.home.HomeFragmentViewModel
 import com.alsif.tingting.ui.likedlist.LikedListFragmentViewModel
 import com.alsif.tingting.ui.reservedlist.ReservedListFragmentViewModel
+import com.alsif.tingting.util.AnimUtil
+import com.alsif.tingting.util.scaleAnimation
+import com.alsif.tingting.util.translateAnimation
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "SearchFragment"
@@ -28,8 +31,18 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        playSearchBarAnimation()
         focusAndShowKeyBoard(binding.edittextSearch)
         setClickListeners()
+    }
+
+    private fun playSearchBarAnimation() {
+        binding.layoutSearchBar.apply {
+            scaleX = SEARCH_BAR_INITIAL_SIZE
+            translationX = SEARCH_BAR_INITIAL_TRANSLATION_X
+            scaleAnimation(AnimUtil.AnimDirection.X, AnimUtil.Size.ORIGIN, AnimUtil.Speed.FAST)
+            translateAnimation(AnimUtil.AnimDirection.X, AnimUtil.Size.MIN, AnimUtil.Speed.FAST)
+        }
     }
 
     private fun setClickListeners() {
@@ -41,5 +54,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     override fun onDestroy() {
         Log.d(TAG, "onDestroy: 프레그먼트가 destroy 되었습니다.")
         super.onDestroy()
+    }
+
+    companion object {
+        private const val SEARCH_BAR_INITIAL_SIZE = 0.9f
+        private const val SEARCH_BAR_INITIAL_TRANSLATION_X = 50f
     }
 }

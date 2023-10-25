@@ -36,9 +36,6 @@ class HomeFragmentViewModel @Inject constructor(
     private val _soonSalePagingDataFlow = MutableStateFlow<PagingData<ConcertDto>>(PagingData.empty())
     val soonSalePagingDataFlow = _soonSalePagingDataFlow.asStateFlow()
 
-    private val _concertDetail = MutableStateFlow(ConcertDetailDto())
-    val concertDetail = _concertDetail.asStateFlow()
-
     private val _error = MutableSharedFlow<DataThrowable>()
     var error = _error.asSharedFlow()
 
@@ -83,8 +80,6 @@ class HomeFragmentViewModel @Inject constructor(
             }
         }
     }
-
-    ///// 페이징 /////
     private fun getOnSaleConcertListPaging(
         concertListRequestDto: ConcertListRequestDto
     ): Flow<PagingData<ConcertDto>> {
@@ -105,21 +100,6 @@ class HomeFragmentViewModel @Inject constructor(
             )
         }.flow.cachedIn(viewModelScope)
     }
-    /////////////
-
-    //////콘서트 디테일///////
-    fun getConcertDetail(concertSeq: Int, userSeq: Int) {
-        viewModelScope.launch {
-            runCatching {
-                homeRepository.getConcertDetail(concertSeq, userSeq)
-            }.onSuccess {
-                _concertDetail.emit(it)
-            }.onFailure {
-                _error.emit(it as DataThrowable)
-            }
-        }
-    }
-    ///////////////////////
 
     companion object {
         private const val PAGE_SIZE = 10

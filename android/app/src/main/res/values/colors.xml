@@ -15,4 +15,9 @@
     <color name="kakao_container_color">#FFFEE500</color>
     <color name="kakao_icon_color">#E6000000</color>
     <color name="kakao_text_color">#FF191919</color>
+
+    <!--  concert detail  -->
+    <color name="schedule_list_background_color">#4DD9D9D9</color>
+    <color name="do_like_button_color">#FFF03B3B</color>
+    <color name="cancle_like_button_color">#FF444444</color>
 </resources>

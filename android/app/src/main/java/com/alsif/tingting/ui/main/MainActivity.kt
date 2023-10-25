@@ -42,6 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initNavController()
+        initFragmentChangedListener()
         setBottomNavigationView()
         subscribe()
         setClickListeners()
@@ -82,8 +83,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         val navController = navHostFragment.navController
         navController.setGraph(graph, intent.extras)
+    }
 
-        // searchFragment만 appBar없애주기
+    private fun initFragmentChangedListener() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.searchFragment -> {
