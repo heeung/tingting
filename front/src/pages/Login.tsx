@@ -1,6 +1,6 @@
-import { kakaoLoginButton, loginBackground, loginLogo, loginLogo2} from "../assets/Images/index"
+import { kakaoLoginButton, loginBackground, loginLogo, loginLogo2} from "/src/assets/images/index.js"
 import styles from "./Login.module.css"
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function Login(){
  
