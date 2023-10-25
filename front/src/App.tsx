@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+// import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import styles from './App.module.css'
 // import Navbar  from './components/navbar/Navbar'
 import Login from './pages/Login.tsx'

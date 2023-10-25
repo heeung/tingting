@@ -1,5 +1,5 @@
 import styles from './ConcertInfo.module.css'
-import { concertImg } from '../../assets/Images/index.js'
+import { concertImg } from '/src/assets/Images/'
 
 export default function ConcertInfo(){
 
