@@ -87,7 +87,11 @@ class HomeFragmentViewModel @Inject constructor(
             ConcertPagingSource(
                 homeRepository,
                 concertListRequestDto
-            )
+            ) {
+                viewModelScope.launch {
+                    _error.emit(DataThrowable.NetworkErrorThrowable())
+                }
+            }
         }.flow.cachedIn(viewModelScope)
     }
     private fun getSoonSaleConcertListPaging(
@@ -97,7 +101,11 @@ class HomeFragmentViewModel @Inject constructor(
             ConcertPagingSource(
                 homeRepository,
                 concertListRequestDto
-            )
+            ) {
+                viewModelScope.launch {
+                    _error.emit(DataThrowable.NetworkErrorThrowable())
+                }
+            }
         }.flow.cachedIn(viewModelScope)
     }
 

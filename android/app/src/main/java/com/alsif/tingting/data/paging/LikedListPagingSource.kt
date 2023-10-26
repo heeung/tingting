@@ -6,13 +6,13 @@ import androidx.paging.PagingState
 import com.alsif.tingting.data.model.ConcertDto
 import com.alsif.tingting.data.model.request.ConcertListRequestDto
 import com.alsif.tingting.data.repository.HomeRepository
-import com.alsif.tingting.data.throwable.DataThrowable
+import com.alsif.tingting.data.repository.LikeRepository
 import javax.inject.Inject
 
-private const val TAG = "ConcertPagingSource"
-class ConcertPagingSource @Inject constructor (
-    private val homeRepository: HomeRepository,
-    private val concertListRequestDto: ConcertListRequestDto,
+class LikedListPagingSource @Inject constructor (
+    private val likeRepository: LikeRepository,
+    private val userSeq: Int,
+    private val itemCount: Int,
     private val throwError: () -> Unit
 ) : PagingSource<Int, ConcertDto>() {
 
@@ -20,10 +20,7 @@ class ConcertPagingSource @Inject constructor (
         val page = params.key ?: 1
 
         return try {
-            // TODO 나중에 다시 확인해보자,,
-            concertListRequestDto.currentPage = page
-            Log.d(TAG, "콘서트리스트 불러오기 페이징: ${page} 페이지")
-            val response = homeRepository.getConcertList(concertListRequestDto)
+            val response = likeRepository.getLikedConcertList(userSeq, page, itemCount)
             val concerts = response.concerts
             LoadResult.Page(
                 data = concerts,
@@ -31,7 +28,6 @@ class ConcertPagingSource @Inject constructor (
                 nextKey = if (page < response.totalPage) page + 1 else null
             )
         } catch (exception: Exception) {
-            Log.e(TAG, "load: network 연결 에러", )
             throwError()
             LoadResult.Error(exception)
         }

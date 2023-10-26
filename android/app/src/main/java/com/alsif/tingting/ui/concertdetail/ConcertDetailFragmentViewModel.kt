@@ -32,8 +32,17 @@ class ConcertDetailFragmentViewModel @Inject constructor(
     private val _concertDetail = MutableStateFlow(ConcertDetailDto())
     val concertDetail = _concertDetail.asStateFlow()
 
+    private val _isLiked = MutableStateFlow<Boolean>(false)
+    var isLiked = _isLiked.asStateFlow()
+
     private val _error = MutableSharedFlow<DataThrowable>()
     var error = _error.asSharedFlow()
+
+    fun setIsLiked(value: Boolean) {
+        viewModelScope.launch {
+            _isLiked.emit(value)
+        }
+    }
 
     //////콘서트 디테일///////
     fun getConcertDetail(concertSeq: Int, userSeq: Int) {

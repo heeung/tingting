@@ -20,7 +20,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.alsif.tingting.R
 import com.alsif.tingting.base.BaseActivity
 import com.alsif.tingting.databinding.ActivityMainBinding
+import com.alsif.tingting.ui.home.HomeFragmentDirections
 import com.alsif.tingting.ui.login.LoginModalBottomSheet
+import com.alsif.tingting.util.extension.setStatusBarOrigin
+import com.alsif.tingting.util.extension.setStatusBarTransparent
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint

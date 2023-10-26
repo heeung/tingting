@@ -39,6 +39,7 @@
                     android:src="@drawable/img_concert_detail_dummy" />
 
                 <LinearLayout
+                    android:id="@+id/button_like"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:background="@drawable/frame_button_do_like"
@@ -61,6 +62,7 @@
                         android:layout_height="match_parent" />
 
                     <TextView
+                        android:id="@+id/textview_button_like"
                         style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_12sdp"
@@ -77,7 +79,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_12sdp">
+            android:paddingHorizontal="@dimen/_12sdp"
+            android:paddingVertical="@dimen/_20sdp">
 
             <TextView
                 android:id="@+id/textview_title"

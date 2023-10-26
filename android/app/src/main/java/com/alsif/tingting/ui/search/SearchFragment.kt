@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.alsif.tingting.R
 import com.alsif.tingting.base.BaseFragment
@@ -15,25 +17,33 @@ import com.alsif.tingting.databinding.FragmentHomeBinding
 import com.alsif.tingting.databinding.FragmentLikedListBinding
 import com.alsif.tingting.databinding.FragmentReservedListBinding
 import com.alsif.tingting.databinding.FragmentSearchBinding
+import com.alsif.tingting.ui.concertdetail.ConcertDetailFragmentArgs
 import com.alsif.tingting.ui.home.HomeFragmentViewModel
 import com.alsif.tingting.ui.likedlist.LikedListFragmentViewModel
+import com.alsif.tingting.ui.main.MainActivityViewModel
 import com.alsif.tingting.ui.reservedlist.ReservedListFragmentViewModel
 import com.alsif.tingting.util.AnimUtil
 import com.alsif.tingting.util.scaleAnimation
 import com.alsif.tingting.util.translateAnimation
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 private const val TAG = "SearchFragment"
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search) {
     private val viewModel: SearchFragmentViewModel by viewModels()
+    private val sharedViewModel: MainActivityViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         playSearchBarAnimation()
-        focusAndShowKeyBoard(binding.edittextSearch)
         setClickListeners()
+    }
+
+    private fun subscribe() {
+
     }
 
     private fun playSearchBarAnimation() {

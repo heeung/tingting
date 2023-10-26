@@ -2,6 +2,13 @@ package com.alsif.tingting.util
 
 import android.animation.ObjectAnimator
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 
 // 공통적으로 사용될 AnimUtil
 object AnimUtil {
@@ -74,4 +81,24 @@ fun View.translateAnimation(direction: AnimUtil.AnimDirection, values: Float, sp
             // XY 동시에 일어나는 일은 없다.
         }
     }
+}
+
+/**
+ * View에 클릭 애니메이션을 적용합니다.
+ */
+fun View.clickAnimation(lifeCycleOwner: LifecycleOwner) {
+    lifeCycleOwner.lifecycleScope.launch {
+        this@clickAnimation.scaleAnimation(AnimUtil.AnimDirection.XY, 0.9f, 100)
+        delay(100)
+        this@clickAnimation.scaleAnimation(AnimUtil.AnimDirection.XY, 1f, 80)
+        delay(80)
+    }
+}
+
+/**
+ * view를 원하는 크기로 초기 세팅
+ */
+fun View.setScaleXY(valueX: Float = 1f, valueY: Float = 1f) {
+    this.scaleX = valueX
+    this.scaleY = valueY
 }
