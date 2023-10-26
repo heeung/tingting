@@ -32,9 +32,9 @@ public class BookController {
 
 	private final BookService bookService;
 
-	@Operation(summary = "콘서트장 좌석 패턴 종류 조회")
+	@Operation(summary = "콘서트장 정보 조회")
 	@Parameters(value = {
-		@Parameter(required = true, name = "concertSeq", description = "콘서트 PK"),
+		@Parameter(required = true, name = "concertSeq", description = "콘서트 PK")
 	})
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200"),
@@ -44,7 +44,7 @@ public class BookController {
 	@GetMapping("/{concertSeq}")
 	ResponseEntity<ConcertHallPatternResponseDto> findConcertPattern(
 		@PathVariable("concertSeq") Long concertSeq) {
-		log.info("===== 콘서트장 좌석 패턴 종류 조회 요청 시작, url={}, concertSeq: {} =====",
+		log.info("===== 콘서트장 정보 조회 요청 시작, url={}, concertSeq: {} =====",
 			"/concerts", concertSeq);
 
 		StopWatch stopWatch = new StopWatch();
@@ -52,7 +52,7 @@ public class BookController {
 		ConcertHallPatternResponseDto concertHallPatternResponseDto = bookService.findConcertPattern(concertSeq);
 		stopWatch.stop();
 
-		log.info("===== 콘서트 좌석 패턴 종류 조회 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
+		log.info("===== 콘서트 정보 조회 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
 		return new ResponseEntity<>(concertHallPatternResponseDto, HttpStatus.OK);
 	}
 }

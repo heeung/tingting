@@ -20,6 +20,9 @@ public class BookService {
 
 	private final ConcertRepository concertRepository;
 
+	/*
+		콘서트장 정보 조회
+	 */
 	public ConcertHallPatternResponseDto findConcertPattern(Long concertSeq) {
 		Optional<Concert> concert = concertRepository.findById(concertSeq);
 		if (concert.isEmpty()) {
@@ -28,6 +31,7 @@ public class BookService {
 
 		log.info(concert.toString());
 		return ConcertHallPatternResponseDto.builder()
+			.concertHallSeq(concert.get().getConcertHall().getSeq())
 			.pattern(concert.get().getConcertHall().getPattern())
 			.build();
 	}
