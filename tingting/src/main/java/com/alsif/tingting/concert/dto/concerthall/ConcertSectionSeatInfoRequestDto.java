@@ -12,15 +12,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @ToString
-@Schema(description = "콘서트장 정보")
-public class ConcertHallPatternResponseDto {
+@Schema(description = "섹션(좌석 대분류)별 좌석 정보 요청")
+public class ConcertSectionSeatInfoRequestDto {
 
-	@Schema(description = "콘서트장 PK", type = "Long", example = "1")
+	@Schema(description = "콘서트장 PK", type = "Long", example = "78")
 	private Long concertHallSeq;
 
-	@Schema(description = "콘서트장 패턴 정보", type = "String", example = "A")
-	private String pattern;
+	@Schema(description = "섹션 이름", type = "String", example = "A")
+	private String target;
 }

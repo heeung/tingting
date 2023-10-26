@@ -1,5 +1,7 @@
 package com.alsif.tingting.book.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alsif.tingting.book.service.BookService;
 import com.alsif.tingting.concert.dto.concerthall.ConcertHallPatternResponseDto;
+import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoRequestDto;
+import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoResponseDto;
 import com.alsif.tingting.global.dto.ErrorResponseDto;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,5 +58,30 @@ public class BookController {
 
 		log.info("===== 콘서트 정보 조회 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
 		return new ResponseEntity<>(concertHallPatternResponseDto, HttpStatus.OK);
+	}
+
+	@Operation(summary = "콘서트장 섹션별 좌석 정보 조회")
+	@Parameters(value = {
+		@Parameter(required = true, name = "concertDetailSeq", description = "콘서트 상세 PK (ex. 1)"),
+	})
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200"),
+		@ApiResponse(responseCode = "400", description = "잘못된 매개변수 요청",
+			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+	})
+	@GetMapping("/{concertDetailSeq}/section")
+	ResponseEntity<List<ConcertSectionSeatInfoResponseDto>> findConcertSectionSeatInfoList(
+		@PathVariable("concertDetailSeq") Long concertDetailSeq, ConcertSectionSeatInfoRequestDto requestDto) {
+		log.info("===== 콘서트장 섹션별 좌석 정보 조회 요청 시작, url={}, concertDetailSeq: {}, {} =====",
+			"/concerts", concertDetailSeq, requestDto.toString());
+
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		List<ConcertSectionSeatInfoResponseDto> concertSectionSeatInfoResponseDtos
+			= bookService.findConcertSectionSeatInfoList(concertDetailSeq, requestDto);
+		stopWatch.stop();
+
+		log.info("===== 콘서트장 섹션별 좌석 정보 조회 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
+		return new ResponseEntity<>(concertSectionSeatInfoResponseDtos, HttpStatus.OK);
 	}
 }
