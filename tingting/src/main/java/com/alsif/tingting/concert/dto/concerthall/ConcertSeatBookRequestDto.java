@@ -17,10 +17,9 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @ToString
-@Schema(description = "좌석 예매 가능 여부 확인 요청")
+@Schema(description = "좌석 예매 요청")
 public class ConcertSeatBookRequestDto {
 
-	@Schema(description = "List<Long> 좌석 PK 목록", type = "List<Long>",
-		example = "{\"seatSeqs\" : [154002,154003,154009]}")
+	@Schema(description = "선택 좌석 PK 목록", type = "List<Long>", example = "[154002,154003,154009]")
 	private List<Long> seatSeqs;
 }

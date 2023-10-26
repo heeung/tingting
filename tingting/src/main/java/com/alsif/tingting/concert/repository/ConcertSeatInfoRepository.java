@@ -18,4 +18,7 @@ public interface ConcertSeatInfoRepository extends JpaRepository<ConcertSeatInfo
 		+ "WHERE csi.concertDetail.seq = :concertDetailSeq AND csi.concertHallSeat.seq = :concertHallSeatSeq")
 	Optional<SeatBookBaseDto> findBookByConcertDetail_SeqAAndConcertHallSeat_Seq(
 		@Param("concertDetailSeq") Long concertDetailSeq, @Param("concertHallSeatSeq") Long concertHallSeatSeq);
+
+	Optional<ConcertSeatInfo> findByConcertDetail_SeqAndConcertHallSeat_Seq(
+		Long concertDetailSeq, Long concertHallSeatSeq);
 }

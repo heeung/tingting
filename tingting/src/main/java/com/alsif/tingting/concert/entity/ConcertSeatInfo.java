@@ -53,6 +53,10 @@ public class ConcertSeatInfo {
 		this.book = book;
 	}
 
+	public void updateBook() {
+		this.book = true;
+	}
+
 	@Override
 	public String toString() {
 		return "ConcertSeatInfo{"
