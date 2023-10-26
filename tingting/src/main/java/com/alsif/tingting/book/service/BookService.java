@@ -6,11 +6,15 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.alsif.tingting.concert.dto.concerthall.ConcertHallPatternResponseDto;
+import com.alsif.tingting.concert.dto.concerthall.ConcertSeatBookRequestDto;
+import com.alsif.tingting.concert.dto.concerthall.ConcertSeatBookResponseDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoRequestDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoResponseDto;
+import com.alsif.tingting.concert.dto.concerthall.SeatBookBaseDto;
 import com.alsif.tingting.concert.entity.Concert;
 import com.alsif.tingting.concert.repository.ConcertHallSeatRepository;
 import com.alsif.tingting.concert.repository.ConcertRepository;
+import com.alsif.tingting.concert.repository.ConcertSeatInfoRepository;
 import com.alsif.tingting.global.constant.ErrorCode;
 import com.alsif.tingting.global.exception.CustomException;
 
@@ -24,6 +28,7 @@ public class BookService {
 
 	private final ConcertRepository concertRepository;
 	private final ConcertHallSeatRepository concertHallSeatRepository;
+	private final ConcertSeatInfoRepository concertSeatInfoRepository;
 
 	/*
 		콘서트장 정보 조회
@@ -57,5 +62,25 @@ public class BookService {
 
 		log.info("{} 섹션의 조회된 좌석 개수: {}", requestDto.getTarget(), concertSectionSeatInfoResponseDtos.size());
 		return concertSectionSeatInfoResponseDtos;
+	}
+
+	/*
+		특정 좌석의 예매 가능 여부 확인
+	 */
+	public ConcertSeatBookResponseDto isSeatAvailable(Long concertDetailSeq, ConcertSeatBookRequestDto requestDto) {
+
+		for (Long seatSeq : requestDto.getSeatSeqs()) {
+			Optional<SeatBookBaseDto> seatBookBaseDto
+				= concertSeatInfoRepository.findBookByConcertDetail_SeqAAndConcertHallSeat_Seq(
+				concertDetailSeq, seatSeq);
+			if (seatBookBaseDto.isEmpty()) {
+				throw new CustomException(ErrorCode.BAD_REQUEST_CONCERT_HALL_SEAT_SEQ);
+			}
+			if (seatBookBaseDto.get().getBook()) {
+				throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
+			}
+		}
+
+		return ConcertSeatBookResponseDto.builder().message("true").build();
 	}
 }

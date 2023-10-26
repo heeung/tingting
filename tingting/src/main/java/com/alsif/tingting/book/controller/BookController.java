@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alsif.tingting.book.service.BookService;
 import com.alsif.tingting.concert.dto.concerthall.ConcertHallPatternResponseDto;
+import com.alsif.tingting.concert.dto.concerthall.ConcertSeatBookRequestDto;
+import com.alsif.tingting.concert.dto.concerthall.ConcertSeatBookResponseDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoRequestDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoResponseDto;
 import com.alsif.tingting.global.dto.ErrorResponseDto;
@@ -83,5 +85,30 @@ public class BookController {
 
 		log.info("===== 콘서트장 섹션별 좌석 정보 조회 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
 		return new ResponseEntity<>(concertSectionSeatInfoResponseDtos, HttpStatus.OK);
+	}
+
+	@Operation(summary = "특정 좌석의 예매 가능 여부 확인")
+	@Parameters(value = {
+		@Parameter(required = true, name = "concertDetailSeq", description = "콘서트 상세 PK (ex. 1)"),
+	})
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200"),
+		@ApiResponse(responseCode = "400", description = "잘못된 매개변수 요청",
+			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+	})
+	@GetMapping("/{concertDetailSeq}/seat")
+	ResponseEntity<ConcertSeatBookResponseDto> isSeatAvailable(
+		@PathVariable("concertDetailSeq") Long concertDetailSeq, ConcertSeatBookRequestDto requestDto) {
+		log.info("===== 특정 좌석의 예매 가능 여부 확인 요청 시작, url={}, concertDetailSeq: {}, {} =====",
+			"/concerts", concertDetailSeq, requestDto.toString());
+
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		ConcertSeatBookResponseDto concertSeatBookResponseDto
+			= bookService.isSeatAvailable(concertDetailSeq, requestDto);
+		stopWatch.stop();
+
+		log.info("===== 특정 좌석의 예매 가능 여부 확인 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
+		return new ResponseEntity<>(concertSeatBookResponseDto, HttpStatus.OK);
 	}
 }
