@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './Home.module.css'
 import Search from '../components/search/Search.js'
 import ConcertList from '../components/concertlist/ConcertList.js'

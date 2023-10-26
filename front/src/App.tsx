@@ -5,6 +5,13 @@ import Login from './pages/Login.tsx'
 // import Home from './pages/Home.tsx'
 // import MyPage from './pages/MyPage.tsx' 
 import "./index.css"
+import {
+  RecoilRoot,
+  // atom,
+  // selector,
+  // useRecoilState,
+  // useRecoilValue,
+} from 'recoil';
 
 function App() {
 
@@ -12,8 +19,10 @@ function App() {
     
     <div
       className={styles.container}>
+      <RecoilRoot>
+        <Login/>
+      </RecoilRoot>
       {/* <Navbar/> */}
-      <Login/>
       {/* <Home/> */}
       {/* <MyPage/> */}
 

@@ -1,4 +1,4 @@
-import { kakaoLoginButton, loginBackground, loginLogo, loginLogo2} from "/src/assets/images/index.js"
+import { kakaoLoginButton, loginBackground, loginLogo, loginLogo2} from '../assets/Images'
 import styles from "./Login.module.css"
 import { useState, useEffect } from 'react';
 
