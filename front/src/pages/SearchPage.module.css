@@ -1,0 +1,15 @@
+.container, .searchBar{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchBar {
+    margin: 3% auto;
+}
+
+.concertList {
+    width: 100%;
+}

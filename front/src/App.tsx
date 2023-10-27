@@ -4,6 +4,7 @@ import Navbar  from './components/navbar/Navbar'
 import Login from './pages/Login.tsx'
 import Home from './pages/Home.tsx'
 import MyPage from './pages/MyPage.tsx' 
+import SearchPage from './pages/SearchPage.tsx';
 import "./index.css"
 import {
   RecoilRoot,
@@ -27,6 +28,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/search" element={<SearchPage />} />
           </Routes>  
         </RecoilRoot>
       </Router>

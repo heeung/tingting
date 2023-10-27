@@ -31,6 +31,12 @@ export default function Navbar(){
         onClick={() => goToOtherPage('')}
         className={styles.logo}
         src={logo} alt="logo" /> 
+        
+        <div
+        onClick={() => goToOtherPage('search')}
+        className={styles.logout}>
+            검색페이지
+        </div>
 
         <div
         onClick={() => goToOtherPage('mypage')}
