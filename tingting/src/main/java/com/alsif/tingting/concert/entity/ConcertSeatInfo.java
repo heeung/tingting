@@ -54,7 +54,7 @@ public class ConcertSeatInfo {
 	}
 
 	public void updateBook() {
-		this.book = true;
+		this.book = !this.book;
 	}
 
 	@Override

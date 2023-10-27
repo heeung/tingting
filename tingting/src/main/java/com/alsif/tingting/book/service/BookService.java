@@ -1,5 +1,6 @@
 package com.alsif.tingting.book.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +14,10 @@ import com.alsif.tingting.book.repository.TicketRepository;
 import com.alsif.tingting.book.repository.TicketSeatRepository;
 import com.alsif.tingting.concert.dto.concerthall.ConcertHallPatternResponseDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSeatBookRequestDto;
-import com.alsif.tingting.concert.dto.concerthall.ConcertSeatBookResponseDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoRequestDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoResponseDto;
 import com.alsif.tingting.concert.dto.concerthall.SeatBookBaseDto;
+import com.alsif.tingting.concert.dto.concerthall.SuccessResponseDto;
 import com.alsif.tingting.concert.entity.Concert;
 import com.alsif.tingting.concert.entity.ConcertDetail;
 import com.alsif.tingting.concert.entity.ConcertSeatInfo;
@@ -88,7 +89,7 @@ public class BookService {
 	/*
 		선택 좌석의 예매 가능 여부 확인
 	 */
-	public ConcertSeatBookResponseDto isSeatAvailable(Long concertDetailSeq,
+	public SuccessResponseDto isSeatAvailable(Long concertDetailSeq,
 		ConcertSeatBookRequestDto requestDto) {
 
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
@@ -103,14 +104,14 @@ public class BookService {
 			}
 		}
 
-		return ConcertSeatBookResponseDto.builder().message("true").build();
+		return SuccessResponseDto.builder().message("true").build();
 	}
 
 	/*
 		선택 좌석 예매 요청
 	 */
 	@Transactional
-	public ConcertSeatBookResponseDto book(Long userSeq, Long concertDetailSeq,
+	public SuccessResponseDto book(Long userSeq, Long concertDetailSeq,
 		ConcertSeatBookRequestDto requestDto) {
 
 		Optional<User> user = userRepository.findById(userSeq);
@@ -174,10 +175,65 @@ public class BookService {
 		pointRepository.save(Point.builder()
 			.user(user.get())
 			.ticket(ticket)
-			.pay(totalPrice)
+			.pay(totalPrice * -1)
 			.total(currentMoney - totalPrice)
 			.build());
 
-		return ConcertSeatBookResponseDto.builder().message("true").build();
+		return SuccessResponseDto.builder().message("true").build();
+	}
+
+	/*
+		예매 취소
+	 */
+	@Transactional
+	public SuccessResponseDto reservationCancellation(Long userSeq, Long ticketSeq) {
+
+		Optional<User> user = userRepository.findById(userSeq);
+		if (user.isEmpty()) {
+			throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
+		}
+
+		// 예매 취소일 추가
+		Optional<Ticket> ticket = ticketRepository.findById(ticketSeq);
+		if (ticket.isEmpty()) {
+			throw new CustomException(ErrorCode.BAD_REQUEST_TICKET_SEQ);
+		}
+		// 티켓 구매자 학인
+		if (!ticket.get().getUser().getSeq().equals(userSeq)) {
+			throw new CustomException(ErrorCode.FORBIDDEN_USER);
+		}
+		ticket.get().updateDeletedDate(LocalDateTime.now());
+
+		// 예매 가능 여부 업데이트
+		List<ConcertSeatInfo> concertSeatInfos = ticketSeatRepository.findAllByTicketSeq(ticketSeq);
+		if (concertSeatInfos.size() == 0) {
+			throw new CustomException(ErrorCode.NO_DATA_FOUND);
+		}
+
+		long totalPrice = 0;
+		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
+			concertSeatInfo.updateBook();
+			Optional<Grade> grade = gradeRepository.findById(concertSeatInfo.getGrade().getSeq());
+			if (grade.isEmpty()) {
+				throw new CustomException(ErrorCode.NO_DATA_FOUND);
+			}
+			totalPrice += grade.get().getPrice();
+		}
+
+		// 포인트 복구
+		Optional<Point> point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq);
+		if (point.isEmpty()) {
+			throw new CustomException(ErrorCode.NO_DATA_FOUND);
+		}
+
+		long currentMoney = point.get().getTotal();
+		pointRepository.save(Point.builder()
+			.user(user.get())
+			.ticket(ticket.get())
+			.pay(totalPrice)
+			.total(currentMoney + totalPrice)
+			.build());
+
+		return SuccessResponseDto.builder().message("true").build();
 	}
 }

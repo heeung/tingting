@@ -15,9 +15,9 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
-@Schema(description = "좌석 예매 가능 여부")
-public class ConcertSeatBookResponseDto {
+@Schema(description = "성공")
+public class SuccessResponseDto {
 
-	@Schema(description = "좌석 예매 가능 여부", type = "String", example = "true")
+	@Schema(description = "성공", type = "String", example = "true")
 	private String message;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alsif.tingting.book.service.BookService;
 import com.alsif.tingting.concert.dto.concerthall.ConcertHallPatternResponseDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSeatBookRequestDto;
-import com.alsif.tingting.concert.dto.concerthall.ConcertSeatBookResponseDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoRequestDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoResponseDto;
+import com.alsif.tingting.concert.dto.concerthall.SuccessResponseDto;
 import com.alsif.tingting.global.dto.ErrorResponseDto;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -101,19 +102,19 @@ public class BookController {
 			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 	})
 	@GetMapping("/{concertDetailSeq}/seat")
-	ResponseEntity<ConcertSeatBookResponseDto> isSeatAvailable(
+	ResponseEntity<SuccessResponseDto> isSeatAvailable(
 		@PathVariable("concertDetailSeq") Long concertDetailSeq, ConcertSeatBookRequestDto requestDto) {
 		log.info("===== 선택 좌석의 예매 가능 여부 확인 요청 시작, url={}, concertDetailSeq: {}, {} =====",
 			"/concerts", concertDetailSeq, requestDto.toString());
 
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
-		ConcertSeatBookResponseDto concertSeatBookResponseDto
+		SuccessResponseDto successResponseDto
 			= bookService.isSeatAvailable(concertDetailSeq, requestDto);
 		stopWatch.stop();
 
 		log.info("===== 선택 좌석의 예매 가능 여부 확인 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
-		return new ResponseEntity<>(concertSeatBookResponseDto, HttpStatus.OK);
+		return new ResponseEntity<>(successResponseDto, HttpStatus.OK);
 	}
 
 	@Operation(summary = "선택 좌석 예매 요청")
@@ -133,7 +134,7 @@ public class BookController {
 			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 	})
 	@PostMapping("/{concertDetailSeq}/seat")
-	ResponseEntity<ConcertSeatBookResponseDto> book(
+	ResponseEntity<SuccessResponseDto> book(
 		@PathVariable("concertDetailSeq") Long concertDetailSeq, @RequestParam Long userSeq,
 		ConcertSeatBookRequestDto requestDto) {
 		log.info("===== 선택 좌석 예매 요청 시작, url={}, concertDetailSeq: {}, {} =====",
@@ -141,11 +142,40 @@ public class BookController {
 
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
-		ConcertSeatBookResponseDto concertSeatBookResponseDto
+		SuccessResponseDto successResponseDto
 			= bookService.book(userSeq, concertDetailSeq, requestDto);
 		stopWatch.stop();
 
 		log.info("===== 선택 좌석 예매 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
-		return new ResponseEntity<>(concertSeatBookResponseDto, HttpStatus.OK);
+		return new ResponseEntity<>(successResponseDto, HttpStatus.OK);
+	}
+
+	@Operation(summary = "예매 취소")
+	@Parameters(value = {
+		@Parameter(required = true, name = "ticketSeq", description = "예매 PK (ex. 317)"),
+		@Parameter(required = true, name = "userSeq", description = "회원 PK (ex. 1)")
+	})
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200"),
+		@ApiResponse(responseCode = "400", description = "잘못된 매개변수 요청",
+			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+		@ApiResponse(responseCode = "401", description = "등록되지 않은 회원",
+			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+		@ApiResponse(responseCode = "403", description = "권한이 없는 회원",
+			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+	})
+	@DeleteMapping("/{ticketSeq}")
+	ResponseEntity<SuccessResponseDto> reservationCancellation(@PathVariable("ticketSeq") Long ticketSeq,
+		@RequestParam Long userSeq) {
+		log.info("===== 콘서트 예매 취소 요청 시작, url={}, userSeq: {}, ticketSeq: {} =====",
+			"/concerts", userSeq, ticketSeq);
+
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		SuccessResponseDto successResponseDto = bookService.reservationCancellation(userSeq, ticketSeq);
+		stopWatch.stop();
+
+		log.info("===== 콘서트 예매 취소 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
+		return new ResponseEntity<>(successResponseDto, HttpStatus.OK);
 	}
 }
