@@ -1,6 +1,8 @@
 package com.alsif.tingting.data.repository
 
+import com.alsif.tingting.data.model.request.LikeToggleRequestDto
 import com.alsif.tingting.data.model.response.ConcertListResponseDto
+import com.alsif.tingting.data.model.response.LikeToggleResponseDto
 import com.alsif.tingting.data.service.HomeService
 import com.alsif.tingting.data.service.LikeService
 import com.alsif.tingting.util.handleApi
@@ -19,4 +21,12 @@ class LikeRepositoryImpl @Inject constructor(
     ): ConcertListResponseDto {
         return handleApi { likeService.getLikedConcertList(userSeq, currentPage, itemCount) }
     }
+
+    /**
+     * POST 찜 토글
+     */
+    override suspend fun postLike(likeToggleRequestDto: LikeToggleRequestDto): LikeToggleResponseDto {
+        return handleApi { likeService.postLike(likeToggleRequestDto) }
+    }
+
 }

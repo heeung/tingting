@@ -22,9 +22,9 @@ data class ConcertDetailDto(
     @SerializedName("favorite")
     val favorite: Boolean,
     @SerializedName("holdCloseDate")
-    val holdCloseDate: String,
+    var holdCloseDate: String,
     @SerializedName("holdOpenDate")
-    val holdOpenDate: String,
+    var holdOpenDate: String,
     @SerializedName("imageUrl")
     val imageUrl: String,
     @SerializedName("info")

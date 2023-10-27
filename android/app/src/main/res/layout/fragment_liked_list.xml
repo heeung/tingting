@@ -7,14 +7,22 @@
     android:orientation="vertical"
     android:background="@color/liked_list_background_color">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_liked_list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/layout_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:scrollbars="vertical"/>
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/blue_mild">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_liked_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

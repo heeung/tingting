@@ -10,8 +10,10 @@ import com.alsif.tingting.data.model.ConcertDetailDto
 import com.alsif.tingting.data.model.ConcertDto
 import com.alsif.tingting.data.model.PagerDataDto
 import com.alsif.tingting.data.model.request.ConcertListRequestDto
+import com.alsif.tingting.data.model.request.LikeToggleRequestDto
 import com.alsif.tingting.data.paging.ConcertPagingSource
 import com.alsif.tingting.data.repository.HomeRepository
+import com.alsif.tingting.data.repository.LikeRepository
 import com.alsif.tingting.data.throwable.DataThrowable
 import com.alsif.tingting.ui.home.dummy.adList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +29,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConcertDetailFragmentViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+    private val homeRepository: HomeRepository,
+    private val likeRepository: LikeRepository
 )  : ViewModel() {
     private val _concertDetail = MutableStateFlow(ConcertDetailDto())
     val concertDetail = _concertDetail.asStateFlow()
@@ -50,7 +53,10 @@ class ConcertDetailFragmentViewModel @Inject constructor(
             runCatching {
                 homeRepository.getConcertDetail(concertSeq, userSeq)
             }.onSuccess {
-                _concertDetail.emit(it)
+                _concertDetail.emit(it.apply {
+                    it.holdOpenDate = it.holdOpenDate.subSequence(0, 10).toString()
+                    it.holdCloseDate = it.holdCloseDate.subSequence(0, 10).toString()
+                })
             }.onFailure {
                 _error.emit(it as DataThrowable)
             }
@@ -58,7 +64,23 @@ class ConcertDetailFragmentViewModel @Inject constructor(
     }
     ///////////////////////
 
+    /**
+     * 찜 토글
+     */
+    fun postLike(type: String, userSeq: Int) {
+        val likeToggleRequestDto = LikeToggleRequestDto(concertDetail.value.concertSeq, userSeq)
+        viewModelScope.launch {
+            if (type == "찜 하기" && concertDetail.value.favorite) { // 두개가 달라야 api요청 하면 됨
+                likeRepository.postLike(likeToggleRequestDto)
+            }
+            if (type == "찜 취소" && !concertDetail.value.favorite) {
+                likeRepository.postLike(likeToggleRequestDto)
+            }
+        }
+    }
+
     companion object {
         private const val PAGE_SIZE = 10
+
     }
 }

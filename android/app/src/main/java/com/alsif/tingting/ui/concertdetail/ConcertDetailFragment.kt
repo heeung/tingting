@@ -6,6 +6,7 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.alsif.tingting.R
 import com.alsif.tingting.base.BaseFragment
@@ -48,6 +49,9 @@ class ConcertDetailFragment: BaseFragment<FragmentConcertDetailBinding>(Fragment
     private fun toggleLikeButton(buttonType: String) {
         if (buttonType == getString(R.string.do_like)) {
             setButtonOff()
+            showSnackbar(binding.root, "찜 목록에 추가되었습니다!", "확인하러 가기") {
+                findNavController().navigate(R.id.likedListFragment)
+            }
         } else {
             setButtonOn()
         }
@@ -75,21 +79,17 @@ class ConcertDetailFragment: BaseFragment<FragmentConcertDetailBinding>(Fragment
                     if (concertDetail.favorite) { setButtonOff() }
                     textviewTitle.text = concertDetail.name
                     textviewContent.text = concertDetail.info
-                    textviewCity.text = "장소 : " + concertDetail.concertHallCity + " / " + concertDetail.concertHallName
-                    textviewDate.text = "일시 : ${concertDetail.holdOpenDate} ~ ${concertDetail.holdCloseDate}"
+                    textviewCity.text = getString(R.string.detail_item_locale, concertDetail.concertHallCity, concertDetail.concertHallName)
+                    textviewDate.text = getString(R.string.detail_item_date, concertDetail.holdOpenDate, concertDetail.holdCloseDate)
 //                    buttonLike.visibility = View.VISIBLE
                 }
             }
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.isLiked.collect {
-                if (it) {
-//                    mActivity.showToast("찜 목록에 추가되었습니다.")
-                } else {
-                    mActivity.showToast("찜 목록에 추가되었습니다.")
-                }
-            }
-        }
+    }
+
+    override fun onPause() {
+        viewModel.postLike(binding.textviewButtonLike.text.toString(), TEST_USERSEQ)
+        super.onPause()
     }
 
     companion object {

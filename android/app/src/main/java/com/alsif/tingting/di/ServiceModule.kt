@@ -5,6 +5,7 @@ import com.alsif.tingting.BuildConfig.BASE_URL
 import com.alsif.tingting.data.interceptor.AuthInterceptor
 import com.alsif.tingting.data.service.HomeService
 import com.alsif.tingting.data.service.LikeService
+import com.alsif.tingting.data.service.SearchService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -58,4 +59,10 @@ object ServiceModule {
     fun provideLikeService(
         retrofit: Retrofit
     ) : LikeService = retrofit.create(LikeService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideSearchService(
+        retrofit: Retrofit
+    ) : SearchService = retrofit.create(SearchService::class.java)
 }

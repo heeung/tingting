@@ -20,11 +20,7 @@ class HomeRepositoryImpl @Inject constructor(
             homeService.getConcertList(
                 currentPage = concertListRequestDto.currentPage,
                 itemCount = concertListRequestDto.itemCount,
-                orderBy = concertListRequestDto.orderBy,
-                startDate = concertListRequestDto.startDate,
-                endDate = concertListRequestDto.endDate,
-                place = concertListRequestDto.place,
-                searchWord = concertListRequestDto.searchWord,
+                orderBy = concertListRequestDto.orderBy
             )
         }
     }

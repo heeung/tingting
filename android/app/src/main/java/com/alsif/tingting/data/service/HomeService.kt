@@ -13,11 +13,7 @@ interface HomeService {
     suspend fun getConcertList(
         @Query("currentPage") currentPage: Int,
         @Query("itemCount") itemCount: Int,
-        @Query("orderBy") orderBy: String,
-        @Query("startDate") startDate: String,
-        @Query("endDate") endDate: String,
-        @Query("place") place: String,
-        @Query("searchWord") searchWord: String,
+        @Query("orderBy") orderBy: String
     ): Response<ConcertListResponseDto>
 
     @GET("concerts/{concertSeq}")

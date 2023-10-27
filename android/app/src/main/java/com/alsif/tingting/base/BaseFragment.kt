@@ -64,11 +64,25 @@ abstract class BaseFragment<B : ViewBinding>(
     }
 
     /**
-     * 스낵바를 띄웁니다. 커스텀 하려면 type 분기를 추가하고 사용하세요.
+     * 스낵바를 띄웁니다.
      */
-    fun showSnackbar(view: View, type: String, message: String) {
+    fun showSnackbar(view: View, message: String) {
         val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-        snackbar.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
+        snackbar.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+        snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.black))
+        snackbar.show()
+    }
+
+    /**
+     * 액션 스낵바를 띄웁니다.
+     */
+    fun showSnackbar(view: View, message: String, actionText: String, onClick: () -> Unit) {
+        val snackbar = Snackbar
+            .make(view, message, Snackbar.LENGTH_LONG)
+            .setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+            .setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.black))
+            .setActionTextColor(ContextCompat.getColor(mActivity, R.color.blue_mild))
+            .setAction(actionText) { onClick() }
         snackbar.show()
     }
 

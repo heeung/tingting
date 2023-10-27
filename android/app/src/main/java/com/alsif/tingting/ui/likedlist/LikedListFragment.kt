@@ -36,12 +36,19 @@ class LikedListFragment : BaseFragment<FragmentLikedListBinding>(FragmentLikedLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(TAG, "onViewCreated: 뷰 붙음")
+        
         if (mActivity.requireLogin()) {
             initRecyclerView()
             subscribe()
             setClickListeners()
             getLikedConcertList()
         }
+    }
+
+    override fun onResume() {
+        getLikedConcertList()
+        super.onResume()
     }
 
     private fun getLikedConcertList() {
@@ -71,6 +78,15 @@ class LikedListFragment : BaseFragment<FragmentLikedListBinding>(FragmentLikedLi
                 findNavController().navigate(action)
             }
         }
+        binding.layoutSwipeRefresh.setOnRefreshListener {
+            getLikedConcertList()
+            binding.layoutSwipeRefresh.isRefreshing = false
+        }
+    }
+
+    override fun onDestroyView() {
+        Log.d(TAG, "onDestroyView: 프레그먼트가 destroyView 되었습니다.")
+        super.onDestroyView()
     }
 
     override fun onDestroy() {

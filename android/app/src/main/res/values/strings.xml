@@ -16,8 +16,14 @@
     <!--  home  -->
     <string name="on_sale">예매 중</string>
     <string name="soon_sale">예매 임박</string>
+    <string name="home_item_date">%s ~ %s</string>
 
     <!--  detail  -->
     <string name="do_like">찜 하기</string>
     <string name="cancle_like">찜 취소</string>
+    <string name="detail_item_date">일시 : %s ~ %s</string>
+    <string name="detail_item_locale">장소 : %s / %s</string>
+
+    <!--  likedlist  -->
+    <string name="liked_item_date">%s ~ %s</string>
 </resources>
