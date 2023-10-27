@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.alsif.tingting.book.entity.TicketSeat;
 import com.alsif.tingting.concert.dto.concerthall.SeatBaseDto;
+import com.alsif.tingting.concert.entity.ConcertSeatInfo;
 
 @Repository
 public interface TicketSeatRepository extends JpaRepository<TicketSeat, Long> {
@@ -19,5 +20,11 @@ public interface TicketSeatRepository extends JpaRepository<TicketSeat, Long> {
 		+ "    JOIN ConcertHallSeat chs ON (csi.concertHallSeat.seq = chs.seq) "
 		+ "    JOIN Grade g ON (csi.grade.seq = g.seq) "
 		+ "WHERE ts.ticket.seq = :ticketSeq")
-	List<SeatBaseDto> findAllByTicketSeq(@Param("ticketSeq") Long ticketSeq);
+	List<SeatBaseDto> findAllPriceByTicketSeq(@Param("ticketSeq") Long ticketSeq);
+
+	@Query("SELECT csi "
+		+ "FROM TicketSeat ts "
+		+ "JOIN ConcertSeatInfo csi ON (ts.concertSeatInfo.seq = csi.seq) "
+		+ "WHERE ts.ticket.seq = :ticketSeq")
+	List<ConcertSeatInfo> findAllByTicketSeq(@Param("ticketSeq") Long ticketSeq);
 }

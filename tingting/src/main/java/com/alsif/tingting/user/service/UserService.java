@@ -53,7 +53,7 @@ public class UserService {
 
 		// 2. 해당 티켓의 구매 가격, 좌석 정보 저장
 		for (TicketBaseDto ticket : tickets) {
-			List<SeatBaseDto> seatBaseDtos = ticketSeatRepository.findAllByTicketSeq(ticket.getTicketSeq());
+			List<SeatBaseDto> seatBaseDtos = ticketSeatRepository.findAllPriceByTicketSeq(ticket.getTicketSeq());
 			long totalPrice = 0;
 			for (SeatBaseDto seatBaseDto : seatBaseDtos) {
 				totalPrice += seatBaseDto.getPrice();

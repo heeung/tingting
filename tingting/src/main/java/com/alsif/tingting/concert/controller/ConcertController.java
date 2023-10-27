@@ -34,7 +34,7 @@ public class ConcertController {
 
 	private final ConcertService concertService;
 
-	@Operation(summary = "콘서트 목록", description = "예매중, 예매임박, 검색")
+	@Operation(summary = "콘서트 목록 조회 (예매 중, 예매 임박, 검색 결과)")
 	@GetMapping("")
 	ResponseEntity<ConcertListResponseDto> findConcertList(ConcertListRequestDto concertListRequestDto) {
 		log.info("===== 콘서트 목록 불러오기 요청 시작, url={}, {} =====",
@@ -49,7 +49,7 @@ public class ConcertController {
 		return new ResponseEntity<>(concertListResponseDto, HttpStatus.OK);
 	}
 
-	@Operation(summary = "콘서트 상세 정보")
+	@Operation(summary = "콘서트 상세 정보 조회")
 	@Parameters(value = {
 		@Parameter(required = true, name = "concertSeq", description = "콘서트 PK"),
 		@Parameter(required = true, name = "userSeq", description = "회원 PK")
