@@ -23,7 +23,7 @@ import HTTPClient.HTTPResponse
  * @author ${userName}
  */
 @RunWith(GrinderRunner)
-class Test1 {
+class ConcertSearchApiTest {
 
     public static GTest test;
     public static HTTPRequest request;
@@ -31,7 +31,7 @@ class Test1 {
     // This method is executed once per a process.
     @BeforeProcess
     public static void beforeClass() {
-        test = new GTest(1, "${name}");
+        test = new GTest(1, "concertSearchApiTest");
         request = new HTTPRequest();
         test.record(request);
         grinder.logger.info("before process.");
@@ -47,7 +47,7 @@ class Test1 {
     // This method is continuously executed until you stop the test
     @Test
     public void test(){
-        HTTPResponse result = request.GET("${url}");
+        HTTPResponse result = request.GET("https://k9d209.p.ssafy.io/api/concerts");
         if (result.statusCode == 301 || result.statusCode == 302) {
             grinder.logger.warn("Warning. The response may not be correct. The response code was {}.", result.statusCode);
         } else {
