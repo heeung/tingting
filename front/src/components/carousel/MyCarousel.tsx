@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Carousel } from 'flowbite';
 import { bannerImg1, bannerImg2, bannerImg3, bannerImg4 } from '../../assets/Images/index.js';
-import './MyCarousel.module.css'; // 스타일링을 위한 CSS 파일을 불러옵니다.
+import './MyCarousel.module.css';
 
 export default function MyCarousel() {
   const [currentPosition, setCurrentPosition] = useState(0);
@@ -10,19 +10,19 @@ export default function MyCarousel() {
     const items = [
       {
         position: 0,
-        el: document.getElementById('carousel-item-1') || null
+        el: document.getElementById('carousel-item-1') as HTMLElement,
       },
       {
         position: 1,
-        el: document.getElementById('carousel-item-2') || null
+        el: document.getElementById('carousel-item-2') as HTMLElement,
       },
       {
         position: 2,
-        el: document.getElementById('carousel-item-3') || null
+        el: document.getElementById('carousel-item-3') as HTMLElement,
       },
       {
         position: 3,
-        el: document.getElementById('carousel-item-4') || null
+        el: document.getElementById('carousel-item-4') as HTMLElement,
       },
     ];
 
@@ -57,8 +57,7 @@ export default function MyCarousel() {
         } else {
           setCurrentPosition(0);
         }
-        // // console.log(currentPosition)
-        // console.log('next slider item is shown');
+        console.log('next slider item is shown');
       },
       onPrev: () => {
         if (currentPosition > 0) {
@@ -66,13 +65,13 @@ export default function MyCarousel() {
         } else {
           setCurrentPosition(3);
         } 
-        // console.log(currentPosition) 
-        // console.log('previous slider item is shown');
+        console.log(currentPosition) 
+        console.log('previous slider item is shown');
       },
       onChange: (newPosition:number) => {
-        // console.log('new slider item has been shown');
+        console.log('new slider item has been shown');
         setCurrentPosition(newPosition);
-        // console.log(currentPosition)
+        console.log(currentPosition)
       }
     };
 

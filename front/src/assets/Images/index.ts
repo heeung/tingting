@@ -9,4 +9,6 @@ import bannerImg3 from "./bannerImg3.jpg"
 import bannerImg4 from "./bannerImg4.jpg"
 import concertImg from "./concertImg.png"
 import kakakoConnection from "./kakakoConnection.png"
-export { kakaoLoginButton, loginBackground, loginLogo, loginLogo2, logo, bannerImg1, bannerImg2, bannerImg3, bannerImg4, concertImg, kakakoConnection }
+import moreViewIcon from "./moreViewIcon.png"
+export { kakaoLoginButton, loginBackground, loginLogo, loginLogo2, logo, bannerImg1, bannerImg2, bannerImg3, bannerImg4, concertImg, kakakoConnection, 
+    moreViewIcon}
