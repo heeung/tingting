@@ -37,7 +37,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
 			+ "FROM Concert c "
 			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
-			+ "WHERE ch.city = :place AND c.name LIKE %:searchWord% AND c.holdOpenDate >= :startDate AND c.holdCloseDate < :endDate "
+			+ "WHERE ch.city = :place AND c.name LIKE %:searchWord% AND :startDate <= c.holdCloseDate AND c.holdOpenDate < :endDate "
 			+ "ORDER BY c.holdOpenDate ASC")
 	Page<ConcertBaseDto> findAllConcertByPlaceAndSearchWordAndDate(
 		@Param("place") String place, @Param("searchWord") String searchWord,
@@ -56,7 +56,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
 			+ "FROM Concert c "
 			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
-			+ "WHERE ch.city = :place AND c.holdOpenDate >= :startDate AND c.holdCloseDate < :endDate "
+			+ "WHERE ch.city = :place AND :startDate <= c.holdCloseDate AND c.holdOpenDate < :endDate "
 			+ "ORDER BY c.holdOpenDate ASC")
 	Page<ConcertBaseDto> findAllConcertByPlaceAndDate(
 		@Param("place") String place, @Param("startDate") LocalDateTime startDate,
@@ -75,7 +75,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
 			+ "FROM Concert c "
 			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
-			+ "WHERE c.name LIKE %:searchWord% AND c.holdOpenDate >= :startDate AND c.holdCloseDate < :endDate "
+			+ "WHERE c.name LIKE %:searchWord% AND :startDate <= c.holdCloseDate AND c.holdOpenDate < :endDate "
 			+ "ORDER BY c.holdOpenDate ASC")
 	Page<ConcertBaseDto> findAllConcertBySearchWordAndDate(
 		@Param("searchWord") String searchWord, @Param("startDate") LocalDateTime startDate,
@@ -94,7 +94,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
 			+ "FROM Concert c "
 			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
-			+ "WHERE c.holdOpenDate >= :startDate AND c.holdCloseDate < :endDate "
+			+ "WHERE :startDate <= c.holdCloseDate AND c.holdOpenDate < :endDate "
 			+ "ORDER BY c.holdOpenDate ASC")
 	Page<ConcertBaseDto> findAllConcertByDate(
 		@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
