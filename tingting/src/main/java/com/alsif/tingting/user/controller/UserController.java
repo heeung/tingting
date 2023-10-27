@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
+import com.alsif.tingting.global.dto.ErrorResponseDto;
 import com.alsif.tingting.global.dto.PageableDto;
 import com.alsif.tingting.user.dto.TicketListResponseDto;
 import com.alsif.tingting.user.service.UserService;
@@ -16,6 +17,10 @@ import com.alsif.tingting.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +37,11 @@ public class UserController {
 	@Operation(summary = "찜 목록")
 	@Parameters(value = {
 		@Parameter(required = true, name = "userSeq", description = "회원 PK (ex. 1)")
+	})
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200"),
+		@ApiResponse(responseCode = "401", description = "등록되지 않은 회원",
+			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 	})
 	@GetMapping("/{userSeq}/favorite")
 	ResponseEntity<ConcertListResponseDto> findFavoriteList(@PathVariable("userSeq") Long userSeq,
@@ -51,6 +61,11 @@ public class UserController {
 	@Operation(summary = "예매 내역")
 	@Parameters(value = {
 		@Parameter(required = true, name = "userSeq", description = "회원 PK (ex. 435)")
+	})
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200"),
+		@ApiResponse(responseCode = "401", description = "등록되지 않은 회원",
+			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 	})
 	@GetMapping("/{userSeq}/ticket")
 	ResponseEntity<TicketListResponseDto> findTicketList(@PathVariable("userSeq") Long userSeq,

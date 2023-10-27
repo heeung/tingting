@@ -14,8 +14,11 @@ import com.alsif.tingting.concert.dto.ConcertBaseDto;
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
 import com.alsif.tingting.concert.dto.concerthall.SeatBaseDto;
 import com.alsif.tingting.concert.repository.ConcertRepository;
+import com.alsif.tingting.global.constant.ErrorCode;
 import com.alsif.tingting.global.dto.PageableDto;
+import com.alsif.tingting.global.exception.CustomException;
 import com.alsif.tingting.user.dto.TicketListResponseDto;
+import com.alsif.tingting.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserService {
 
+	private final UserRepository userRepository;
 	private final ConcertRepository concertRepository;
 	private final TicketRepository ticketRepository;
 	private final TicketSeatRepository ticketSeatRepository;
@@ -33,9 +37,13 @@ public class UserService {
 		찜 목록 가져오기
 	 */
 	public ConcertListResponseDto findFavoriteList(Long userSeq, PageableDto requestDto) {
+
+		userRepository.findById(userSeq).orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
+
 		Pageable pageable = PageRequest.of(requestDto.getCurrentPage() - 1, requestDto.getItemCount());
 		Page<ConcertBaseDto> concertBaseDtos = concertRepository.findAllConcertFavorite(userSeq, pageable);
 		log.info("찜 중인 콘서트 개수: {}", concertBaseDtos.getContent().size());
+
 		return ConcertListResponseDto.builder()
 			.totalPage(concertBaseDtos.getTotalPages())
 			.currentPage(requestDto.getCurrentPage())
@@ -47,6 +55,9 @@ public class UserService {
 		예매 내역 가져오기
 	 */
 	public TicketListResponseDto findTicketList(Long userSeq, PageableDto requestDto) {
+
+		userRepository.findById(userSeq).orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
+
 		// 1. 회원이 가지고 있는 모든 예매 내역 조회
 		Pageable pageable = PageRequest.of(requestDto.getCurrentPage() - 1, requestDto.getItemCount());
 		Page<TicketBaseDto> tickets = ticketRepository.findAllByUserSeq(userSeq, pageable);

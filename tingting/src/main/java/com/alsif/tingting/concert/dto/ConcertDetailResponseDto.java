@@ -20,7 +20,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"performers", "concertDetails"})
 @Schema(description = "콘서트 상세 정보 반환")
 public class ConcertDetailResponseDto extends ConcertBaseDto {
 

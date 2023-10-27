@@ -1,6 +1,7 @@
 package com.alsif.tingting.concert.repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -103,7 +104,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 			+ "FROM Concert c "
 			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
 			+ "WHERE c.seq = :concertSeq")
-	ConcertDetailResponseDto findByConcertDetailsByConcertSeq(@Param("concertSeq") Long concertSeq);
+	Optional<ConcertDetailResponseDto> findByConcertDetailsByConcertSeq(@Param("concertSeq") Long concertSeq);
 
 	@Query(
 		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
