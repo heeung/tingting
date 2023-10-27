@@ -60,6 +60,18 @@ public class Ticket extends BaseEntity {
 		this.deletedDate = date;
 	}
 
+	public void setSeq(long seq){
+		this.seq = seq;
+	}
+
+	public void addPoint(Point point){
+		this.points.add(point);
+	}
+
+	public void addTicketSeats(TicketSeat ticketSeat){
+		this.ticketSeats.add(ticketSeat);
+	}
+
 	@Override
 	public String toString() {
 		return "Ticket {"

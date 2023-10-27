@@ -45,6 +45,10 @@ public class ConcertSeatInfo {
 	@Column(nullable = false)
 	private Boolean book;
 
+	public void updateStatus(){
+		this.book = !this.book;
+	}
+
 	@Builder
 	public ConcertSeatInfo(ConcertHallSeat concertHallSeat, Grade grade, ConcertDetail concertDetail, Boolean book) {
 		this.concertHallSeat = concertHallSeat;
