@@ -57,7 +57,7 @@ public class ConcertController {
 	@Operation(summary = "콘서트 상세 정보 조회")
 	@Parameters(value = {
 		@Parameter(required = true, name = "concertSeq", description = "콘서트 PK"),
-		@Parameter(required = true, name = "userSeq", description = "회원 PK")
+		@Parameter(name = "userSeq", description = "회원 PK")
 	})
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200"),
@@ -66,7 +66,7 @@ public class ConcertController {
 	})
 	@GetMapping("/{concertSeq}")
 	ResponseEntity<ConcertDetailResponseDto> findConcertDetail(@PathVariable("concertSeq") Long concertSeq,
-		@RequestParam Long userSeq) {
+		@RequestParam(required = false) Long userSeq) {
 		log.info("===== 콘서트 상세 정보 불러오기 요청 시작, url={}, concertSeq: {}, userSeq: {} =====",
 			"/concerts", concertSeq, userSeq);
 
