@@ -3,7 +3,6 @@ package com.alsif.tingting.book.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +20,11 @@ import com.alsif.tingting.concert.dto.concerthall.SuccessResponseDto;
 import com.alsif.tingting.concert.entity.Concert;
 import com.alsif.tingting.concert.entity.ConcertDetail;
 import com.alsif.tingting.concert.entity.ConcertSeatInfo;
-import com.alsif.tingting.concert.entity.Grade;
+import com.alsif.tingting.concert.entity.concerthall.ConcertHall;
 import com.alsif.tingting.concert.repository.ConcertDetailRepository;
 import com.alsif.tingting.concert.repository.ConcertHallSeatRepository;
 import com.alsif.tingting.concert.repository.ConcertRepository;
 import com.alsif.tingting.concert.repository.ConcertSeatInfoRepository;
-import com.alsif.tingting.concert.repository.GradeRepository;
 import com.alsif.tingting.global.constant.ErrorCode;
 import com.alsif.tingting.global.exception.CustomException;
 import com.alsif.tingting.user.entity.Point;
@@ -49,22 +47,24 @@ public class BookService {
 	private final UserRepository userRepository;
 	private final ConcertDetailRepository concertDetailRepository;
 	private final TicketSeatRepository ticketSeatRepository;
-	private final GradeRepository gradeRepository;
 	private final PointRepository pointRepository;
 
 	/*
 		콘서트장 정보 조회
 	 */
 	public ConcertHallPatternResponseDto findConcertPattern(Long concertSeq) {
-		Optional<Concert> concert = concertRepository.findById(concertSeq);
-		if (concert.isEmpty()) {
-			throw new CustomException(ErrorCode.BAD_REQUEST_CONCERT_SEQ);
+		Concert concert = concertRepository.findById(concertSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_SEQ));
+		log.info(concert.toString());
+
+		ConcertHall concertHall = concert.getConcertHall();
+		if (concertHall == null) {
+			throw new CustomException(ErrorCode.NO_DATA_FOUND);
 		}
 
-		log.info(concert.toString());
 		return ConcertHallPatternResponseDto.builder()
-			.concertHallSeq(concert.get().getConcertHall().getSeq())
-			.pattern(concert.get().getConcertHall().getPattern())
+			.concertHallSeq(concertHall.getSeq())
+			.pattern(concertHall.getPattern())
 			.build();
 	}
 
@@ -92,14 +92,13 @@ public class BookService {
 	public SuccessResponseDto isSeatAvailable(Long concertDetailSeq,
 		ConcertSeatBookRequestDto requestDto) {
 
+		// 좌석별 예매 가능 여부 확인
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
-			Optional<SeatBookBaseDto> seatBookBaseDto
-				= concertSeatInfoRepository.findBookByConcertDetail_SeqAAndConcertHallSeat_Seq(
-				concertDetailSeq, seatSeq);
-			if (seatBookBaseDto.isEmpty()) {
-				throw new CustomException(ErrorCode.BAD_REQUEST_CONCERT_HALL_SEAT_SEQ);
-			}
-			if (seatBookBaseDto.get().getBook()) {
+			SeatBookBaseDto seatBookBaseDto = concertSeatInfoRepository
+				.findBookByConcertDetail_SeqAAndConcertHallSeat_Seq(concertDetailSeq, seatSeq)
+				.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_HALL_SEAT_SEQ));
+
+			if (seatBookBaseDto.getBook()) {
 				throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
 			}
 		}
@@ -114,44 +113,41 @@ public class BookService {
 	public SuccessResponseDto book(Long userSeq, Long concertDetailSeq,
 		ConcertSeatBookRequestDto requestDto) {
 
-		Optional<User> user = userRepository.findById(userSeq);
-		if (user.isEmpty()) {
-			throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
-		}
+		User user = userRepository.findById(userSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
 
-		Optional<ConcertDetail> concertDetail = concertDetailRepository.findById(concertDetailSeq);
-		if (concertDetail.isEmpty()) {
-			throw new CustomException(ErrorCode.BAD_REQUEST_CONCERT_DETAIL_SEQ);
-		}
+		ConcertDetail concertDetail = concertDetailRepository.findById(concertDetailSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_DETAIL_SEQ));
 
-		// 예매된 좌석으로 변경
 		List<ConcertSeatInfo> concertSeatInfos = new ArrayList<>();
 		long totalPrice = 0;
+
+		// 좌석별 예매 상태 변경
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
-			Optional<ConcertSeatInfo> concertSeatInfo
-				= concertSeatInfoRepository.findByConcertDetail_SeqAndConcertHallSeat_Seq(
-				concertDetailSeq, seatSeq);
-			if (concertSeatInfo.isEmpty()) {
-				throw new CustomException(ErrorCode.BAD_REQUEST_CONCERT_HALL_SEAT_SEQ);
-			}
-			if (concertSeatInfo.get().getBook()) {
+			ConcertSeatInfo concertSeatInfo = concertSeatInfoRepository
+				.findByConcertDetail_SeqAndConcertHallSeat_Seq(concertDetailSeq, seatSeq)
+				.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_HALL_SEAT_SEQ));
+
+			// 예매 되지 않은 좌석이라면, 예매 처리
+			if (concertSeatInfo.getBook()) {
 				throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
 			}
-			// 예매 상태 변경
-			concertSeatInfo.get().updateBook();
+			concertSeatInfo.updateBook();
+
 			// 좌석 가격 조회
-			Optional<Grade> grade = gradeRepository.findById(concertSeatInfo.get().getGrade().getSeq());
-			if (grade.isEmpty()) {
+			Long price = concertSeatInfo.getGrade().getPrice();
+			if (price == null) {
 				throw new CustomException(ErrorCode.NO_DATA_FOUND);
 			}
-			totalPrice += grade.get().getPrice();
-			concertSeatInfos.add(concertSeatInfo.get());
+
+			totalPrice += price;
+			concertSeatInfos.add(concertSeatInfo);
 		}
 
 		// 예매 티켓 발행
 		Ticket ticket = ticketRepository.save(Ticket.builder()
-			.user(user.get())
-			.concertDetail(concertDetail.get())
+			.user(user)
+			.concertDetail(concertDetail)
 			.build());
 
 		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
@@ -162,18 +158,16 @@ public class BookService {
 		}
 
 		// 포인트 차감
-		Optional<Point> point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq);
-		if (point.isEmpty()) {
-			throw new CustomException(ErrorCode.NO_DATA_FOUND);
-		}
+		Point point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.NO_DATA_FOUND));
 
-		long currentMoney = point.get().getTotal();
+		long currentMoney = point.getTotal();
 		if (currentMoney < totalPrice) {
 			throw new CustomException(ErrorCode.LACK_POINT);
 		}
 
 		pointRepository.save(Point.builder()
-			.user(user.get())
+			.user(user)
 			.ticket(ticket)
 			.pay(totalPrice * -1)
 			.total(currentMoney - totalPrice)
@@ -188,48 +182,48 @@ public class BookService {
 	@Transactional
 	public SuccessResponseDto reservationCancellation(Long userSeq, Long ticketSeq) {
 
-		Optional<User> user = userRepository.findById(userSeq);
-		if (user.isEmpty()) {
-			throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
-		}
+		User user = userRepository.findById(userSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
 
-		// 예매 취소일 추가
-		Optional<Ticket> ticket = ticketRepository.findById(ticketSeq);
-		if (ticket.isEmpty()) {
-			throw new CustomException(ErrorCode.BAD_REQUEST_TICKET_SEQ);
-		}
-		// 티켓 구매자 학인
-		if (!ticket.get().getUser().getSeq().equals(userSeq)) {
+		Ticket ticket = ticketRepository.findById(ticketSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_TICKET_SEQ));
+
+		// 티켓 구매자 확인, 후 예매 취소 처리
+		if (!ticket.getUser().getSeq().equals(userSeq)) {
 			throw new CustomException(ErrorCode.FORBIDDEN_USER);
 		}
-		ticket.get().updateDeletedDate(LocalDateTime.now());
+		ticket.updateDeletedDate(LocalDateTime.now());
 
-		// 예매 가능 여부 업데이트
+		// 취소한 좌석 예매 가능 처리
 		List<ConcertSeatInfo> concertSeatInfos = ticketSeatRepository.findAllByTicketSeq(ticketSeq);
 		if (concertSeatInfos.size() == 0) {
 			throw new CustomException(ErrorCode.NO_DATA_FOUND);
 		}
 
 		long totalPrice = 0;
+		// 좌석 정보 업데이트, 환불 가격 확인
 		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
 			concertSeatInfo.updateBook();
-			Optional<Grade> grade = gradeRepository.findById(concertSeatInfo.getGrade().getSeq());
-			if (grade.isEmpty()) {
+
+			Long price = concertSeatInfo.getGrade().getPrice();
+			if (price == null) {
 				throw new CustomException(ErrorCode.NO_DATA_FOUND);
 			}
-			totalPrice += grade.get().getPrice();
+
+			totalPrice += price;
 		}
 
 		// 포인트 복구
-		Optional<Point> point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq);
-		if (point.isEmpty()) {
-			throw new CustomException(ErrorCode.NO_DATA_FOUND);
-		}
+		Point point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.NO_DATA_FOUND));
 
-		long currentMoney = point.get().getTotal();
+		long currentMoney = point.getTotal();
+
+		log.info("현재 포인트: {}, 환불 받을 포인트: {}", currentMoney, totalPrice);
+
 		pointRepository.save(Point.builder()
-			.user(user.get())
-			.ticket(ticket.get())
+			.user(user)
+			.ticket(ticket)
 			.pay(totalPrice)
 			.total(currentMoney + totalPrice)
 			.build());
