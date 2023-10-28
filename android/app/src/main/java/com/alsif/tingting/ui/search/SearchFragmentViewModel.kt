@@ -1,5 +1,6 @@
 package com.alsif.tingting.ui.search
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -24,13 +25,17 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "SearchFragmentViewModel"
 @HiltViewModel
 class SearchFragmentViewModel @Inject constructor(
     private val searchRepository: SearchRepository
 )  : ViewModel() {
 
-    private val _searchPagingDataFlow = MutableSharedFlow<PagingData<ConcertDto>>()
-    val searchPagingDataFlow = _searchPagingDataFlow.asSharedFlow()
+//    private val _searchPagingDataFlow = MutableSharedFlow<PagingData<ConcertDto>>()
+//    val searchPagingDataFlow = _searchPagingDataFlow.asSharedFlow()
+
+    private val _searchPagingDataFlow = MutableStateFlow<PagingData<ConcertDto>>(PagingData.empty())
+    val searchPagingDataFlow = _searchPagingDataFlow.asStateFlow()
 
     private val _error = MutableSharedFlow<DataThrowable>()
     var error = _error.asSharedFlow()
@@ -44,7 +49,7 @@ class SearchFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             getConcertListPaging(
                 concertListRequestDto
-            ).collectLatest { pagingData ->
+            ).collect { pagingData ->
                 _searchPagingDataFlow.emit(pagingData)
             }
         }
@@ -66,5 +71,10 @@ class SearchFragmentViewModel @Inject constructor(
 
     companion object {
         private const val PAGE_SIZE = 10
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d(TAG, "onCleared: Search 뷰모델 죽음")
     }
 }

@@ -52,6 +52,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         super.onViewCreated(view, savedInstanceState)
 
         Log.d(TAG, "onViewCreated: viewCreated 되었습니다.")
+        Log.d(TAG, "onViewCreated: ${viewModel.searchPagingDataFlow}")
         initRecyclerView()
         playSearchBarAnimation()
         setClickListeners()
@@ -61,7 +62,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
     private fun getConcertList() {
         // 아무것도 없는 호출
-        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "", ""))
+//        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "", ""))
 //        // 검색어만 있는 호출
 //        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "", "화려한"))
 //        // 장소 + 검색어
