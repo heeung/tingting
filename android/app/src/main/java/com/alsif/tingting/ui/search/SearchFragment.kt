@@ -119,7 +119,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
             val smoothScroller = object : LinearSmoothScroller(binding.recyclerSearch.context) {
                 override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
-                    // 원하는 스크롤 속도를 여기에서 설정합니다.
                     return 30f / displayMetrics.densityDpi
                 }
             }
