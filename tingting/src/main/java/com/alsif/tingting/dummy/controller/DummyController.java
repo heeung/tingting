@@ -21,22 +21,15 @@ public class DummyController {
 		dummyService.insertAllData();
 	}
 
-	@GetMapping("/dummy/tickets")
-	public void dummy2(){
-		log.info("티켓 컨트롤러 시작");
-		dummyService.insertTickets();
-	}
-
 	@GetMapping("/dummy/favorite")
-	public void dummy3(){
+	public void dummy3() {
 		log.info("찜목록");
 		dummyService.makeFavorite();
 	}
 
-
 	@GetMapping("/test")
-	public void dummy5(){
+	public void dummy5() {
 		log.info("티켓 더미 리팩토링 시작");
-		dummyService.insertTicketRefact();
+		dummyService.insertTicket();
 	}
 }
