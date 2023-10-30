@@ -84,6 +84,7 @@ public class DummyService {
 		insertConcerts();
 		insertConcertSeatInfos();
 		insertTicket();
+		insertFavorite();
 	}
 
 	private void init() {
@@ -99,6 +100,7 @@ public class DummyService {
 		tickets = new ArrayList<>();
 		ticketSeats = new ArrayList<>();
 		points = new ArrayList<>();
+		userConcerts = new ArrayList<>();
 	}
 
 	// 가수 넣기
@@ -272,6 +274,20 @@ public class DummyService {
 
 	}
 
+	// 찜
+	@Transactional
+	public void insertFavorite() {
+		for (int i = 0; i < 100; i++) {
+			UserConcert userConcert = UserConcert.builder()
+				.user(getRandomValue(users))
+				.concert(getRandomValue(concerts))
+				.build();
+
+			userConcerts.add(userConcert);
+		}
+		userConcertRepository.saveAll(userConcerts);
+	}
+
 	private int setTicketSeat(Ticket ticket, List<ConcertSeatInfo> concertSeatInfoList, int cnt) {
 		for (int j = 0; j < concertSeatInfoList.size(); j++) {
 			if (cnt == 0) {
@@ -295,23 +311,6 @@ public class DummyService {
 			}
 		}
 		return cnt;
-	}
-
-	// 찜
-	@Transactional
-	public void makeFavorite() {
-		List<User> users = userRepository.findAll();
-		List<Concert> concerts = concertRepository.findAll();
-		userConcerts = new ArrayList<>();
-		for (int i = 0; i < 100; i++) {
-			UserConcert userConcert = UserConcert.builder()
-				.user(getRandomValue(users))
-				.concert(getRandomValue(concerts))
-				.build();
-
-			userConcerts.add(userConcert);
-		}
-		userConcertRepository.saveAll(userConcerts);
 	}
 
 	private void makePerformers(List<String> singer, List<String> performersImage) {

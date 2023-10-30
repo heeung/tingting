@@ -20,16 +20,4 @@ public class DummyController {
 		log.info("컨트롤러 시작");
 		dummyService.insertAllData();
 	}
-
-	@GetMapping("/dummy/favorite")
-	public void dummy3() {
-		log.info("찜목록");
-		dummyService.makeFavorite();
-	}
-
-	@GetMapping("/test")
-	public void dummy5() {
-		log.info("티켓 더미 리팩토링 시작");
-		dummyService.insertTicket();
-	}
 }
