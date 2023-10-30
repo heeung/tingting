@@ -37,6 +37,9 @@ class SearchFragmentViewModel @Inject constructor(
     private val _searchPagingDataFlow = MutableStateFlow<PagingData<ConcertDto>>(PagingData.empty())
     val searchPagingDataFlow = _searchPagingDataFlow.asStateFlow()
 
+    private val _isFilterOpened = MutableStateFlow(false)
+    val isFilterOpened = _isFilterOpened.asStateFlow()
+
     private val _error = MutableSharedFlow<DataThrowable>()
     var error = _error.asSharedFlow()
 
@@ -67,6 +70,15 @@ class SearchFragmentViewModel @Inject constructor(
                 }
             }
         }.flow.cachedIn(viewModelScope)
+    }
+
+    /**
+     * 필터 영역 토글
+     */
+    fun toggleFilter() {
+        viewModelScope.launch {
+            _isFilterOpened.emit(!_isFilterOpened.value)
+        }
     }
 
     companion object {

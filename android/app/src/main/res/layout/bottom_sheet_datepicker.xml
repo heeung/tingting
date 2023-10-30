@@ -8,7 +8,6 @@
     android:background="@drawable/frame_date_picker">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/date_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,11 +20,13 @@
         >
 
         <DatePicker
+            android:id="@+id/date_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:calendarViewShown="false"
             android:datePickerMode="calendar"
             android:theme="@style/CustomDatePicker"
+
         />
 
     </androidx.cardview.widget.CardView>

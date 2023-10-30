@@ -3,16 +3,15 @@ package com.alsif.tingting.ui.search
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
+import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+import android.widget.ArrayAdapter
+import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
@@ -20,26 +19,22 @@ import com.alsif.tingting.R
 import com.alsif.tingting.base.BaseFragment
 import com.alsif.tingting.data.model.ConcertDto
 import com.alsif.tingting.data.model.request.ConcertListRequestDto
-import com.alsif.tingting.databinding.FragmentHomeBinding
-import com.alsif.tingting.databinding.FragmentLikedListBinding
-import com.alsif.tingting.databinding.FragmentReservedListBinding
 import com.alsif.tingting.databinding.FragmentSearchBinding
-import com.alsif.tingting.ui.concertdetail.ConcertDetailFragmentArgs
-import com.alsif.tingting.ui.home.HomeFragmentDirections
-import com.alsif.tingting.ui.home.HomeFragmentViewModel
-import com.alsif.tingting.ui.home.tab.recyclerview.ConcertPagingAdapter
-import com.alsif.tingting.ui.likedlist.LikedListFragmentViewModel
 import com.alsif.tingting.ui.login.LoginModalBottomSheet
 import com.alsif.tingting.ui.main.MainActivityViewModel
-import com.alsif.tingting.ui.reservedlist.ReservedListFragmentViewModel
 import com.alsif.tingting.ui.search.recyclerview.SearchPagingAdapter
 import com.alsif.tingting.util.AnimUtil
 import com.alsif.tingting.util.clickAnimation
 import com.alsif.tingting.util.scaleAnimation
 import com.alsif.tingting.util.translateAnimation
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.kakao.sdk.friend.m.v
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import androidx.core.util.Pair
+import com.google.android.material.datepicker.MaterialDatePicker.Builder.dateRangePicker
+
 
 private const val TAG = "SearchFragment"
 @AndroidEntryPoint
@@ -60,7 +55,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         setClickListeners()
         subscribe()
         getConcertList()
-        showDatePickerBottomSheet()
+        initMenu()
+//        showDatePickerBottomSheet()
     }
 
     private fun getConcertList() {
@@ -88,6 +84,19 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
                 searchAdapter.submitData(it)
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isFilterOpened.collect {
+                if (it) {
+                    binding.layoutFilter.apply {
+                        translateAnimation(AnimUtil.AnimDirection.Y, 0f , AnimUtil.Speed.COMMON)
+                    }
+                } else {
+                    binding.layoutFilter.apply {
+                        translateAnimation(AnimUtil.AnimDirection.Y, -200f , AnimUtil.Speed.COMMON)
+                    }
+                }
+            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -96,6 +105,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             adapter = searchAdapter
             layoutManager = GridLayoutManager(mActivity, 2, LinearLayoutManager.VERTICAL, false)
         }
+    }
+
+    private fun initMenu() {
+        val regionArray = resources.getStringArray(R.array.select_region)
+        val arrayAdapter = ArrayAdapter(mActivity, R.layout.drop_down_item, regionArray)
+        binding.textviewCitySelect.setDropDownBackgroundResource(R.color.white)
+        binding.textviewCitySelect.setAdapter(arrayAdapter)
     }
 
     private fun playSearchBarAnimation() {
@@ -137,6 +153,32 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         }
         binding.buttonSearch.setOnClickListener {
             viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "", binding.edittextSearch.text.toString()))
+        }
+        binding.edittextSearch.setOnEditorActionListener(OnEditorActionListener { view, actionId, _ ->
+            when (actionId) {
+                IME_ACTION_SEARCH -> {
+                    viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "", binding.edittextSearch.text.toString()))
+                    hideKeyBoard(view)
+                }
+            }
+            true
+        })
+        binding.buttonFilter.setOnClickListener {
+            it.clickAnimation(viewLifecycleOwner)
+            viewModel.toggleFilter()
+        }
+        binding.buttonDatePicker.setOnClickListener {
+            val dateRangePicker =
+                MaterialDatePicker.Builder.dateRangePicker()
+                    .setTitleText("공연 기간을 골라주세요")
+                    .setSelection(
+                        Pair(
+                            MaterialDatePicker.thisMonthInUtcMilliseconds(),
+                            MaterialDatePicker.todayInUtcMilliseconds()
+                        )
+                    )
+                    .build()
+            dateRangePicker.show(childFragmentManager, "date_picker")
         }
     }
 
