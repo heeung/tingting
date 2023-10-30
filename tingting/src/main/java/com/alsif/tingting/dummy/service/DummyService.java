@@ -4,11 +4,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -78,23 +75,6 @@ public class DummyService {
 
 	List<UserConcert> userConcerts;
 
-
-
-	/**
-	 * 1. 가수를 넣는다. (이 행위는 데이터 넣는 첫날에만 발생함
-	 * 2. 콘서트홀, 콘서트 좌석을 넣는다. 근데 콘서트홀 좌석 패턴에 대해서 아직 얘기를 안해봤는데? 흠......
-	 * -> 이걸 할 때 연관관계를 걸어줘야하기 때문에, Entity하나 만들고, 그에 종속되는 Entity를 만든다음 매핑 해서 인서트해야됨
-	 * 3. 회원정보, 포인트 정보 넣기
-	 * 4. 콘서트 정보, 상세, 콘서트 출연자 넣기
-	 * 5. 콘서트 좌석 정보 넣기
-	 * 6. 예매 티켓 정보 넣기(보류)
-	 *
-	 * 근데 여기서 중요한건 현재 메서드별로 리턴값 void로 해놨는데, 특정 메서드는 분리 및 합체 되면서
-	 * 리턴값을 엔티티를 받아다가 그걸로 추가적으로 매핑하거나 하는 연산이 필요할 수도 있음.
-	 * -> 전역변수 선언하는 걸로 수정
-	 */
-
-	// @Transactional
 	public void insertAllData() {
 		dummyList = new DummyList();
 		init();
@@ -103,6 +83,8 @@ public class DummyService {
 		insertUsers();
 		insertConcerts();
 		insertConcertSeatInfos();
+		insertTicket();
+		insertFavorite();
 	}
 
 	private void init() {
@@ -110,12 +92,15 @@ public class DummyService {
 		concertHalls = new ArrayList<>();
 		concertHallSeats = new ArrayList<>();
 		users = new ArrayList<>();
-		points = new ArrayList<>();
 		concerts = new ArrayList<>();
 		concertDetails = new ArrayList<>();
 		grades = new ArrayList<>();
 		concertPerformers = new ArrayList<>();
 		concertSeatInfos = new ArrayList<>();
+		tickets = new ArrayList<>();
+		ticketSeats = new ArrayList<>();
+		points = new ArrayList<>();
+		userConcerts = new ArrayList<>();
 	}
 
 	// 가수 넣기
@@ -231,146 +216,32 @@ public class DummyService {
 		log.info("insertConcertSeatInfos 종료");
 	}
 
-
-	// 예매 티켓 정보 넣기
-	// TODO: 보류
 	@Transactional
-	public void insertTickets() {
-		tickets = new ArrayList<>();
-		ticketSeats = new ArrayList<>();
-		points = new ArrayList<>();
+	public void insertTicket() {
 
-		List<User> users = userRepository.findAll();
-		List<ConcertDetail> concertDetails = concertDetailRepository.findAll();
-		List<ConcertSeatInfo> concertSeatInfos = concertSeatInfoRepository.findAll();
-
-
-		int userSize = users.size();
-		int concertDetailSize = concertDetails.size();
-		int concertSeatInfoSize = concertSeatInfos.size();
-
-		for(int i = 0 ; i < 100 ; i++) {
-
-			Ticket ticket = Ticket.builder()
-				.user(getRandomValue(users))
-				.concertDetail(getRandomValue(concertDetails))
-				.build();
-
-			// concertSeatInfo 돌면서 좌석 있는곳에 true
-			// concertDetail이 동일한 곳에
-
-
-			User choiceUser = ticket.getUser();
-			ConcertDetail choiceConcertDetail = ticket.getConcertDetail();
-
-			ConcertSeatInfo concertSeatInfo = null;
-			while(true){
-				concertSeatInfo = getRandomValue(concertSeatInfos);
-				if(concertSeatInfo.getConcertDetail().equals(choiceConcertDetail) && !concertSeatInfo.getBook()){
-					break;
-				}
-			}
-
-
-			// 포인트 만들기
-			// 근데 포인트할때 그 좌석의 가격을 알아야함
-			// 나의 제일 최근 포인트를 알아야함
-			// 포인트를 돌면서 회원이 동일하고 생성일이 가장 최근인 row 찾아서 그때의 포인트 누적 찾기
-
-			List<Point> pointsList = pointRepository.findAll();
-
-			// 내 포인트의 최근찾기
-			List<Point> myPoint = new ArrayList<>();
-			for(Point point : pointsList){
-				if(point.getUser().equals(choiceUser)){
-					myPoint.add(point);
-				}
-			}
-			myPoint.sort(Comparator.comparing(Point::getCreatedDate));
-			Long latestPoint = myPoint.get(myPoint.size()-1).getTotal();
-
-			Point point = Point.builder()
-				.user(choiceUser)
-				.ticket(ticket)
-				.pay(concertSeatInfo.getGrade().getPrice())
-				.total(latestPoint-concertSeatInfo.getGrade().getPrice())
-				.build();
-
-
-			TicketSeat ticketSeat = TicketSeat.builder()
-				.ticket(ticket)
-				.concertSeatInfo(concertSeatInfo)
-				.build();
-
-			concertSeatInfo.updateStatus();
-
-			tickets.add(ticket);
-			ticketSeats.add(ticketSeat);
-			points.add(point);
-
-
-		}
-		ticketRepository.saveAll(tickets);
-		ticketSeatRepository.saveAll(ticketSeats);
-		pointRepository.saveAll(points);
-		log.info("insertTicket 함수 종료");
-
-	}
-
-
-
-	// TODO : 예매 정보 추가 리팩토링
-	@Transactional
-	public void insertTicketRefact() {
-		tickets = new ArrayList<>();        // 새로 만든 티켓들을 넣을 배열
-		ticketSeats = new ArrayList<>();    // 새로 만든 예매 좌석 정보 넣을 배열
-		points = new ArrayList<>();            // 새로 만든 포인트 넣을 배열
-
-		List<User> users = userRepository.findAll();
-		List<ConcertDetail> concertDetails = concertDetailRepository.findAll();
-		List<ConcertSeatInfo> concertSeatInfos = concertSeatInfoRepository.findAll();
 		Ticket ticket = null;
 
-
-
 		// 티켓 백장 만들기
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 100000; i++) {
+
+			User randomUser = getRandomValue(users);
+			ConcertDetail randomConcertDetail = getRandomValue(concertDetails);
+
 			ticket = Ticket.builder()
-				.user(getRandomValue(users))
-				.concertDetail(getRandomValue(concertDetails))
+				.user(randomUser)
+				.concertDetail(randomConcertDetail)
 				.build();
 
-
-			// 랜덤으로 넣은 사용자와 콘서트상세
-			User choiceUser = ticket.getUser();
-			ConcertDetail choiceConcertDetail = ticket.getConcertDetail();
-
-			// 랜덤으로 넣은 콘서트 상세 죄석정보목록리스트
+			// 랜덤으로 넣은 콘서트 상세 좌석정보목록리스트
 			List<ConcertSeatInfo> concertSeatInfoList = concertSeatInfoRepository.findConcertSeatInfoByConcertDetail_Seq(
-				choiceConcertDetail.getSeq());
+				randomConcertDetail.getSeq());
 
 			// 예매좌석정보 생성
-			// 한개의 예매할 때 3개 좌석 선택
-			int cnt = 3;
-			for (ConcertSeatInfo concertSeatInfo : concertSeatInfoList) {
-				if (cnt == 0) {
-					break;
-				}
-				if (!concertSeatInfo.getBook()) {
-					// 예매 좌석 정보
-					TicketSeat ticketSeat = TicketSeat.builder()
-						.ticket(ticket)
-						.concertSeatInfo(concertSeatInfo)
-						.build();
-
-					// 해당 콘서트 좌석 정보 예매 완료
-					concertSeatInfo.updateStatus();
-
-					ticket.addTicketSeats(ticketSeat);
-					ticketSeats.add(ticketSeat);
-
-					cnt--;
-				}
+			// 한개의 예매할 때 1~4개 좌석 선택
+			int cnt = (int)(Math.random() * 4) + 1;
+			cnt = setTicketSeat(ticket, concertSeatInfoList, cnt);
+			if (cnt > 0) {
+				continue;
 			}
 
 			// 담은 예매좌석정보수만큼 가격구하고 해당 예매와 관련한 포인트 제거하기
@@ -381,12 +252,11 @@ public class DummyService {
 			}
 
 			// 나의 최근 포인트
-			long latestTotal = pointRepository.findTop1ByUserSeqOrderByCreatedDateDesc(choiceUser.getSeq()).getTotal();
-
+			long latestTotal = pointRepository.findTop1ByUserSeqOrderByCreatedDateDesc(randomUser.getSeq()).getTotal();
 
 			// 포인트 추가
 			Point point = Point.builder()
-				.user(choiceUser)
+				.user(randomUser)
 				.ticket(ticket)
 				.pay(totalPrice)
 				.total(latestTotal - totalPrice)
@@ -402,17 +272,12 @@ public class DummyService {
 		pointRepository.saveAll(points);
 		ticketSeatRepository.saveAll(ticketSeats);
 
-
 	}
-
 
 	// 찜
 	@Transactional
-	public void makeFavorite(){
-		List<User> users = userRepository.findAll();
-		List<Concert> concerts = concertRepository.findAll();
-		userConcerts = new ArrayList<>();
-		for(int i = 0 ; i < 100 ; i++){
+	public void insertFavorite() {
+		for (int i = 0; i < 100; i++) {
 			UserConcert userConcert = UserConcert.builder()
 				.user(getRandomValue(users))
 				.concert(getRandomValue(concerts))
@@ -421,6 +286,31 @@ public class DummyService {
 			userConcerts.add(userConcert);
 		}
 		userConcertRepository.saveAll(userConcerts);
+	}
+
+	private int setTicketSeat(Ticket ticket, List<ConcertSeatInfo> concertSeatInfoList, int cnt) {
+		for (int j = 0; j < concertSeatInfoList.size(); j++) {
+			if (cnt == 0) {
+				break;
+			}
+			ConcertSeatInfo concertSeatInfo = concertSeatInfoList.get(j);
+			if (!concertSeatInfo.getBook()) {
+				// 예매 좌석 정보
+				TicketSeat ticketSeat = TicketSeat.builder()
+					.ticket(ticket)
+					.concertSeatInfo(concertSeatInfo)
+					.build();
+
+				// 해당 콘서트 좌석 정보 예매 완료
+				concertSeatInfo.updateStatus();
+
+				ticket.addTicketSeats(ticketSeat);
+				ticketSeats.add(ticketSeat);
+
+				cnt--;
+			}
+		}
+		return cnt;
 	}
 
 	private void makePerformers(List<String> singer, List<String> performersImage) {
