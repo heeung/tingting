@@ -26,4 +26,9 @@
 
     <!--  search  -->
     <color name="scroll_up_button_color">#8AC7FF</color>
+
+    <!--  date picker  -->
+    <color name="calendar_day_selected_font_color">#FF444444</color>
+    <color name="calendar_day_selected_background_color">#B38AC7FF</color>
+    <color name="date_picker_sheet_background_color">#FAFAFA</color>
 </resources>

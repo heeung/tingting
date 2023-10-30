@@ -29,6 +29,7 @@ import com.alsif.tingting.ui.home.HomeFragmentDirections
 import com.alsif.tingting.ui.home.HomeFragmentViewModel
 import com.alsif.tingting.ui.home.tab.recyclerview.ConcertPagingAdapter
 import com.alsif.tingting.ui.likedlist.LikedListFragmentViewModel
+import com.alsif.tingting.ui.login.LoginModalBottomSheet
 import com.alsif.tingting.ui.main.MainActivityViewModel
 import com.alsif.tingting.ui.reservedlist.ReservedListFragmentViewModel
 import com.alsif.tingting.ui.search.recyclerview.SearchPagingAdapter
@@ -47,6 +48,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private val sharedViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var searchAdapter: SearchPagingAdapter
+    lateinit var datePickerBottomSheet: DatePickerBottomSheet
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,6 +60,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         setClickListeners()
         subscribe()
         getConcertList()
+        showDatePickerBottomSheet()
     }
 
     private fun getConcertList() {
@@ -135,6 +138,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         binding.buttonSearch.setOnClickListener {
             viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "", binding.edittextSearch.text.toString()))
         }
+    }
+
+    private fun showDatePickerBottomSheet() {
+        datePickerBottomSheet = DatePickerBottomSheet()
+        datePickerBottomSheet.show(childFragmentManager, LoginModalBottomSheet.TAG)
+    }
+
+    private fun dismissDatePickerBottomSheet() {
+        datePickerBottomSheet.dismiss()
     }
 
     override fun onDestroyView() {
