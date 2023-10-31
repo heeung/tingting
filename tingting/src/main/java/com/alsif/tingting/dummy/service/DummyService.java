@@ -171,6 +171,9 @@ public class DummyService {
 		List<String> concertInfos = dummyList.getConcertInfo();
 		List<String> concertImageUrls = dummyList.getConcertImageUrls();
 
+		performers = performerRepository.findAll();
+		concertHalls = concertHallRepository.findAll();
+
 		makeConcertsWithDetailAndPerformersAndGrades(concertName1, concertName2, concertName3, concertName4,
 			concertName5,
 			concertInfos, concertImageUrls);
