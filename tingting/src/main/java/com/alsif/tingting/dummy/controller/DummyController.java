@@ -20,4 +20,16 @@ public class DummyController {
 		log.info("컨트롤러 시작");
 		dummyService.insertAllData();
 	}
+
+	@GetMapping("/dummy/concerts")
+	public void concerts() {
+		log.info("컨트롤러 concerts 메서드 시작");
+		dummyService.insertConcertsAndConcertSeatInfos();
+	}
+
+	@GetMapping("/dummy/users")
+	public void users() {
+		log.info("컨트롤러 users 메서드 시작");
+		dummyService.initAndInsertUsers();
+	}
 }

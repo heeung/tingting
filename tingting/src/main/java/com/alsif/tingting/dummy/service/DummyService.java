@@ -76,7 +76,6 @@ public class DummyService {
 	List<UserConcert> userConcerts;
 
 	public void insertAllData() {
-		dummyList = new DummyList();
 		init();
 		insertPerformers();
 		insertConcertHalls();
@@ -87,7 +86,19 @@ public class DummyService {
 		insertFavorite();
 	}
 
+	public void insertConcertsAndConcertSeatInfos() {
+		init();
+		insertConcerts();
+		insertConcertSeatInfos();
+	}
+
+	public void initAndInsertUsers() {
+		init();
+		insertUsers();
+	}
+
 	private void init() {
+		dummyList = new DummyList();
 		performers = new ArrayList<>();
 		concertHalls = new ArrayList<>();
 		concertHallSeats = new ArrayList<>();
@@ -106,6 +117,7 @@ public class DummyService {
 	// 가수 넣기
 	@Transactional
 	public void insertPerformers() {
+		/*
 		log.info("insertPerformers 시작");
 		List<String> singer = dummyList.getPerformers();
 		List<String> performersImage = dummyList.getPerformersImage();
@@ -114,12 +126,13 @@ public class DummyService {
 
 		performerRepository.saveAll(performers);
 		log.info("insertPerformers 종료");
-
+		*/
 	}
 
-	// 콘서트홀, 콘서트홀 좌석 넣기
+	// 콘서트홀, 콘서트홀 좌석 넣기 -> 일단 안씀
 	@Transactional
 	public void insertConcertHalls() {
+		/*
 		log.info("insertConcertHalls 시작");
 		List<String> concertHallNames = dummyList.getConcertHallName();
 		List<String> concertHallCities = dummyList.getConcertHallCity();
@@ -130,6 +143,7 @@ public class DummyService {
 		concertHallRepository.saveAll(concertHalls);
 		concertHallSeatRepository.saveAll(concertHallSeats);
 		log.info("insertConcertHalls 종료");
+		 */
 	}
 
 	// 회원정보, 포인트(회원가입 때 주는거) 정보 넣기
@@ -149,13 +163,16 @@ public class DummyService {
 	@Transactional
 	public void insertConcerts() {
 		log.info("insertConcerts 시작");
-		List<String> concertNameHeaders = dummyList.getConcertNameHeaders();
-		List<String> concertNameMiddles = dummyList.getConcertNameMiddles();
-		List<String> concertNameTails = dummyList.getConcertNameTails();
+		List<String> concertName1 = dummyList.getConcertName1();
+		List<String> concertName2 = dummyList.getConcertName2();
+		List<String> concertName3 = dummyList.getConcertName3();
+		List<String> concertName4 = dummyList.getConcertName4();
+		List<String> concertName5 = dummyList.getConcertName5();
 		List<String> concertInfos = dummyList.getConcertInfo();
 		List<String> concertImageUrls = dummyList.getConcertImageUrls();
 
-		makeConcertsWithDetailAndPerformersAndGrades(concertNameHeaders, concertNameMiddles, concertNameTails,
+		makeConcertsWithDetailAndPerformersAndGrades(concertName1, concertName2, concertName3, concertName4,
+			concertName5,
 			concertInfos, concertImageUrls);
 
 		concertRepository.saveAll(concerts);
@@ -367,19 +384,22 @@ public class DummyService {
 
 	private void makeUsersAndPoints(List<String> emails) {
 		for (String email : emails) {
+			for (int j = 'a'; j <= 'z'; j++) {
+				for (char i = 'a'; i <= 'z'; i++) {
+					User user = User.builder()
+						.email(j + i + email)
+						.build();
 
-			User user = User.builder()
-				.email(email)
-				.build();
+					Point point = Point.builder()
+						.pay(10000000L)
+						.user(user)
+						.total(10000000L)
+						.build();
 
-			Point point = Point.builder()
-				.pay(10000000L)
-				.user(user)
-				.total(10000000L)
-				.build();
-
-			users.add(user);
-			points.add(point);
+					users.add(user);
+					points.add(point);
+				}
+			}
 		}
 	}
 
@@ -420,39 +440,55 @@ public class DummyService {
 		return concertHoldOpenDate.minusDays(5).plusHours(19);
 	}
 
-	private void makeConcertsWithDetailAndPerformersAndGrades(List<String> concertNameHeaders,
-		List<String> concertNameMiddles,
-		List<String> concertNameTails, List<String> concertInfos, List<String> concertImageUrls) {
-		for (int i = 0; i < 500; i++) {
-			String concertName = makeConcertName(concertNameHeaders, concertNameMiddles, concertNameTails);
-			String concertInfo = getRandomValue(concertInfos);
-			String concertImageUrl = getRandomValue(concertImageUrls);
+	private void makeConcertsWithDetailAndPerformersAndGrades(
+		List<String> concertName1,
+		List<String> concertName2,
+		List<String> concertName3,
+		List<String> concertName4,
+		List<String> concertName5,
+		List<String> concertInfos,
+		List<String> concertImageUrls) {
 
-			int concertHoldPeriod = (int)(Math.random() * 5) + 1;
+		for (int i = 0; i < concertName1.size(); i++) {
+			for (int j = 0; j < concertName2.size(); j++) {
+				for (int k = 0; k < concertName3.size(); k++) {
+					for (int l = 0; l < concertName4.size(); l++) {
+						for (int m = 0; m < concertName5.size(); m++) {
+							String concertName = String.format("%s %s %s %s %s", concertName1.get(i),
+								concertName2.get(j), concertName3.get(k), concertName4.get(l), concertName5.get(m));
+							String concertInfo = getRandomValue(concertInfos);
+							String concertImageUrl = getRandomValue(concertImageUrls);
 
-			LocalDateTime concertHoldOpenDate = makeRandomConcertHoldOpenDate();
-			LocalDateTime concertHoldCloseDate = makeConcertHoldCloseDate(concertHoldOpenDate, concertHoldPeriod);
-			LocalDateTime concertBookOpenDate = makeConcertBookOpenDate(concertHoldOpenDate);
-			LocalDateTime concertBookCloseDate = makeConcertBookCloseDate(concertHoldOpenDate);
+							int concertHoldPeriod = (int)(Math.random() * 5) + 1;
 
-			Concert concert = Concert.builder()
-				.concertHall(getRandomValue(concertHalls))
-				.name(concertName)
-				.info(concertInfo)
-				.imageUrl(concertImageUrl)
-				.holdOpenDate(concertHoldOpenDate)
-				.holdCloseDate(concertHoldCloseDate)
-				.bookOpenDate(concertBookOpenDate)
-				.bookCloseDate(concertBookCloseDate)
-				.build();
+							LocalDateTime concertHoldOpenDate = makeRandomConcertHoldOpenDate();
+							LocalDateTime concertHoldCloseDate = makeConcertHoldCloseDate(concertHoldOpenDate,
+								concertHoldPeriod);
+							LocalDateTime concertBookOpenDate = makeConcertBookOpenDate(concertHoldOpenDate);
+							LocalDateTime concertBookCloseDate = makeConcertBookCloseDate(concertHoldOpenDate);
 
-			makeConcertPerformer(concert);
+							Concert concert = Concert.builder()
+								.concertHall(getRandomValue(concertHalls))
+								.name(concertName)
+								.info(concertInfo)
+								.imageUrl(concertImageUrl)
+								.holdOpenDate(concertHoldOpenDate)
+								.holdCloseDate(concertHoldCloseDate)
+								.bookOpenDate(concertBookOpenDate)
+								.bookCloseDate(concertBookCloseDate)
+								.build();
 
-			makeConcertDetail(concertHoldPeriod, concertHoldOpenDate, concert);
+							makeConcertPerformer(concert);
 
-			makeConcertGrade(concert);
+							makeConcertDetail(concertHoldPeriod, concertHoldOpenDate, concert);
 
-			concerts.add(concert);
+							makeConcertGrade(concert);
+
+							concerts.add(concert);
+						}
+					}
+				}
+			}
 		}
 	}
 
