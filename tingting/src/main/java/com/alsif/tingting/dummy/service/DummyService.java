@@ -187,6 +187,7 @@ public class DummyService {
 
 	@Transactional
 	public void insertGradeSingle(long start, long end) {
+		grades = new ArrayList<>();
 		for (long i = start; i <= end; i++) {
 			int gradeRandom = (int)(Math.random() * 2) + 1;
 			long priceRandom = (long)(Math.random() * 4) + 5;
