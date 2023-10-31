@@ -426,18 +426,6 @@ public class DummyList {
 		"전국투어", "페스티벌", "콘서트", "내한공연", "단독공연", "디너쇼", "깜짝쇼", "마술쇼", "뮤지컬", "판소리"
 	);
 
-	private final List<String> concertNameHeaders = Arrays.asList(
-		"신나는", "대단한", "화려한", "감동적인", "환상적인", "눈물의", "흥겨운", "꿈같은", "우아한", "미스터리한", "열정적인", "엄청난"
-	);
-
-	private final List<String> concertNameMiddles = Arrays.asList(
-		"봄", "여름", "가을", "겨울", "연말", "할로윈", "크리스마스", "5주년", "10주년", "가족사랑", "어버이날", "어린이날", "평화"
-	);
-
-	private final List<String> concertNameTails = Arrays.asList(
-		"전국투어", "페스티벌", "콘서트", "내한공연", "단독공연", "디너쇼"
-	);
-
 	private final List<String> concertImageUrls = Arrays.asList(
 		"https://ticketimage.interpark.com/Play/image/large/23/23015003_p.gif",
 		"https://ticketimage.interpark.com/Play/image/large/23/23014702_p.gif",
