@@ -384,10 +384,10 @@ public class DummyService {
 
 	private void makeUsersAndPoints(List<String> emails) {
 		for (String email : emails) {
-			for (int j = 'a'; j <= 'z'; j++) {
+			for (char j = 'a'; j <= 'z'; j++) {
 				for (char i = 'a'; i <= 'z'; i++) {
 					User user = User.builder()
-						.email(j + i + email)
+						.email(String.valueOf(j) + String.valueOf(i) + email)
 						.build();
 
 					Point point = Point.builder()
