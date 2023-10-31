@@ -1,6 +1,7 @@
 package com.alsif.tingting.dummy.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alsif.tingting.dummy.service.DummyService;
@@ -31,5 +32,11 @@ public class DummyController {
 	public void users() {
 		log.info("컨트롤러 users 메서드 시작");
 		dummyService.initAndInsertUsers();
+	}
+
+	@GetMapping("/dummy/grades")
+	public void grades(@RequestParam("start") long start, @RequestParam("end") long end) {
+		log.info("컨트롤러 grades 메서드 시작");
+		dummyService.insertGradeSingle(start, end);
 	}
 }

@@ -67,6 +67,14 @@ public class Concert {
 	@OneToMany(mappedBy = "concert")
 	private final List<Grade> grades = new ArrayList<>();
 
+	private Concert(Long seq) {
+		this.seq = seq;
+	}
+
+	public static Concert constructBySeq(Long seq) {
+		return new Concert(seq);
+	}
+
 	@Builder
 	public Concert(ConcertHall concertHall, String name, String imageUrl, String info, LocalDateTime holdOpenDate,
 		LocalDateTime holdCloseDate, LocalDateTime bookOpenDate, LocalDateTime bookCloseDate) {

@@ -185,6 +185,32 @@ public class DummyService {
 		log.info("insertConcerts 종료");
 	}
 
+	@Transactional
+	public void insertGradeSingle(long start, long end) {
+		for (long i = start; i <= end; i++) {
+			int gradeRandom = (int)(Math.random() * 2) + 1;
+			long priceRandom = (long)(Math.random() * 4) + 5;
+			for (int j = 0; j < gradeRandom; j++) {
+				Grade grade;
+				if (j == 0) {
+					grade = Grade.builder()
+						.price(priceRandom * 11000L)
+						.name("일반")
+						.build();
+				} else {
+					grade = Grade.builder()
+						.price((priceRandom + 2) * 11000L)
+						.name("VIP")
+						.build();
+				}
+				grade.setConcert(Concert.constructBySeq(i));
+				grades.add(grade);
+			}
+		}
+
+		gradeRepository.saveAll(grades);
+	}
+
 	// 콘서트 좌석 정보 넣기
 	@Transactional
 	public void insertConcertSeatInfos() {
