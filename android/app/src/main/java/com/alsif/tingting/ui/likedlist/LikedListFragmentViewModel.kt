@@ -31,8 +31,8 @@ class LikedListFragmentViewModel @Inject constructor(
     private val likeRepository: LikeRepository
 )  : ViewModel() {
 
-    private val _likedListPagingDataFlow = MutableSharedFlow<PagingData<ConcertDto>>()
-    val likedListPagingDataFlow = _likedListPagingDataFlow.asSharedFlow()
+    private val _likedListPagingDataFlow = MutableStateFlow<PagingData<ConcertDto>>(PagingData.empty())
+    val likedListPagingDataFlow = _likedListPagingDataFlow.asStateFlow()
 
     private val _error = MutableSharedFlow<DataThrowable>()
     var error = _error.asSharedFlow()
@@ -50,7 +50,7 @@ class LikedListFragmentViewModel @Inject constructor(
             getLikedConcertListPaging(
                 userSeq,
                 itemCount
-            ).collectLatest { pagingData ->
+            ).collect { pagingData ->
                 Log.d(TAG, "getLikedConcertList: 콜렉트 스코프 들어옴")
                 _likedListPagingDataFlow.emit(pagingData)
             }

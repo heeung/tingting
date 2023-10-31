@@ -65,22 +65,45 @@
                 android:layout_marginLeft="@dimen/_6sdp"
                 android:layout_marginRight="@dimen/_1sdp"
                 android:layout_gravity="center"
-                android:background="@drawable/frame_button_filter"
+                android:background="@drawable/frame_button_filter_on"
                 android:elevation="@dimen/_2sdp"/>
 
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_search"
+<!--    <ImageView-->
+<!--        android:id="@+id/image_no_result"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintHeight_percent="0.1"-->
+<!--        app:layout_constraintWidth_percent="0.2"-->
+<!--        android:src="@drawable/img_logo"-->
+<!--        android:elevation="@dimen/_2sdp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/layout_appbar" />-->
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/layout_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_appbar" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_appbar"
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/blue_mild">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_search"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            android:background="@color/white"
+            android:visibility="visible"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/button_scroll_up"
@@ -91,7 +114,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="@dimen/_16sdp"
-        android:elevation="@dimen/_3sdp">
+        android:elevation="@dimen/_3sdp"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -107,7 +131,8 @@
         android:orientation="horizontal"
         android:translationZ="2dp"
         android:paddingBottom="@dimen/_4sdp"
-        android:paddingHorizontal="@dimen/_4sdp"
+        android:paddingRight="@dimen/_16sdp"
+        android:paddingLeft="@dimen/_8sdp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.08"
@@ -117,63 +142,93 @@
         android:translationY="-200dp"
         >
 
-        <ImageView
-            android:id="@+id/button_date_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_calendar" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <LinearLayout
+            android:id="@+id/layout_date_range"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            app:boxBackgroundColor="@color/white"
-            app:boxStrokeWidth="1dp"
-            app:boxStrokeColor="@color/grey"
-            app:endIconTint="@color/grey"
-            app:boxCornerRadiusBottomEnd="@dimen/_10sdp"
-            app:boxCornerRadiusBottomStart="@dimen/_10sdp"
-            app:boxCornerRadiusTopEnd="@dimen/_10sdp"
-            app:boxCornerRadiusTopStart="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_2sdp"
-            >
+            android:layout_weight="6"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/_4sdp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textview_start_date"
-                style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
-                android:textSize="@dimen/_9sdp"
-                android:text="@string/start_date_hint"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/button_date_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_32sdp"
+                android:layout_marginHorizontal="@dimen/_2sdp"
+                android:layout_weight="1"
+                app:cardCornerRadius="@dimen/_10sdp"
+                android:elevation="@dimen/_2sdp"
+                >
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:id="@+id/image_date_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_calendar"
+                    android:layout_gravity="center"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            app:boxBackgroundColor="@color/white"
-            app:boxStrokeWidth="1dp"
-            app:boxStrokeColor="@color/grey"
-            app:endIconTint="@color/grey"
-            app:boxCornerRadiusBottomEnd="@dimen/_10sdp"
-            app:boxCornerRadiusBottomStart="@dimen/_10sdp"
-            app:boxCornerRadiusTopEnd="@dimen/_10sdp"
-            app:boxCornerRadiusTopStart="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_2sdp"
-            >
+            </androidx.cardview.widget.CardView>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textview_end_date"
-                style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
-                android:textSize="@dimen/_9sdp"
-                android:text="@string/end_date_hint"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/box_start_date"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeColor="@color/grey"
+                app:endIconTint="@color/grey"
+                app:boxCornerRadiusBottomEnd="@dimen/_10sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_10sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_10sdp"
+                app:boxCornerRadiusTopStart="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_2sdp"
+                >
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textview_start_date"
+                    style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                    android:textSize="@dimen/_9sdp"
+                    android:text="@string/start_date_hint"
+                    android:focusable="false"
+                    android:textColor="@color/grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/box_end_date"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeColor="@color/grey"
+                app:endIconTint="@color/grey"
+                app:boxCornerRadiusBottomEnd="@dimen/_10sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_10sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_10sdp"
+                app:boxCornerRadiusTopStart="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_2sdp"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textview_end_date"
+                    style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                    android:textSize="@dimen/_9sdp"
+                    android:text="@string/end_date_hint"
+                    android:focusable="false"
+                    android:textColor="@color/grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"

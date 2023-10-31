@@ -24,6 +24,8 @@ import com.alsif.tingting.ui.login.LoginModalBottomSheet
 import com.alsif.tingting.ui.main.MainActivity
 import com.alsif.tingting.ui.main.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 private const val TAG = "LikedListFragment"
@@ -57,8 +59,14 @@ class LikedListFragment : BaseFragment<FragmentLikedListBinding>(FragmentLikedLi
 
     private fun subscribe() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.likedListPagingDataFlow.collect {
+            viewModel.likedListPagingDataFlow.collectLatest {
+                binding.layoutSwipeRefresh.isRefreshing = false
                 likedListAdapter.submitData(it)
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.error.collectLatest {
+                showToast(it.message.toString())
             }
         }
     }
@@ -80,7 +88,6 @@ class LikedListFragment : BaseFragment<FragmentLikedListBinding>(FragmentLikedLi
         }
         binding.layoutSwipeRefresh.setOnRefreshListener {
             getLikedConcertList()
-            binding.layoutSwipeRefresh.isRefreshing = false
         }
     }
 

@@ -26,8 +26,8 @@ object ServiceModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
-        .readTimeout(5000, TimeUnit.MILLISECONDS)
-        .connectTimeout(5000, TimeUnit.MILLISECONDS)
+        .readTimeout(30000, TimeUnit.MILLISECONDS)
+        .connectTimeout(30000, TimeUnit.MILLISECONDS)
         .addInterceptor(AuthInterceptor()) // TODO interceptor 추가 필요 (주석 해제)
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()

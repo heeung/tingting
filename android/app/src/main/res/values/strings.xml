@@ -13,6 +13,7 @@
     <string name="start_date_hint">시작일</string>
     <string name="end_date_hint">종료일</string>
     <string-array name="select_region">
+        <item>지역</item>
         <item>서울</item>
         <item>인천</item>
         <item>대전</item>
@@ -22,7 +23,6 @@
         <item>부산</item>
         <item>울산</item>
     </string-array>
-
 
     <!--  viewpager  -->
     <string name="viewpager2_banner">%1$d / %2$d 모두보기</string>

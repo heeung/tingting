@@ -1,5 +1,7 @@
 package com.alsif.tingting.ui.search
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -33,7 +35,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import androidx.core.util.Pair
+import com.alsif.tingting.util.extension.parseLocalDateTime
+import com.alsif.tingting.util.extension.parseLong
+import com.alsif.tingting.util.extension.toDateString
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker.Builder.dateRangePicker
+import com.google.gson.annotations.SerializedName
+import kotlinx.coroutines.flow.collect
+import java.time.LocalDateTime
 
 
 private const val TAG = "SearchFragment"
@@ -43,7 +52,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private val sharedViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var searchAdapter: SearchPagingAdapter
-    lateinit var datePickerBottomSheet: DatePickerBottomSheet
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,31 +62,29 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         playSearchBarAnimation()
         setClickListeners()
         subscribe()
-        getConcertList()
+    }
+
+    override fun onResume() {
         initMenu()
-//        showDatePickerBottomSheet()
+        super.onResume()
     }
 
     private fun getConcertList() {
-        // 아무것도 없는 호출
-//        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "", ""))
-//        // 검색어만 있는 호출
-//        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "", "화려한"))
-//        // 장소 + 검색어
-//        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "서울", "화려한"))
-//          // 기간 + 검색어
-//        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "2023-12-01", "2023-12-10", "", "화려한"))
-//        // 기간 + 장소 + 검색어
-//        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "2023-12-01", "2023-12-10", "서울", "화려한"))
-//        // 장소만
-//        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "서울", ""))
-//        // 기간만
-//        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "2023-12-01", "2023-12-10", "", ""))
-//        // 장소 + 기간만
-//        viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "2023-12-01", "2023-12-10", "서울", ""))
+        showLoadingDialog(mActivity)
+        val startDate = if (viewModel.isDateEditPossible.value && viewModel.isFilterOpened.value) viewModel.startDate.value.parseLocalDateTime().toDateString() else ""
+        val endDate = if (viewModel.isDateEditPossible.value && viewModel.isFilterOpened.value) viewModel.endDate.value.parseLocalDateTime().toDateString() else ""
+        val place = if (binding.textviewCitySelect.text.toString() != "지역" && viewModel.isFilterOpened.value) binding.textviewCitySelect.text.toString() else ""
+        val searchWord = if (!binding.edittextSearch.text.isNullOrEmpty())  binding.edittextSearch.text.toString() else ""
+        viewModel.getConcertList(ConcertListRequestDto(INITIAL_PAGE_NUM, PAGE_SIZE, "", startDate, endDate, place, searchWord))
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun subscribe() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.error.collectLatest {
+                showToast(it.message.toString())
+            }
+        }
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.searchPagingDataFlow.collectLatest { it ->
                 searchAdapter.submitData(it)
@@ -90,11 +96,57 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
                     binding.layoutFilter.apply {
                         translateAnimation(AnimUtil.AnimDirection.Y, 0f , AnimUtil.Speed.COMMON)
                     }
+                    binding.buttonFilter.setBackgroundResource(R.drawable.frame_button_filter_off)
+                    binding.buttonFilter.setImageResource(R.drawable.ic_filter_white)
                 } else {
                     binding.layoutFilter.apply {
                         translateAnimation(AnimUtil.AnimDirection.Y, -200f , AnimUtil.Speed.COMMON)
                     }
+                    binding.buttonFilter.setBackgroundResource(R.drawable.frame_button_filter_on)
+                    binding.buttonFilter.setImageResource(R.drawable.ic_filter)
                 }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.startDate.collect {
+                binding.textviewStartDate.setText(it.parseLocalDateTime().toDateString())
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.endDate.collect {
+                binding.textviewEndDate.setText(it.parseLocalDateTime().toDateString())
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isDateEditPossible.collect {
+                if (it) {
+                    binding.boxStartDate.visibility = View.VISIBLE
+                    binding.boxEndDate.visibility = View.VISIBLE
+                    binding.layoutDateRange.isClickable = true
+                    binding.buttonDatePicker.setBackgroundResource(R.drawable.frame_button_date_picker_off)
+                    binding.imageDatePicker.setImageResource(R.drawable.ic_calendar_white)
+                } else {
+                    binding.boxStartDate.visibility = View.INVISIBLE
+                    binding.boxEndDate.visibility = View.INVISIBLE
+                    binding.layoutDateRange.isClickable = false
+                    binding.buttonDatePicker.setBackgroundResource(R.drawable.frame_button_date_picker_on)
+                    binding.imageDatePicker.setImageResource(R.drawable.ic_calendar)
+                }
+            }
+        }
+        // 검색 결과에 따라 보여주기
+        searchAdapter.addOnPagesUpdatedListener {
+            binding.layoutSwipeRefresh.isRefreshing = false
+            dismissLoadingDialog()
+            if (searchAdapter.itemCount == 0) {
+                binding.buttonScrollUp.visibility = View.GONE
+//                binding.recyclerSearch.visibility = View.INVISIBLE
+//                binding.imageNoResult.visibility = View.VISIBLE
+                showSnackbar(binding.root, "검색된 공연이 없어요! 다시 검색해주세요.")
+            } else {
+                binding.buttonScrollUp.visibility = View.VISIBLE
+//                binding.recyclerSearch.visibility = View.VISIBLE
+//                binding.imageNoResult.visibility = View.INVISIBLE
             }
         }
     }
@@ -152,12 +204,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             }
         }
         binding.buttonSearch.setOnClickListener {
-            viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "", binding.edittextSearch.text.toString()))
+            it.clickAnimation(viewLifecycleOwner)
+            getConcertList()
         }
         binding.edittextSearch.setOnEditorActionListener(OnEditorActionListener { view, actionId, _ ->
             when (actionId) {
                 IME_ACTION_SEARCH -> {
-                    viewModel.getConcertList(ConcertListRequestDto(1, 10, "", "", "", "", binding.edittextSearch.text.toString()))
+                    getConcertList()
                     hideKeyBoard(view)
                 }
             }
@@ -167,28 +220,52 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             it.clickAnimation(viewLifecycleOwner)
             viewModel.toggleFilter()
         }
+        binding.layoutDateRange.setOnClickListener {
+            setDateRangePicker()
+        }
+        binding.textviewStartDate.setOnClickListener {
+            setDateRangePicker()
+        }
+        binding.textviewEndDate.setOnClickListener {
+            setDateRangePicker()
+        }
         binding.buttonDatePicker.setOnClickListener {
-            val dateRangePicker =
-                MaterialDatePicker.Builder.dateRangePicker()
-                    .setTitleText("공연 기간을 골라주세요")
-                    .setSelection(
-                        Pair(
-                            MaterialDatePicker.thisMonthInUtcMilliseconds(),
-                            MaterialDatePicker.todayInUtcMilliseconds()
-                        )
-                    )
-                    .build()
-            dateRangePicker.show(childFragmentManager, "date_picker")
+            it.clickAnimation(viewLifecycleOwner)
+            viewModel.toggleDateEdit()
+        }
+        binding.textviewCitySelect.setOnItemClickListener { _, _, _, _ ->
+            getConcertList()
+        }
+        binding.layoutSwipeRefresh.setOnRefreshListener {
+            getConcertList()
         }
     }
 
-    private fun showDatePickerBottomSheet() {
-        datePickerBottomSheet = DatePickerBottomSheet()
-        datePickerBottomSheet.show(childFragmentManager, LoginModalBottomSheet.TAG)
-    }
-
-    private fun dismissDatePickerBottomSheet() {
-        datePickerBottomSheet.dismiss()
+    private fun setDateRangePicker() {
+        val dateRangePicker =
+            MaterialDatePicker.Builder.dateRangePicker()
+                .setTitleText("공연 기간을 골라주세요")
+                .setSelection(
+                    Pair(
+                        viewModel.startDate.value,
+                        viewModel.endDate.value
+                    )
+                )
+                .setTheme(R.style.CustomDateRangePicker)
+                .setPositiveButtonText("확인")
+                .build()
+        dateRangePicker.show(childFragmentManager, "date_picker")
+        dateRangePicker.addOnPositiveButtonClickListener {
+//            binding.textviewStartDate.setText(dateRangePicker.selection?.first?.parseLocalDateTime()?.toDateString())
+//            binding.textviewEndDate.setText(dateRangePicker.selection?.second?.parseLocalDateTime()?.toDateString())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                viewModel.setStartDate(dateRangePicker.selection?.first ?: LocalDateTime.MIN.parseLong())
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                viewModel.setEndDate(dateRangePicker.selection?.second ?: LocalDateTime.MAX.parseLong())
+            }
+            getConcertList()
+        }
     }
 
     override fun onDestroyView() {
@@ -204,5 +281,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     companion object {
         private const val SEARCH_BAR_INITIAL_SIZE = 0.9f
         private const val SEARCH_BAR_INITIAL_TRANSLATION_X = 50f
+        private const val INITIAL_PAGE_NUM = 1
+        private const val PAGE_SIZE = 10
     }
 }
