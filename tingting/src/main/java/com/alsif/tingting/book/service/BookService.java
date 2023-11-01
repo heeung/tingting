@@ -173,6 +173,11 @@ public class BookService {
 		Ticket ticket = ticketRepository.findById(ticketSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_TICKET_SEQ));
 
+		// 이미 예매 취소된 티켓일 경우
+		if (ticket.getDeletedDate() != null) {
+			throw new CustomException(ErrorCode.ALREADY_CANCELED_TICKET);
+		}
+
 		// 티켓 구매자 확인, 후 예매 취소 처리
 		if (!ticket.getUser().getSeq().equals(userSeq)) {
 			throw new CustomException(ErrorCode.FORBIDDEN_USER);
@@ -198,7 +203,7 @@ public class BookService {
 			totalPrice += price;
 		}
 
-		// 포인트 복구
+		// 포인트 환불
 		Point point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.NO_DATA_FOUND));
 
