@@ -15,7 +15,6 @@ import com.alsif.tingting.concert.dto.concerthall.ConcertHallPatternResponseDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSeatBookRequestDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoRequestDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoResponseDto;
-import com.alsif.tingting.concert.dto.concerthall.SeatBookBaseDto;
 import com.alsif.tingting.concert.dto.concerthall.SuccessResponseDto;
 import com.alsif.tingting.concert.entity.Concert;
 import com.alsif.tingting.concert.entity.ConcertDetail;
@@ -89,18 +88,10 @@ public class BookService {
 	/*
 		선택 좌석의 예매 가능 여부 확인
 	 */
-	public SuccessResponseDto isSeatAvailable(Long concertDetailSeq,
-		ConcertSeatBookRequestDto requestDto) {
-
+	public SuccessResponseDto isSeatAvailable(Long concertDetailSeq, ConcertSeatBookRequestDto requestDto) {
 		// 좌석별 예매 가능 여부 확인
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
-			SeatBookBaseDto seatBookBaseDto = concertSeatInfoRepository
-				.findBookByConcertDetail_SeqAAndConcertHallSeat_Seq(concertDetailSeq, seatSeq)
-				.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_HALL_SEAT_SEQ));
-
-			if (seatBookBaseDto.getBook()) {
-				throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
-			}
+			this.checkSeatAvailability(concertDetailSeq, seatSeq);
 		}
 
 		return SuccessResponseDto.builder().message("true").build();
@@ -124,14 +115,8 @@ public class BookService {
 
 		// 좌석별 예매 상태 변경
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
-			ConcertSeatInfo concertSeatInfo = concertSeatInfoRepository
-				.findByConcertDetail_SeqAndConcertHallSeat_Seq(concertDetailSeq, seatSeq)
-				.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_HALL_SEAT_SEQ));
-
 			// 예매 되지 않은 좌석이라면, 예매 처리
-			if (concertSeatInfo.getBook()) {
-				throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
-			}
+			ConcertSeatInfo concertSeatInfo = this.checkSeatAvailability(concertDetailSeq, seatSeq);
 			concertSeatInfo.updateBook();
 
 			// 좌석 가격 조회
@@ -229,5 +214,23 @@ public class BookService {
 			.build());
 
 		return SuccessResponseDto.builder().message("true").build();
+	}
+
+	/*
+		좌석 사용 가능 여부 유효성 검사
+	 */
+	private ConcertSeatInfo checkSeatAvailability(Long concertDetailSeq, Long concertSeatInfoSeq) {
+		ConcertSeatInfo concertSeatInfo = concertSeatInfoRepository.findById(concertSeatInfoSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_HALL_SEAT_SEQ));
+
+		if (!concertSeatInfo.getConcertDetail().getSeq().equals(concertDetailSeq)) {
+			throw new CustomException(ErrorCode.BAD_REQUEST_CONCERT_DETAIL_SEQ);
+		}
+
+		if (concertSeatInfo.getBook()) {
+			throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
+		}
+
+		return concertSeatInfo;
 	}
 }
