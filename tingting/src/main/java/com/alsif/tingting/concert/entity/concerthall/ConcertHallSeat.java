@@ -42,6 +42,14 @@ public class ConcertHallSeat {
 		this.seat = seat;
 	}
 
+	private ConcertHallSeat(Long seq) {
+		this.seq = seq;
+	}
+
+	public static ConcertHallSeat constructBySeq(Long seq) {
+		return new ConcertHallSeat(seq);
+	}
+
 	public void setConcertHall(ConcertHall concertHall) {
 		if (this.concertHall != null) {
 			this.concertHall.getConcertHallSeats().remove(this);

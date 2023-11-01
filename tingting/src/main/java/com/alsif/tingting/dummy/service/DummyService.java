@@ -26,6 +26,7 @@ import com.alsif.tingting.concert.repository.ConcertDetailRepository;
 import com.alsif.tingting.concert.repository.ConcertRepository;
 import com.alsif.tingting.concert.repository.ConcertSeatInfoRepository;
 import com.alsif.tingting.concert.repository.GradeRepository;
+import com.alsif.tingting.concert.repository.JDBCRepository;
 import com.alsif.tingting.concert.repository.concerthall.ConcertHallRepository;
 import com.alsif.tingting.concert.repository.concerthall.ConcertHallSeatRepository;
 import com.alsif.tingting.concert.repository.performer.ConcertPerformerRepository;
@@ -58,6 +59,7 @@ public class DummyService {
 	private final PointRepository pointRepository;
 	private final UserConcertRepository userConcertRepository;
 	private final UserRepository userRepository;
+	private final JDBCRepository JDBCRepository;
 	private DummyList dummyList;
 
 	List<Performer> performers;
@@ -82,8 +84,8 @@ public class DummyService {
 		insertUsers();
 		insertConcerts();
 		insertConcertSeatInfos();
-		insertTicket();
-		insertFavorite();
+		// insertTicket();
+		// insertFavorite();
 	}
 
 	public void insertConcertsAndConcertSeatInfos() {
@@ -117,7 +119,6 @@ public class DummyService {
 	// 가수 넣기
 	@Transactional
 	public void insertPerformers() {
-		/*
 		log.info("insertPerformers 시작");
 		List<String> singer = dummyList.getPerformers();
 		List<String> performersImage = dummyList.getPerformersImage();
@@ -126,13 +127,12 @@ public class DummyService {
 
 		performerRepository.saveAll(performers);
 		log.info("insertPerformers 종료");
-		*/
 	}
 
-	// 콘서트홀, 콘서트홀 좌석 넣기 -> 일단 안씀
+	// 콘서트홀, 콘서트홀 좌석 넣기
 	@Transactional
 	public void insertConcertHalls() {
-		/*
+
 		log.info("insertConcertHalls 시작");
 		List<String> concertHallNames = dummyList.getConcertHallName();
 		List<String> concertHallCities = dummyList.getConcertHallCity();
@@ -143,7 +143,35 @@ public class DummyService {
 		concertHallRepository.saveAll(concertHalls);
 		concertHallSeatRepository.saveAll(concertHallSeats);
 		log.info("insertConcertHalls 종료");
-		 */
+
+	}
+
+	@Transactional
+	public void insertConcertHallSeats() {
+
+		log.info("insertConcertHallSeats 시작");
+		concertHallSeats = new ArrayList<>();
+
+		for (long i = 97; i <= 192; i++) {
+			for (char section = 'A'; section <= 'J'; section++) {
+				for (char seatAlphabet = 'A'; seatAlphabet <= 'J'; seatAlphabet++) {
+					for (int seatNumber = 1; seatNumber <= 20; seatNumber++) {
+						ConcertHallSeat concertHallSeat = ConcertHallSeat.builder()
+							.section(String.valueOf(section))
+							.seat(String.valueOf(seatAlphabet) + seatNumber)
+							.build();
+						concertHallSeat.setConcertHall(ConcertHall.makeDummyEntityBySeq(i));
+
+						concertHallSeats.add(concertHallSeat);
+
+					}
+				}
+			}
+		}
+
+		concertHallSeatRepository.saveAll(concertHallSeats);
+		log.info("insertConcertHallSeats 종료");
+
 	}
 
 	// 회원정보, 포인트(회원가입 때 주는거) 정보 넣기
@@ -185,7 +213,7 @@ public class DummyService {
 		log.info("insertConcerts 종료");
 	}
 
-	@Transactional
+	/*@Transactional
 	public void insertGradeSingle(long start, long end) {
 		grades = new ArrayList<>();
 		for (long i = start; i <= end; i++) {
@@ -208,12 +236,11 @@ public class DummyService {
 				grades.add(grade);
 			}
 		}
-
 		gradeRepository.saveAll(grades);
-	}
+	}*/
 
 	// 콘서트 좌석 정보 넣기
-	@Transactional
+	// @Transactional
 	public void insertConcertSeatInfos() {
 		log.info("insertConcertSeatInfos 시작");
 		for (Concert concert : concerts) {
@@ -256,10 +283,12 @@ public class DummyService {
 						concertSeatInfos.add(concertSeatInfo);
 					}
 				}
+				JDBCRepository.saveAllConcertSeatInfo(concertSeatInfos);
+				concertSeatInfos.clear();
 			}
 		}
 
-		concertSeatInfoRepository.saveAll(concertSeatInfos);
+		JDBCRepository.saveAllConcertSeatInfo(concertSeatInfos);
 		log.info("insertConcertSeatInfos 종료");
 	}
 

@@ -1,6 +1,7 @@
 package com.alsif.tingting.concert.repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -96,4 +97,6 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 			+ "ORDER BY c.holdOpenDate ASC")
 	Page<ConcertBaseDto> findAllConcertByDate(
 		@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
+
+	List<Concert> findBySeqBetween(Long startId, Long endId);
 }
