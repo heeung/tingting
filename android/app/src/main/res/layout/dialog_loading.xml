@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
-        app:cardCornerRadius="@dimen/_17sdp"
+        app:cardCornerRadius="@dimen/_24sdp"
         app:cardElevation="@dimen/_4sdp"
         android:padding="@dimen/_10sdp"
         android:layout_margin="@dimen/_10sdp"
@@ -20,11 +20,11 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieAnimationView"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_150sdp"
+            android:layout_width="@dimen/_54sdp"
+            android:layout_height="@dimen/_54sdp"
             android:layout_gravity="center"
             app:lottie_autoPlay="true"
-            app:lottie_fileName="animation_loading_2.json"
+            app:lottie_fileName="animation_loading_4.json"
             app:lottie_loop="true" />
 
     </androidx.cardview.widget.CardView>

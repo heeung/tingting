@@ -39,6 +39,8 @@ import com.alsif.tingting.ui.search.recyclerview.PageLoadingAdapter
 import com.alsif.tingting.util.extension.parseLocalDateTime
 import com.alsif.tingting.util.extension.parseLong
 import com.alsif.tingting.util.extension.toDateString
+import com.alsif.tingting.util.hideAnimation
+import com.alsif.tingting.util.revealAnimation
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker.Builder.dateRangePicker
 import com.google.gson.annotations.SerializedName
@@ -132,14 +134,18 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.isDateEditPossible.collect {
                 if (it) {
-                    binding.boxStartDate.visibility = View.VISIBLE
-                    binding.boxEndDate.visibility = View.VISIBLE
+                    binding.boxStartDate.revealAnimation(viewLifecycleOwner)
+                    binding.boxEndDate.revealAnimation(viewLifecycleOwner)
+//                    binding.boxStartDate.visibility = View.VISIBLE
+//                    binding.boxEndDate.visibility = View.VISIBLE
                     binding.layoutDateRange.isClickable = true
                     binding.buttonDatePicker.setBackgroundResource(R.drawable.frame_button_date_picker_off)
                     binding.imageDatePicker.setImageResource(R.drawable.ic_calendar_white)
                 } else {
-                    binding.boxStartDate.visibility = View.INVISIBLE
-                    binding.boxEndDate.visibility = View.INVISIBLE
+                    binding.boxStartDate.hideAnimation(viewLifecycleOwner)
+                    binding.boxEndDate.hideAnimation(viewLifecycleOwner)
+//                    binding.boxStartDate.visibility = View.INVISIBLE
+//                    binding.boxEndDate.visibility = View.INVISIBLE
                     binding.layoutDateRange.isClickable = false
                     binding.buttonDatePicker.setBackgroundResource(R.drawable.frame_button_date_picker_on)
                     binding.imageDatePicker.setImageResource(R.drawable.ic_calendar)

@@ -84,6 +84,16 @@ fun View.translateAnimation(direction: AnimUtil.AnimDirection, values: Float, sp
 }
 
 /**
+ * alpha 애니메이션을 적용합니다.
+ */
+fun View.alphaAnimation(values: Float, speed: Long) {
+    ObjectAnimator.ofFloat(this, "alpha", values).apply {
+        duration = speed
+        start()
+    }
+}
+
+/**
  * View에 클릭 애니메이션을 적용합니다.
  */
 fun View.clickAnimation(lifeCycleOwner: LifecycleOwner) {
@@ -92,6 +102,27 @@ fun View.clickAnimation(lifeCycleOwner: LifecycleOwner) {
         delay(100)
         this@clickAnimation.scaleAnimation(AnimUtil.AnimDirection.XY, 1f, 80)
         delay(80)
+    }
+}
+
+/**
+ * View에 나타나는 에니메이션을 적용합니다.
+ */
+fun View.hideAnimation(lifeCycleOwner: LifecycleOwner) {
+    lifeCycleOwner.lifecycleScope.launch {
+        this@hideAnimation.alphaAnimation(0f, AnimUtil.Speed.FAST)
+        delay(AnimUtil.Speed.FAST)
+        this@hideAnimation.visibility = View.INVISIBLE
+    }
+}
+
+/**
+ * View에 나타나는 에니메이션을 적용합니다.
+ */
+fun View.revealAnimation(lifeCycleOwner: LifecycleOwner) {
+    lifeCycleOwner.lifecycleScope.launch {
+        this@revealAnimation.visibility = View.VISIBLE
+        this@revealAnimation.alphaAnimation(1f, AnimUtil.Speed.FAST)
     }
 }
 
