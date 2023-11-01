@@ -1,6 +1,8 @@
 package com.alsif.tingting.user.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -62,16 +64,21 @@ public class UserService {
 		Pageable pageable = PageRequest.of(requestDto.getCurrentPage() - 1, requestDto.getItemCount());
 		Page<TicketBaseDto> tickets = ticketRepository.findAllByUserSeq(userSeq, pageable);
 
-		// 2. 해당 티켓의 구매 가격, 좌석 정보 저장
-		for (TicketBaseDto ticket : tickets) {
-			List<SeatBaseDto> seatBaseDtos = ticketSeatRepository.findAllPriceByTicketSeq(ticket.getTicketSeq());
-			long totalPrice = 0;
-			for (SeatBaseDto seatBaseDto : seatBaseDtos) {
-				totalPrice += seatBaseDto.getPrice();
+		List<SeatBaseDto> seatBaseDtos = ticketSeatRepository.findAllPriceByTicketSeq(
+			tickets.stream().map(TicketBaseDto::getTicketSeq).collect(Collectors.toList()));
+
+		for (SeatBaseDto seatBaseDto : seatBaseDtos) {
+			for (TicketBaseDto ticket : tickets) {
+				if (ticket.getTicketSeq().equals(seatBaseDto.getTicketSeq())) {
+					if (ticket.getSeats() == null) {
+						ticket.setSeats(new ArrayList<>());
+					}
+					ticket.getSeats().add(seatBaseDto);
+					break;
+				}
 			}
-			ticket.setTotalPrice(totalPrice);
-			ticket.setSeats(seatBaseDtos);
 		}
+
 		log.info("예매한 콘서트 개수 (취소 내역 포함, 현재 페이지 개수): {}", tickets.getContent().size());
 
 		return TicketListResponseDto.builder()
