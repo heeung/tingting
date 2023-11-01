@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -89,7 +90,11 @@ class HomeFragmentViewModel @Inject constructor(
                 concertListRequestDto
             ) {
                 viewModelScope.launch {
-                    _error.emit(DataThrowable.NetworkErrorThrowable())
+                    if (it is SocketTimeoutException) {
+                        _error.emit(DataThrowable.NetworkTrafficThrowable())
+                    } else {
+                        _error.emit(DataThrowable.NetworkErrorThrowable())
+                    }
                 }
             }
         }.flow.cachedIn(viewModelScope)
@@ -103,7 +108,11 @@ class HomeFragmentViewModel @Inject constructor(
                 concertListRequestDto
             ) {
                 viewModelScope.launch {
-                    _error.emit(DataThrowable.NetworkErrorThrowable())
+                    if (it is SocketTimeoutException) {
+                        _error.emit(DataThrowable.NetworkTrafficThrowable())
+                    } else {
+                        _error.emit(DataThrowable.NetworkErrorThrowable())
+                    }
                 }
             }
         }.flow.cachedIn(viewModelScope)

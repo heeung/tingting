@@ -23,11 +23,13 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ServiceModule {
+    private const val TIME: Long = 30000
+
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
-        .readTimeout(30000, TimeUnit.MILLISECONDS)
-        .connectTimeout(30000, TimeUnit.MILLISECONDS)
+        .readTimeout(TIME, TimeUnit.MILLISECONDS)
+        .connectTimeout(TIME, TimeUnit.MILLISECONDS)
         .addInterceptor(AuthInterceptor()) // TODO interceptor 추가 필요 (주석 해제)
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()

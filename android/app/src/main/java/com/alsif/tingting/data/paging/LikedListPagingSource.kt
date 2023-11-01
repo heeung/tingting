@@ -13,7 +13,7 @@ class LikedListPagingSource @Inject constructor (
     private val likeRepository: LikeRepository,
     private val userSeq: Int,
     private val itemCount: Int,
-    private val throwError: () -> Unit
+    private val throwError: (Exception) -> Unit
 ) : PagingSource<Int, ConcertDto>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ConcertDto> {
@@ -28,7 +28,7 @@ class LikedListPagingSource @Inject constructor (
                 nextKey = if (page < response.totalPage) page + 1 else null
             )
         } catch (exception: Exception) {
-            throwError()
+            throwError(exception)
             LoadResult.Error(exception)
         }
     }

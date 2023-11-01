@@ -35,6 +35,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import androidx.core.util.Pair
+import com.alsif.tingting.ui.search.recyclerview.PageLoadingAdapter
 import com.alsif.tingting.util.extension.parseLocalDateTime
 import com.alsif.tingting.util.extension.parseLong
 import com.alsif.tingting.util.extension.toDateString
@@ -70,7 +71,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     }
 
     private fun getConcertList() {
-        showLoadingDialog(mActivity)
+//        showLoadingDialog(mActivity)
+        val startDate = if (viewModel.isDateEditPossible.value && viewModel.isFilterOpened.value) viewModel.startDate.value.parseLocalDateTime().toDateString() else ""
+        val endDate = if (viewModel.isDateEditPossible.value && viewModel.isFilterOpened.value) viewModel.endDate.value.parseLocalDateTime().toDateString() else ""
+        val place = if (binding.textviewCitySelect.text.toString() != "지역" && viewModel.isFilterOpened.value) binding.textviewCitySelect.text.toString() else ""
+        val searchWord = if (!binding.edittextSearch.text.isNullOrEmpty())  binding.edittextSearch.text.toString() else ""
+        viewModel.getConcertList(ConcertListRequestDto(INITIAL_PAGE_NUM, PAGE_SIZE, "", startDate, endDate, place, searchWord))
+    }
+
+    private fun getConcertListWithLoadingDialog() {
+        showLoadingDialog()
         val startDate = if (viewModel.isDateEditPossible.value && viewModel.isFilterOpened.value) viewModel.startDate.value.parseLocalDateTime().toDateString() else ""
         val endDate = if (viewModel.isDateEditPossible.value && viewModel.isFilterOpened.value) viewModel.endDate.value.parseLocalDateTime().toDateString() else ""
         val place = if (binding.textviewCitySelect.text.toString() != "지역" && viewModel.isFilterOpened.value) binding.textviewCitySelect.text.toString() else ""
@@ -82,6 +92,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private fun subscribe() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.error.collectLatest {
+                binding.layoutSwipeRefresh.isRefreshing = false
+                dismissLoadingDialog()
                 showToast(it.message.toString())
             }
         }
@@ -136,17 +148,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         }
         // 검색 결과에 따라 보여주기
         searchAdapter.addOnPagesUpdatedListener {
-            binding.layoutSwipeRefresh.isRefreshing = false
             dismissLoadingDialog()
+            binding.layoutSwipeRefresh.isRefreshing = false
             if (searchAdapter.itemCount == 0) {
                 binding.buttonScrollUp.visibility = View.GONE
-//                binding.recyclerSearch.visibility = View.INVISIBLE
-//                binding.imageNoResult.visibility = View.VISIBLE
-                showSnackbar(binding.root, "검색된 공연이 없어요! 다시 검색해주세요.")
+                showSnackbar(binding.root, NEED_SEARCH_RE)
             } else {
                 binding.buttonScrollUp.visibility = View.VISIBLE
-//                binding.recyclerSearch.visibility = View.VISIBLE
-//                binding.imageNoResult.visibility = View.INVISIBLE
             }
         }
     }
@@ -154,7 +162,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private fun initRecyclerView() {
         searchAdapter = SearchPagingAdapter()
         binding.recyclerSearch.apply {
-            adapter = searchAdapter
+            adapter = searchAdapter.withLoadStateFooter(
+                footer = PageLoadingAdapter()
+            )
             layoutManager = GridLayoutManager(mActivity, 2, LinearLayoutManager.VERTICAL, false)
         }
     }
@@ -205,12 +215,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         }
         binding.buttonSearch.setOnClickListener {
             it.clickAnimation(viewLifecycleOwner)
-            getConcertList()
+            getConcertListWithLoadingDialog()
         }
         binding.edittextSearch.setOnEditorActionListener(OnEditorActionListener { view, actionId, _ ->
             when (actionId) {
                 IME_ACTION_SEARCH -> {
-                    getConcertList()
+                    getConcertListWithLoadingDialog()
                     hideKeyBoard(view)
                 }
             }
@@ -234,7 +244,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             viewModel.toggleDateEdit()
         }
         binding.textviewCitySelect.setOnItemClickListener { _, _, _, _ ->
-            getConcertList()
+            getConcertListWithLoadingDialog()
         }
         binding.layoutSwipeRefresh.setOnRefreshListener {
             getConcertList()
@@ -244,7 +254,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private fun setDateRangePicker() {
         val dateRangePicker =
             MaterialDatePicker.Builder.dateRangePicker()
-                .setTitleText("공연 기간을 골라주세요")
+                .setTitleText(DATE_PICKER_TITLE)
                 .setSelection(
                     Pair(
                         viewModel.startDate.value,
@@ -252,7 +262,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
                     )
                 )
                 .setTheme(R.style.CustomDateRangePicker)
-                .setPositiveButtonText("확인")
+                .setPositiveButtonText(CONFIRM)
                 .build()
         dateRangePicker.show(childFragmentManager, "date_picker")
         dateRangePicker.addOnPositiveButtonClickListener {
@@ -264,7 +274,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 viewModel.setEndDate(dateRangePicker.selection?.second ?: LocalDateTime.MAX.parseLong())
             }
-            getConcertList()
+            getConcertListWithLoadingDialog()
         }
     }
 
@@ -283,5 +293,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         private const val SEARCH_BAR_INITIAL_TRANSLATION_X = 50f
         private const val INITIAL_PAGE_NUM = 1
         private const val PAGE_SIZE = 10
+        private const val DATE_PICKER_TITLE = "공연 기간을 골라주세요"
+        private const val CONFIRM = "확인"
+        private const val NEED_SEARCH_RE = "검색된 공연이 없어요! 다시 검색해주세요."
     }
 }

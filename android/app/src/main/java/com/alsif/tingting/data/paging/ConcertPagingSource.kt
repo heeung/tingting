@@ -13,7 +13,7 @@ private const val TAG = "ConcertPagingSource"
 class ConcertPagingSource @Inject constructor (
     private val homeRepository: HomeRepository,
     private val concertListRequestDto: ConcertListRequestDto,
-    private val throwError: () -> Unit
+    private val throwError: (Exception) -> Unit
 ) : PagingSource<Int, ConcertDto>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ConcertDto> {
@@ -32,7 +32,7 @@ class ConcertPagingSource @Inject constructor (
             )
         } catch (exception: Exception) {
             Log.e(TAG, "load: network 연결 에러", )
-            throwError()
+            throwError(exception)
             LoadResult.Error(exception)
         }
     }

@@ -8,13 +8,15 @@ import com.alsif.tingting.data.model.request.ConcertListRequestDto
 import com.alsif.tingting.data.model.response.ConcertListResponseDto
 import com.alsif.tingting.data.repository.HomeRepository
 import com.alsif.tingting.data.repository.SearchRepository
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 private const val TAG = "SearchPagingSource"
 class SearchPagingSource @Inject constructor (
     private val searchRepository: SearchRepository,
     private val concertListRequestDto: ConcertListRequestDto,
-    private val throwError: () -> Unit
+    private val throwError: (Exception) -> Unit,
 ) : PagingSource<Int, ConcertDto>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ConcertDto> {
@@ -47,8 +49,8 @@ class SearchPagingSource @Inject constructor (
                 nextKey = if (page < response.totalPage) page + 1 else null
             )
         } catch (exception: Exception) {
-            Log.e(TAG, "load: network 연결 에러",)
-            throwError()
+            Log.e(TAG, "load: network 연결 에러? -> ${exception}")
+            throwError(exception)
             LoadResult.Error(exception)
         }
     }

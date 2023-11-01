@@ -32,7 +32,10 @@ abstract class BaseFragment<B : ViewBinding>(
     private lateinit var _imm: InputMethodManager
     protected val imm get() = _imm
 
-    lateinit var mLoadingDialog: LoadingDialog
+//    lateinit var mLoadingDialog: LoadingDialog
+    val mLoadingDialog by lazy {
+        LoadingDialog(mActivity)
+    }
 
 
     override fun onCreateView(
@@ -115,8 +118,8 @@ abstract class BaseFragment<B : ViewBinding>(
     /**
      * 로딩창 띄우기
      */
-    fun showLoadingDialog(context: Context) {
-        mLoadingDialog = LoadingDialog(context)
+    fun showLoadingDialog() {
+//        mLoadingDialog = LoadingDialog(context)
         mLoadingDialog.show()
     }
 

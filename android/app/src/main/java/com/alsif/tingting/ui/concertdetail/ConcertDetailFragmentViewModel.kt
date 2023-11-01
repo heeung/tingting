@@ -58,7 +58,11 @@ class ConcertDetailFragmentViewModel @Inject constructor(
                     it.holdCloseDate = it.holdCloseDate.subSequence(0, 10).toString()
                 })
             }.onFailure {
-                _error.emit(it as DataThrowable)
+                if (it is DataThrowable) {
+                    _error.emit(it)
+                } else {
+                    _error.emit(DataThrowable.IllegalStateThrowable())
+                }
             }
         }
     }
