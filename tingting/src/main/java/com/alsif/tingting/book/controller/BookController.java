@@ -162,6 +162,8 @@ public class BookController {
 		@ApiResponse(responseCode = "401", description = "등록되지 않은 회원",
 			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
 		@ApiResponse(responseCode = "403", description = "권한이 없는 회원",
+			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+		@ApiResponse(responseCode = "409", description = "이미 예매가 취소된 티켓",
 			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 	})
 	@DeleteMapping("/{ticketSeq}")
