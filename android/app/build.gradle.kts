@@ -138,4 +138,7 @@ dependencies {
 
     //paging
     implementation ("androidx.paging:paging-runtime:3.1.1")
+
+    //swipe refresh
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

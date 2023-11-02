@@ -4,6 +4,7 @@
         <!-- Primary brand color. -->
         <item name="android:colorBackground">@color/white</item>
         <item name="tabBackground">@color/white</item>
+        <item name="colorPrimary">@color/blue_mild</item>
 
         <!--  statusbar color  -->
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>

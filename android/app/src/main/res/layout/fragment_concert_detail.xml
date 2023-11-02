@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/layout_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentScrim="@color/white"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image_concert"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_420sdp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    android:src="@drawable/img_concert_detail_dummy" />
+
+                <LinearLayout
+                    android:id="@+id/button_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:background="@drawable/frame_button_do_like"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="0.08"
+                    android:layout_margin="@dimen/_16sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:elevation="@dimen/_4sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_like_filled" />
+
+                    <Space
+                        android:layout_width="@dimen/_4sdp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/textview_button_like"
+                        style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_12sdp"
+                        android:text="@string/do_like"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_12sdp"
+            android:paddingVertical="@dimen/_20sdp">
+
+            <TextView
+                android:id="@+id/textview_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Theme.AppCompat.TextView.gSans.Black.Bold"
+                android:textSize="@dimen/_18sdp"
+                tools:text="타이틀"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:layout_constrainedHeight="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textview_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_14sdp"
+                style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                tools:text="콘서트 설명"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/textview_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12sdp"
+                style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                tools:text="콘서트 설명"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/textview_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12sdp"
+                style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                tools:text="콘서트 설명"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/textview_performer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12sdp"
+                style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                tools:text="콘서트 설명"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

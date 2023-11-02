@@ -20,7 +20,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.alsif.tingting.R
 import com.alsif.tingting.base.BaseActivity
 import com.alsif.tingting.databinding.ActivityMainBinding
+import com.alsif.tingting.ui.home.HomeFragmentDirections
 import com.alsif.tingting.ui.login.LoginModalBottomSheet
+import com.alsif.tingting.util.extension.setStatusBarOrigin
+import com.alsif.tingting.util.extension.setStatusBarTransparent
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +45,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initNavController()
+        initFragmentChangedListener()
         setBottomNavigationView()
         subscribe()
         setClickListeners()
@@ -82,11 +86,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         val navController = navHostFragment.navController
         navController.setGraph(graph, intent.extras)
+    }
 
-        // searchFragment만 appBar없애주기
+    private fun initFragmentChangedListener() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.searchFragment -> {
+                    binding.layoutAppbar.visibility = View.GONE
+                }
+                R.id.concertDetailFragment -> {
                     binding.layoutAppbar.visibility = View.GONE
                 }
                 else -> {

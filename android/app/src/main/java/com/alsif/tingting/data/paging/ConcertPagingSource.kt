@@ -6,12 +6,14 @@ import androidx.paging.PagingState
 import com.alsif.tingting.data.model.ConcertDto
 import com.alsif.tingting.data.model.request.ConcertListRequestDto
 import com.alsif.tingting.data.repository.HomeRepository
+import com.alsif.tingting.data.throwable.DataThrowable
 import javax.inject.Inject
 
 private const val TAG = "ConcertPagingSource"
 class ConcertPagingSource @Inject constructor (
     private val homeRepository: HomeRepository,
-    private val concertListRequestDto: ConcertListRequestDto
+    private val concertListRequestDto: ConcertListRequestDto,
+    private val throwError: (Exception) -> Unit
 ) : PagingSource<Int, ConcertDto>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ConcertDto> {
@@ -29,6 +31,8 @@ class ConcertPagingSource @Inject constructor (
                 nextKey = if (page < response.totalPage) page + 1 else null
             )
         } catch (exception: Exception) {
+            Log.e(TAG, "load: network 연결 에러", )
+            throwError(exception)
             LoadResult.Error(exception)
         }
     }

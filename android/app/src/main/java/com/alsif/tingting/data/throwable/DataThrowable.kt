@@ -19,11 +19,16 @@ sealed class DataThrowable(val code: Int, message: String) : Throwable(message) 
 
     class NetworkErrorThrowable : DataThrowable(NETWORK_ERROR_CODE, NETWORK_ERROR_MESSAGE)
 
+    class NetworkTrafficThrowable : DataThrowable(NETWORK_TRAFFIC_CODE, NETWORK_TRAFFIC_MESSAGE)
+
     companion object {
         const val ILLEGAL_STATE_THROWABLE_CODE = 999
         const val ILLEGAL_STATE_THROWABLE_MESSAGE = "잘못된 값입니다."
 
         const val NETWORK_ERROR_CODE = 998
         const val NETWORK_ERROR_MESSAGE = "네트워크 연결을 확인해주세요."
+
+        const val NETWORK_TRAFFIC_CODE = 997
+        const val NETWORK_TRAFFIC_MESSAGE = "서버 처리량이 많아 지연되고있습니다."
     }
 }

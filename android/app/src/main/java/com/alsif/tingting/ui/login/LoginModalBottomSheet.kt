@@ -11,6 +11,7 @@ import com.alsif.tingting.base.BaseBottomSheet
 import com.alsif.tingting.data.local.AuthDataSource
 import com.alsif.tingting.databinding.BottomSheetLoginBinding
 import com.alsif.tingting.ui.main.MainActivityViewModel
+import com.alsif.tingting.util.clickAnimation
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class LoginModalBottomSheet : BaseBottomSheet<BottomSheetLoginBinding>(BottomSheetLoginBinding::bind, R.layout.bottom_sheet_login)  {
@@ -20,6 +21,7 @@ class LoginModalBottomSheet : BaseBottomSheet<BottomSheetLoginBinding>(BottomShe
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnKakaoLogin.setOnClickListener {
+            it.clickAnimation(viewLifecycleOwner)
             kakaoLogin(
                 mActivity,
                 setAccessToken = {

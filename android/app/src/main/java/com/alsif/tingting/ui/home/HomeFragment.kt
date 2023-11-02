@@ -39,8 +39,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind
     }
 
     private fun subscribe() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.error.collectLatest {
+                dismissLoadingDialog()
                 mActivity.showToast(it.message.toString())
             }
         }
@@ -111,6 +112,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind
     override fun onResume() {
         scrollJobCreate()
         super.onResume()
+    }
+
+    override fun onDestroyView() {
+        dismissLoadingDialog()
+        super.onDestroyView()
     }
 
     override fun onDestroy() {

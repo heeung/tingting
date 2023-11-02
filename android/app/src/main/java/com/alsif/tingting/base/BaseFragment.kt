@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.alsif.tingting.R
+import com.alsif.tingting.ui.main.LoadingDialog
 import com.alsif.tingting.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -30,6 +31,11 @@ abstract class BaseFragment<B : ViewBinding>(
 
     private lateinit var _imm: InputMethodManager
     protected val imm get() = _imm
+
+//    lateinit var mLoadingDialog: LoadingDialog
+    val mLoadingDialog by lazy {
+        LoadingDialog(mActivity)
+    }
 
 
     override fun onCreateView(
@@ -64,11 +70,26 @@ abstract class BaseFragment<B : ViewBinding>(
     }
 
     /**
-     * 스낵바를 띄웁니다. 커스텀 하려면 type 분기를 추가하고 사용하세요.
+     * 스낵바를 띄웁니다.
      */
-    fun showSnackbar(view: View, type: String, message: String) {
+    fun showSnackbar(view: View, message: String) {
         val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-        snackbar.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
+        snackbar.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+        snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.black))
+        snackbar.anchorView = mActivity.bottomNavigationView // 특정뷰 위로 스낵바 이동
+        snackbar.show()
+    }
+
+    /**
+     * 액션 스낵바를 띄웁니다.
+     */
+    fun showSnackbar(view: View, message: String, actionText: String, onClick: () -> Unit) {
+        val snackbar = Snackbar
+            .make(view, message, Snackbar.LENGTH_LONG)
+            .setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+            .setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.black))
+            .setActionTextColor(ContextCompat.getColor(mActivity, R.color.blue_mild))
+            .setAction(actionText) { onClick() }
         snackbar.show()
     }
 
@@ -92,5 +113,22 @@ abstract class BaseFragment<B : ViewBinding>(
     fun focusAndShowKeyBoard(editText: View) {
         editText.requestFocus()
         showKeyBoard(editText)
+    }
+
+    /**
+     * 로딩창 띄우기
+     */
+    fun showLoadingDialog() {
+//        mLoadingDialog = LoadingDialog(context)
+        mLoadingDialog.show()
+    }
+
+    /**
+     * 로딩창 내리기
+     */
+    fun dismissLoadingDialog() {
+        if (mLoadingDialog.isShowing) {
+            mLoadingDialog.dismiss()
+        }
     }
 }

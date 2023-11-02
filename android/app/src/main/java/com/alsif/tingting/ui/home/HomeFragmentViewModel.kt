@@ -6,11 +6,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.alsif.tingting.data.model.CommentDto
+import com.alsif.tingting.data.model.ConcertDetailDto
 import com.alsif.tingting.data.model.ConcertDto
 import com.alsif.tingting.data.model.PagerDataDto
 import com.alsif.tingting.data.model.request.ConcertListRequestDto
-import com.alsif.tingting.data.model.response.ConcertListResponseDto
 import com.alsif.tingting.data.paging.ConcertPagingSource
 import com.alsif.tingting.data.repository.HomeRepository
 import com.alsif.tingting.data.throwable.DataThrowable
@@ -24,6 +23,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -81,8 +81,6 @@ class HomeFragmentViewModel @Inject constructor(
             }
         }
     }
-
-    ///// 페이징 /////
     private fun getOnSaleConcertListPaging(
         concertListRequestDto: ConcertListRequestDto
     ): Flow<PagingData<ConcertDto>> {
@@ -90,7 +88,15 @@ class HomeFragmentViewModel @Inject constructor(
             ConcertPagingSource(
                 homeRepository,
                 concertListRequestDto
-            )
+            ) {
+                viewModelScope.launch {
+                    if (it is SocketTimeoutException) {
+                        _error.emit(DataThrowable.NetworkTrafficThrowable())
+                    } else {
+                        _error.emit(DataThrowable.NetworkErrorThrowable())
+                    }
+                }
+            }
         }.flow.cachedIn(viewModelScope)
     }
     private fun getSoonSaleConcertListPaging(
@@ -100,10 +106,17 @@ class HomeFragmentViewModel @Inject constructor(
             ConcertPagingSource(
                 homeRepository,
                 concertListRequestDto
-            )
+            ) {
+                viewModelScope.launch {
+                    if (it is SocketTimeoutException) {
+                        _error.emit(DataThrowable.NetworkTrafficThrowable())
+                    } else {
+                        _error.emit(DataThrowable.NetworkErrorThrowable())
+                    }
+                }
+            }
         }.flow.cachedIn(viewModelScope)
     }
-    /////////////
 
     companion object {
         private const val PAGE_SIZE = 10
