@@ -63,7 +63,7 @@ public class TicketBaseDto {
 		if (deletedDate != null) {
 			this.deletedDate = deletedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		}
-		this.totalPrice = pay;
+		this.totalPrice = pay * -1;
 		this.concertSeq = concertSeq;
 		this.name = name;
 		this.holdDate = holdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
