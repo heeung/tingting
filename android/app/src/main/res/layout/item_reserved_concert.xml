@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_reserved_concert"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_114sdp"
+    android:layout_marginHorizontal="@dimen/_12sdp"
+    android:background="@drawable/frame_liked_concert"
+    android:elevation="@dimen/_2sdp"
+    android:orientation="horizontal"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginBottom="@dimen/_8sdp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_4sdp"
+        android:layout_weight="3"
+        app:cardCornerRadius="@dimen/_17sdp">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_concert_detail_dummy" />
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="7"
+        android:orientation="vertical"
+        android:padding="@dimen/_12sdp">
+
+        <TextView
+            android:id="@+id/textview_title"
+            style="@style/Theme.AppCompat.TextView.gSans.Black.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="title"
+            android:textSize="@dimen/_12sdp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_8sdp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:src="@drawable/ic_marker" />
+
+            <Space
+                android:layout_width="@dimen/_4sdp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textview_city"
+                style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:textSize="@dimen/_10sdp" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_4sdp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:src="@drawable/ic_calendar_black" />
+
+            <Space
+                android:layout_width="@dimen/_4sdp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textview_date"
+                style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:textSize="@dimen/_10sdp" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_4sdp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:src="@drawable/ic_clock" />
+
+            <Space
+                android:layout_width="@dimen/_4sdp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textview_time"
+                style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:textSize="@dimen/_10sdp" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_8sdp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textview_seat_count"
+                style="@style/Theme.AppCompat.TextView.gSans.Black.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:textSize="@dimen/_10sdp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="@dimen/_6sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:layout_gravity="bottom"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:src="@drawable/ic_arrow_right" />
+
+</LinearLayout>

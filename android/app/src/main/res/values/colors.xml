@@ -27,6 +27,9 @@
     <!--  search  -->
     <color name="scroll_up_button_color">#8AC7FF</color>
 
+    <!--  reservedlist  -->
+    <color name="reserved_list_background_color">#4DD9D9D9</color>
+
     <!--  date picker  -->
     <color name="calendar_day_selected_font_color">#FF444444</color>
     <color name="calendar_day_selected_background_color">#B38AC7FF</color>
