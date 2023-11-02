@@ -10,5 +10,8 @@ import bannerImg4 from "./bannerImg4.jpg"
 import concertImg from "./concertImg.png"
 import kakakoConnection from "./kakakoConnection.png"
 import moreViewIcon from "./moreViewIcon.png"
+import likeButton from "./likeButton.png"
+import cancelLikeButton from "./cancelLikeButton.png"
+
 export { kakaoLoginButton, loginBackground, loginLogo, loginLogo2, logo, bannerImg1, bannerImg2, bannerImg3, bannerImg4, concertImg, kakakoConnection, 
-    moreViewIcon}
+    moreViewIcon, likeButton, cancelLikeButton}

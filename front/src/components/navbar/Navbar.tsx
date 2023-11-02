@@ -43,6 +43,13 @@ export default function Navbar(){
         className={styles.logout}>
             마이페이지
         </div>
+
+        <div
+        onClick={() => goToOtherPage('concert/detail')}
+        className={styles.logout}>
+            콘서트 상세 
+        </div>
+
         <div
         onClick={() => goToOtherPage('login')}
         className={styles.logout}>

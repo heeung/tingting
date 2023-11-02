@@ -1,26 +1,35 @@
-import styles from './ConcertList.module.css'
-import ConcertInfo from '../concertinfo/ConcertInfo'
+import styles from './ConcertList.module.css';
+import ConcertInfo from '../concertinfo/ConcertInfo';
 
+interface Concert {
+  concertSeq: number;
+  name: string;
+  holdOpenDate: string;
+  holdCloseDate: string;
+  imageUrl: string;
+  concertHallName: string;
+  concertHallCity: string;
+}
 
+interface ConcertListProps {
+  concertList: Concert[];
+}
 
-export default function ConcertList(){
-    // 티켓 판매 사이트에서는 한 줄의 개수보다 작은 경우에는 더미 이미지를 만들어서 랜더링 해줌 
-    const lst = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
-    return(
-        <div
-            className={styles.container}>    
-            {lst.map((item:number)=>{
-                return <div 
-                className={styles.concertList}
-                key={item}
-                >
-                    <ConcertInfo
-                    />
-                </div>
-
-            })}
-         
-        </div>
-
-    )
+export default function ConcertList(props: ConcertListProps) {
+  return (
+    <div className={styles.container}>
+      {props.concertList ? (
+        props.concertList.map((concert: Concert) => (
+          <div className={styles.concertList} key={concert.concertSeq}>
+            <ConcertInfo
+              // 여기에 ConcertInfo 컴포넌트에 전달할 속성을 추가하세요.
+              // 예: concertName={concert.name}
+            />
+          </div>
+        ))
+      ) : (
+        <div>데이터가 없습니다.</div>
+      )}
+    </div>
+  );
 }

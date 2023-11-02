@@ -3,9 +3,9 @@ import {kakakoConnection} from "../assets/Images/index.ts"
 import { useState } from 'react'
 import BookingInfoList from "../components/bookinginfolist/BookingInfoList.tsx"
 import ConcertList from "../components/concertlist/ConcertList.tsx"
+import { useRecoilState } from "recoil"
 
 export default function MyPage(){
-
     const [category,setCategory] = useState("reservations");
 
     const toggleCategory = (categoryName:string) => {
