@@ -1,0 +1,10 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: tingting
+  profiles:
+    active: master
+  config:
+    import: optional:configserver:http://k9d209.p.ssafy.io:8888
