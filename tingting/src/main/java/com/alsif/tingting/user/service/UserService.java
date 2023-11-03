@@ -38,7 +38,7 @@ public class UserService {
 	/*
 		찜 목록 가져오기
 	 */
-	public ConcertListResponseDto findFavoriteList(Long userSeq, PageableDto requestDto) {
+	public ConcertListResponseDto findFavoriteList(Integer userSeq, PageableDto requestDto) {
 
 		userRepository.findById(userSeq).orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
 
@@ -56,7 +56,7 @@ public class UserService {
 	/*
 		예매 내역 가져오기
 	 */
-	public TicketListResponseDto findTicketList(Long userSeq, PageableDto requestDto) {
+	public TicketListResponseDto findTicketList(Integer userSeq, PageableDto requestDto) {
 
 		userRepository.findById(userSeq).orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
 

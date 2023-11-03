@@ -18,8 +18,8 @@ import lombok.ToString;
 @Schema(description = "콘서트장 정보")
 public class ConcertHallPatternResponseDto {
 
-	@Schema(description = "콘서트장 PK", type = "Long", example = "1")
-	private Long concertHallSeq;
+	@Schema(description = "콘서트장 PK", type = "Integer", example = "1")
+	private Integer concertHallSeq;
 
 	@Schema(description = "콘서트장 패턴 정보", type = "String", example = "A")
 	private String pattern;
