@@ -160,24 +160,27 @@ public class ConcertService {
 	public ConcertDetailResponseDto findConcertDetail(Long concertSeq, Long userSeq) {
 
 		ConcertDetailResponseDto concertDetailResponseDto
-			= concertRepository.findByConcertDetailsByConcertSeq(concertSeq);
-		log.info(concertDetailResponseDto.toString());
+			= concertRepository.findByConcertDetailsByConcertSeq(concertSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_SEQ));
 
-		boolean favorite = userConcertRepository.existsByUser_SeqAndConcert_Seq(userSeq, concertSeq);
+		boolean favorite = false;
+		// 로그인 했을 경우, 찜 여부 조회
+		if (userSeq != null) {
+			favorite = userConcertRepository.existsByUser_SeqAndConcert_Seq(userSeq, concertSeq);
+		}
 		concertDetailResponseDto.setFavorite(favorite);
-		log.info("favorite: {}", favorite);
 
 		List<PerformerBaseDto> performerBaseDtos = concertPerformerRepository.findAllByConcertSeq(concertSeq);
 		concertDetailResponseDto.setPerformers(performerBaseDtos);
-		log.info(performerBaseDtos.toString());
 
 		List<ConcertDetailBaseDto> concertDetailBaseDtos = concertDetailRepository.findAllByConcert_Seq(concertSeq)
 			.stream()
 			.map(ConcertDetail::convertToConcertDetailBaseDto)
 			.collect(Collectors.toList());
 		concertDetailResponseDto.setConcertDetails(concertDetailBaseDtos);
-		log.info(concertDetailBaseDtos.toString());
 
+		log.info("콘서트 정보: {}, 출연자 수: {}, 콘서트 상세 정보 개수: {}, 찜 여부: {}",
+			concertDetailResponseDto, performerBaseDtos.size(), concertDetailBaseDtos.size(), favorite);
 		return concertDetailResponseDto;
 	}
 

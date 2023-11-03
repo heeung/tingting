@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -136,7 +137,7 @@ public class BookController {
 	@PostMapping("/{concertDetailSeq}/seat")
 	ResponseEntity<SuccessResponseDto> book(
 		@PathVariable("concertDetailSeq") Long concertDetailSeq, @RequestParam Long userSeq,
-		ConcertSeatBookRequestDto requestDto) {
+		@RequestBody ConcertSeatBookRequestDto requestDto) {
 		log.info("===== 선택 좌석 예매 요청 시작, url={}, concertDetailSeq: {}, {} =====",
 			"/concerts", concertDetailSeq, requestDto.toString());
 
@@ -162,6 +163,8 @@ public class BookController {
 		@ApiResponse(responseCode = "401", description = "등록되지 않은 회원",
 			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
 		@ApiResponse(responseCode = "403", description = "권한이 없는 회원",
+			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+		@ApiResponse(responseCode = "409", description = "이미 예매가 취소된 티켓",
 			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 	})
 	@DeleteMapping("/{ticketSeq}")
