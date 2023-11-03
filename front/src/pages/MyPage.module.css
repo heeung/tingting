@@ -1,0 +1,19 @@
+.container {
+    margin-top: 5%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.id {
+    min-width: 40%;
+    font-size: x-large;
+    font-weight: 1000;
+}
+
+.point {
+    min-width: 40%;
+    font-size: x-large;
+    font-weight: 1000;
+}
