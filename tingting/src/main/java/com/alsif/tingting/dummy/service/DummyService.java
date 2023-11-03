@@ -316,13 +316,13 @@ public class DummyService {
 
 			// 담은 예매좌석정보수만큼 가격구하고 해당 예매와 관련한 포인트 제거하기
 			// 해당 좌석 포인트
-			long totalPrice = 0L;
+			int totalPrice = 0;
 			for (TicketSeat seat : ticket.getTicketSeats()) {
 				totalPrice += seat.getConcertSeatInfo().getGrade().getPrice();
 			}
 
 			// 나의 최근 포인트
-			long latestTotal = pointRepository.findTop1ByUserSeqOrderByCreatedDateDesc(randomUser.getSeq()).getTotal();
+			int latestTotal = pointRepository.findTop1ByUserSeqOrderByCreatedDateDesc(randomUser.getSeq()).getTotal();
 
 			// 포인트 추가
 			Point point = Point.builder()
@@ -444,9 +444,9 @@ public class DummyService {
 						.build();
 
 					Point point = Point.builder()
-						.pay(10000000L)
+						.pay(10000000)
 						.user(user)
-						.total(10000000L)
+						.total(10000000)
 						.build();
 
 					users.add(user);
@@ -553,17 +553,17 @@ public class DummyService {
 
 	private void makeConcertGrade(Concert concert) {
 		int gradeRandom = (int)(Math.random() * 2) + 1;
-		long priceRandom = (long)(Math.random() * 2) + 5;
+		int priceRandom = (int)(Math.random() * 2) + 5;
 		for (int j = 0; j < gradeRandom; j++) {
 			Grade grade;
 			if (j == 0) {
 				grade = Grade.builder()
-					.price(priceRandom * 11000L)
+					.price(priceRandom * 11000)
 					.name("일반")
 					.build();
 			} else {
 				grade = Grade.builder()
-					.price((priceRandom + 2) * 11000L)
+					.price((priceRandom + 2) * 11000)
 					.name("VIP")
 					.build();
 			}

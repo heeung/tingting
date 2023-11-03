@@ -14,7 +14,7 @@ import com.alsif.tingting.concert.dto.ConcertBaseDto;
 import com.alsif.tingting.concert.entity.Concert;
 
 @Repository
-public interface ConcertRepository extends JpaRepository<Concert, Long> {
+public interface ConcertRepository extends JpaRepository<Concert, Integer> {
 
 	@Query(
 		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
@@ -98,5 +98,5 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 	Page<ConcertBaseDto> findAllConcertByDate(
 		@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
 
-	List<Concert> findBySeqBetween(Long startId, Long endId);
+	List<Concert> findBySeqBetween(Integer startId, Integer endId);
 }

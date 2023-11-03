@@ -39,9 +39,9 @@ public class JDBCRepository {
 			concertSeatInfos.size(),
 			(PreparedStatement ps, ConcertSeatInfo concertSeatInfo) -> {
 				ps.setBoolean(1, concertSeatInfo.getBook());
-				ps.setLong(2, concertSeatInfo.getConcertDetail().getSeq());
-				ps.setLong(3, concertSeatInfo.getConcertHallSeat().getSeq());
-				ps.setLong(4, concertSeatInfo.getGrade().getSeq());
+				ps.setInt(2, concertSeatInfo.getConcertDetail().getSeq());
+				ps.setInt(3, concertSeatInfo.getConcertHallSeat().getSeq());
+				ps.setInt(4, concertSeatInfo.getGrade().getSeq());
 			});
 
 		long l1 = System.currentTimeMillis();
@@ -60,7 +60,7 @@ public class JDBCRepository {
 			concerts,
 			concerts.size(),
 			(PreparedStatement ps, Concert concert) -> {
-				ps.setLong(1, concert.getConcertHall().getSeq());
+				ps.setInt(1, concert.getConcertHall().getSeq());
 				ps.setString(2, concert.getName());
 				ps.setString(3, concert.getInfo());
 				ps.setString(4, concert.getImageUrl());
@@ -86,7 +86,7 @@ public class JDBCRepository {
 			concertDetails,
 			concertDetails.size(),
 			(PreparedStatement ps, ConcertDetail concertDetail) -> {
-				ps.setLong(1, concertDetail.getConcert().getSeq());
+				ps.setInt(1, concertDetail.getConcert().getSeq());
 				ps.setString(2, concertDetail.getHoldDate().toString());
 			});
 
@@ -106,9 +106,9 @@ public class JDBCRepository {
 			grades,
 			grades.size(),
 			(PreparedStatement ps, Grade grade) -> {
-				ps.setLong(1, grade.getConcert().getSeq());
+				ps.setInt(1, grade.getConcert().getSeq());
 				ps.setString(2, grade.getName());
-				ps.setLong(3, grade.getPrice());
+				ps.setInt(3, grade.getPrice());
 			});
 
 		long l1 = System.currentTimeMillis();
@@ -127,8 +127,8 @@ public class JDBCRepository {
 			concertPerformers,
 			concertPerformers.size(),
 			(PreparedStatement ps, ConcertPerformer concertPerformer) -> {
-				ps.setLong(1, concertPerformer.getConcert().getSeq());
-				ps.setLong(2, concertPerformer.getPerformer().getSeq());
+				ps.setInt(1, concertPerformer.getConcert().getSeq());
+				ps.setInt(2, concertPerformer.getPerformer().getSeq());
 			});
 
 		long l1 = System.currentTimeMillis();
@@ -170,9 +170,9 @@ public class JDBCRepository {
 			(PreparedStatement ps, Point point) -> {
 				ps.setString(1, LocalDateTime.now().toString());
 				ps.setString(2, LocalDateTime.now().toString());
-				ps.setLong(3, 10000000L);
-				ps.setLong(4, 10000000L);
-				ps.setLong(5, point.getUser().getSeq());
+				ps.setInt(3, 10000000);
+				ps.setInt(4, 10000000);
+				ps.setInt(5, point.getUser().getSeq());
 			});
 
 		long l1 = System.currentTimeMillis();

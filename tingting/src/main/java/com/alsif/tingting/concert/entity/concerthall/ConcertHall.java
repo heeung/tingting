@@ -24,7 +24,7 @@ public class ConcertHall {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@Column(nullable = false, length = 50)
 	private String name;
@@ -45,11 +45,11 @@ public class ConcertHall {
 		this.pattern = pattern;
 	}
 
-	private ConcertHall(Long seq) {
+	private ConcertHall(Integer seq) {
 		this.seq = seq;
 	}
-	
-	public static ConcertHall makeDummyEntityBySeq(Long seq) {
+
+	public static ConcertHall makeDummyEntityBySeq(Integer seq) {
 		return new ConcertHall(seq);
 	}
 

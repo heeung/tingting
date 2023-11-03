@@ -23,7 +23,7 @@ public class ConcertHallSeat {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "concert_hall_seq", nullable = false)
@@ -42,11 +42,11 @@ public class ConcertHallSeat {
 		this.seat = seat;
 	}
 
-	private ConcertHallSeat(Long seq) {
+	private ConcertHallSeat(Integer seq) {
 		this.seq = seq;
 	}
 
-	public static ConcertHallSeat constructBySeq(Long seq) {
+	public static ConcertHallSeat constructBySeq(Integer seq) {
 		return new ConcertHallSeat(seq);
 	}
 
