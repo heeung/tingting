@@ -55,14 +55,15 @@ public class TicketBaseDto {
 	@Schema(description = "콘서트홀 시도", type = "String", example = "서울")
 	private String concertHallCity;
 
-	public TicketBaseDto(Long ticketSeq, LocalDateTime createdDate, LocalDateTime deletedDate, Long concertSeq,
-		String name,
-		LocalDateTime holdDate, String imageUrl, String concertHallName, String concertHallCity) {
+	public TicketBaseDto(Long ticketSeq, LocalDateTime createdDate, LocalDateTime deletedDate, Long pay,
+		Long concertSeq, String name, LocalDateTime holdDate, String imageUrl, String concertHallName,
+		String concertHallCity) {
 		this.ticketSeq = ticketSeq;
 		this.createdDate = createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		if (deletedDate != null) {
 			this.deletedDate = deletedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		}
+		this.totalPrice = pay * -1;
 		this.concertSeq = concertSeq;
 		this.name = name;
 		this.holdDate = holdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));

@@ -17,10 +17,15 @@ import com.alsif.tingting.concert.dto.ConcertFavoriteResponseDto;
 import com.alsif.tingting.concert.dto.ConcertListRequestDto;
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
 import com.alsif.tingting.concert.service.ConcertService;
+import com.alsif.tingting.global.dto.ErrorResponseDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,11 +57,16 @@ public class ConcertController {
 	@Operation(summary = "콘서트 상세 정보 조회")
 	@Parameters(value = {
 		@Parameter(required = true, name = "concertSeq", description = "콘서트 PK"),
-		@Parameter(required = true, name = "userSeq", description = "회원 PK")
+		@Parameter(name = "userSeq", description = "회원 PK")
+	})
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200"),
+		@ApiResponse(responseCode = "400", description = "잘못된 매개변수 요청",
+			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 	})
 	@GetMapping("/{concertSeq}")
 	ResponseEntity<ConcertDetailResponseDto> findConcertDetail(@PathVariable("concertSeq") Long concertSeq,
-		@RequestParam Long userSeq) {
+		@RequestParam(required = false) Long userSeq) {
 		log.info("===== 콘서트 상세 정보 불러오기 요청 시작, url={}, concertSeq: {}, userSeq: {} =====",
 			"/concerts", concertSeq, userSeq);
 
