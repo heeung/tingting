@@ -12,6 +12,7 @@ import com.alsif.tingting.R
 import com.alsif.tingting.data.model.ConcertDto
 import com.alsif.tingting.databinding.ItemConcertBinding
 import com.alsif.tingting.databinding.ItemLikedConcertBinding
+import com.alsif.tingting.util.clickAnimation
 import com.bumptech.glide.Glide
 
 class LikedListPagingAdapter : PagingDataAdapter<ConcertDto, LikedListPagingAdapter.LikedConcertListHolder>(ConcertListComparator) {

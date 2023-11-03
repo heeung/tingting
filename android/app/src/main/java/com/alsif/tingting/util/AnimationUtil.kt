@@ -1,7 +1,11 @@
 package com.alsif.tingting.util
 
 import android.animation.ObjectAnimator
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.Transformation
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
@@ -10,6 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.internal.wait
 
+private const val TAG = "AnimationUtil"
 // 공통적으로 사용될 AnimUtil
 object AnimUtil {
     enum class AnimDirection {
@@ -132,4 +137,59 @@ fun View.revealAnimation(lifeCycleOwner: LifecycleOwner) {
 fun View.setScaleXY(valueX: Float = 1f, valueY: Float = 1f) {
     this.scaleX = valueX
     this.scaleY = valueY
+}
+
+//fun View.expand() {
+//    val animation = this.expandAction()
+//    this.startAnimation(animation)
+//}
+
+fun View.expand() {
+    this.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    val actualHeight = this.measuredHeight
+
+    this.layoutParams.height = 0
+    this.visibility = View.VISIBLE
+
+    val animation = object : Animation() {
+        override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
+            this@expand.layoutParams.height = if (interpolatedTime == 1f)
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            else (actualHeight * interpolatedTime).toInt()
+
+            this@expand.requestLayout()
+        }
+    }
+    animation.duration = (actualHeight / this.context.resources.displayMetrics.density * 1.5).toLong()
+    Log.d(TAG, "expand: ${animation.duration}")
+
+    this.startAnimation(animation)
+}
+
+fun View.collapse() {
+    val actualHeight = this.measuredHeight
+
+    val animation = object : Animation() {
+        override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
+            if (interpolatedTime == 1f) {
+                this@collapse.visibility = View.GONE
+            } else {
+                this@collapse.layoutParams.height = (actualHeight - (actualHeight * interpolatedTime)).toInt()
+                this@collapse.requestLayout()
+            }
+        }
+    }
+
+    animation.duration = (actualHeight / this.context.resources.displayMetrics.density).toLong()
+    this.startAnimation(animation)
+}
+
+fun View.flipAnimatinon(isFliped: Boolean): Boolean {
+    if (isFliped) {
+        this.animate().setDuration(200).rotation(180f)
+        return true
+    } else {
+        this.animate().setDuration(200).rotation(0f)
+        return false
+    }
 }

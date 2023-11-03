@@ -24,6 +24,7 @@ import com.alsif.tingting.ui.login.LoginModalBottomSheet
 import com.alsif.tingting.ui.main.MainActivity
 import com.alsif.tingting.ui.main.MainActivityViewModel
 import com.alsif.tingting.ui.search.recyclerview.PageLoadingAdapter
+import com.alsif.tingting.util.clickAnimation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -108,13 +109,11 @@ class LikedListFragment : BaseFragment<FragmentLikedListBinding>(FragmentLikedLi
     }
 
     override fun onDestroyView() {
-        Log.d(TAG, "onDestroyView: 프레그먼트가 destroyView 되었습니다.")
         dismissLoadingDialog()
         super.onDestroyView()
     }
 
     override fun onDestroy() {
-        Log.d(TAG, "onDestroy: 프레그먼트가 destroy 되었습니다.")
         super.onDestroy()
     }
 

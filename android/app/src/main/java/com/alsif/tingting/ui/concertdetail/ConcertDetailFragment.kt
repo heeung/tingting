@@ -1,7 +1,9 @@
 package com.alsif.tingting.ui.concertdetail
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.viewModels
@@ -16,6 +18,7 @@ import com.alsif.tingting.ui.search.SearchFragment
 import com.alsif.tingting.util.AnimUtil
 import com.alsif.tingting.util.clickAnimation
 import com.alsif.tingting.util.extension.setStatusBarTransparent
+import com.alsif.tingting.util.scaleAnimation
 import com.alsif.tingting.util.setScaleXY
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,10 +42,22 @@ class ConcertDetailFragment: BaseFragment<FragmentConcertDetailBinding>(Fragment
         viewModel.getConcertDetail(args.concertSeq, TEST_USERSEQ)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setClickListeners() {
-        binding.buttonLike.setOnClickListener {
-            toggleLikeButton(binding.textviewButtonLike.text.toString())
-            it.clickAnimation(viewLifecycleOwner)
+        binding.buttonLike.setOnTouchListener { view, motionEvent ->
+            when (motionEvent.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    view.scaleAnimation(AnimUtil.AnimDirection.XY, 0.9f, 100)
+                }
+                MotionEvent.ACTION_CANCEL -> {
+                    view.scaleAnimation(AnimUtil.AnimDirection.XY, 1f, 100)
+                }
+                MotionEvent.ACTION_UP -> {
+                    toggleLikeButton(binding.textviewButtonLike.text.toString())
+                    view.scaleAnimation(AnimUtil.AnimDirection.XY, 1f, 100)
+                }
+            }
+            true
         }
     }
 

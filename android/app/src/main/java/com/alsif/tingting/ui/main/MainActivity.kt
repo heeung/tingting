@@ -26,6 +26,7 @@ import com.alsif.tingting.util.extension.setStatusBarOrigin
 import com.alsif.tingting.util.extension.setStatusBarTransparent
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -151,5 +152,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 true
             }
         }
+    }
+
+    fun logout() {
+        UserApiClient.instance.logout {
+            sharedViewModel.resetToken()
+            showToast(LOGOUT_MESSAGE)
+            // TODO 홈으로 가기
+        }
+    }
+
+    companion object {
+        private const val LOGOUT_MESSAGE = "로그아웃 되었습니다."
     }
 }

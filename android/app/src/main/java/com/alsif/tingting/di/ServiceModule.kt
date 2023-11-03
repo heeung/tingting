@@ -6,6 +6,7 @@ import com.alsif.tingting.data.interceptor.AuthInterceptor
 import com.alsif.tingting.data.service.HomeService
 import com.alsif.tingting.data.service.LikeService
 import com.alsif.tingting.data.service.SearchService
+import com.alsif.tingtinqg.data.service.ReserveService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -67,4 +68,10 @@ object ServiceModule {
     fun provideSearchService(
         retrofit: Retrofit
     ) : SearchService = retrofit.create(SearchService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideReserveService(
+        retrofit: Retrofit
+    ) : ReserveService = retrofit.create(ReserveService::class.java)
 }
