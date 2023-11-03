@@ -15,6 +15,6 @@ public class CorsConfig implements WebMvcConfigurer {
 			.allowedOrigins("http://k9d209.p.ssafy.io:9000")
 			.allowedOrigins("https://k9d209.p.ssafy.io")
 			.allowedHeaders("*")
-			.allowedMethods("*");
+			.allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTION");
 	}
 }
