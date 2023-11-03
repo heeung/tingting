@@ -17,4 +17,8 @@ data class SeatDto(
     val section: String,
     @SerializedName("ticketSeq")
     val ticketSeq: Long
-) : Parcelable
+) : Parcelable {
+    override fun toString(): String {
+        return "$section-$seat"
+    }
+}

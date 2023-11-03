@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
 
+@Suppress("EXTENSION_SHADOWED_BY_MEMBER")
 @Parcelize
 data class TicketDto(
     @SerializedName("concertHallCity")
@@ -28,5 +29,17 @@ data class TicketDto(
     @SerializedName("ticketSeq")
     val ticketSeq: Long,
     @SerializedName("totalPrice")
-    val totalPrice: Int
-) : Parcelable
+    val totalPrice: Int,
+    var isExpanded: Boolean
+) : Parcelable {
+    fun seatsInfo(): String {
+        return this.seats.toString().replace("[", "").replace("]", "")
+    }
+    fun sectionInfo() : String {
+        val sections = HashSet<String>()
+        for (seat in seats) {
+            sections.add(seat.section)
+        }
+        return sections.toString()
+    }
+}

@@ -40,4 +40,18 @@
 
     <!--  likedlist  -->
     <string name="liked_item_date">%s ~ %s</string>
+
+    <!--  reservedlist  -->
+    <string name="title_seats_detail">예매 좌석</string>
+    <string name="title_reservation_date">예매 일시</string>
+    <string name="title_total_price">총 금액</string>
+    <string name="title_section">구역</string>
+    <string name="title_cancel_date">취소 일시</string>
+    <string name="deleted_ticket">취소 표</string>
+    <string name="go_detail">공연 정보 보기</string>
+    <string name="go_cancel">예매 취소하기</string>
+    <string name="confirm">확인 했습니다.</string>
+    <string name="cancel_confirm_message">정말로 예매를 취소하시겠습니까?</string>
+    <string name="cancel_comfirm_message_2">취소 시 재 예매가 불가능하며\n팅팅은 불가피함에 대해서는 책임지지 않습니다.</string>
+
 </resources>

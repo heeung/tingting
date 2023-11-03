@@ -29,6 +29,12 @@ private const val TAG = "ReservedListFragmentVie"
 class ReservedListFragmentViewModel @Inject constructor(
     private val reserveRepository: ReserveRepository
 )  : ViewModel() {
+    var isFirstRander = true
+
+    // TODO api연결
+    private val _refreshEvent = MutableSharedFlow<Boolean>()
+    val refreshEvent = _refreshEvent.asSharedFlow()
+
     private val _reservedListPagingDataFlow = MutableStateFlow<PagingData<TicketDto>>(PagingData.empty())
     val reservedListPagingDataFlow = _reservedListPagingDataFlow.asStateFlow()
 
@@ -71,6 +77,13 @@ class ReservedListFragmentViewModel @Inject constructor(
                 }
             }
         }.flow.cachedIn(viewModelScope)
+    }
+
+    // TODO api연결
+    fun confirmReservationCancel() {
+        viewModelScope.launch {
+            _refreshEvent.emit(true)
+        }
     }
 
     companion object {

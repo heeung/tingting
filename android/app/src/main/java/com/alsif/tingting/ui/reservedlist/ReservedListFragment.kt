@@ -3,11 +3,7 @@ package com.alsif.tingting.ui.reservedlist
 import android.annotation.SuppressLint
 import android.app.ProgressDialog.show
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -15,24 +11,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alsif.tingting.R
 import com.alsif.tingting.base.BaseFragment
-import com.alsif.tingting.data.model.ConcertDto
 import com.alsif.tingting.data.model.TicketDto
-import com.alsif.tingting.databinding.FragmentHomeBinding
-import com.alsif.tingting.databinding.FragmentLikedListBinding
 import com.alsif.tingting.databinding.FragmentReservedListBinding
-import com.alsif.tingting.ui.home.HomeFragmentViewModel
-import com.alsif.tingting.ui.likedlist.LikedListFragment
-import com.alsif.tingting.ui.likedlist.LikedListFragmentDirections
-import com.alsif.tingting.ui.likedlist.LikedListFragmentViewModel
-import com.alsif.tingting.ui.likedlist.recyclerview.LikedListPagingAdapter
 import com.alsif.tingting.ui.likedlist.recyclerview.ReservedListPagingAdapter
 import com.alsif.tingting.ui.login.LoginModalBottomSheet
 import com.alsif.tingting.ui.main.MainActivityViewModel
 import com.alsif.tingting.ui.search.recyclerview.PageLoadingAdapter
-import com.alsif.tingting.util.AnimUtil
-import com.alsif.tingting.util.clickAnimation
-import com.alsif.tingting.util.scaleAnimation
-import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -45,8 +29,8 @@ class ReservedListFragment : BaseFragment<FragmentReservedListBinding>(FragmentR
 
     private lateinit var reservedListAdapter: ReservedListPagingAdapter
 
-    private val ticketDetailBottomSheet by lazy {
-         TicketDetailModalBottomSheet()
+    private val reservationCancelBottomSheet by lazy {
+         ReservationCancelModalBottomSheet(viewModel)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,12 +40,15 @@ class ReservedListFragment : BaseFragment<FragmentReservedListBinding>(FragmentR
             initRecyclerView()
             subscribe()
             setClickListeners()
-            getReservedListWithLoadingDialog()
         }
     }
 
     override fun onResume() {
         super.onResume()
+        if (viewModel.isFirstRander) {
+            getReservedListWithLoadingDialog()
+            viewModel.isFirstRander = !viewModel.isFirstRander
+        }
     }
 
     private fun getReservedList() {
@@ -85,6 +72,13 @@ class ReservedListFragment : BaseFragment<FragmentReservedListBinding>(FragmentR
                 showToast(it.message.toString())
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.refreshEvent.collectLatest {
+                dismissReservationCancelBottomSheet()
+                showSnackbar(binding.root, CONFIRM_CANCEL_MESSAGE)
+                getReservedListWithLoadingDialog()
+            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -101,16 +95,25 @@ class ReservedListFragment : BaseFragment<FragmentReservedListBinding>(FragmentR
         reservedListAdapter.itemClickListener = object: ReservedListPagingAdapter.ItemClickListener {
             @SuppressLint("ClickableViewAccessibility")
             override fun onClick(view: View, ticketDto: TicketDto) {
-                showTicketDetailBottomSheet()
-//                val action = ReservedListFragmentDirections.actionReservedListFragmentToConcertDetailFragment(ticketDto.concertSeq)
-//                findNavController().navigate(action)
-
+//                showReservationCancelBottomSheet()
+            }
+        }
+        reservedListAdapter.reservationCancelClickListener = object: ReservedListPagingAdapter.ReservationCancelClickListener {
+            @SuppressLint("ClickableViewAccessibility")
+            override fun onClick(view: View, ticketDto: TicketDto) {
+                showReservationCancelBottomSheet()
+            }
+        }
+        reservedListAdapter.concertDatailClickListener = object: ReservedListPagingAdapter.ConcertDatailClickListener {
+            @SuppressLint("ClickableViewAccessibility")
+            override fun onClick(view: View, ticketDto: TicketDto) {
+                val action = ReservedListFragmentDirections.actionReservedListFragmentToConcertDetailFragment(ticketDto.concertSeq)
+                findNavController().navigate(action)
             }
         }
         binding.layoutSwipeRefresh.setOnRefreshListener {
             getReservedList()
         }
-        // 검색 결과에 따라 보여주기
         reservedListAdapter.addOnPagesUpdatedListener {
             dismissLoadingDialog()
             binding.layoutSwipeRefresh.isRefreshing = false
@@ -120,16 +123,20 @@ class ReservedListFragment : BaseFragment<FragmentReservedListBinding>(FragmentR
         }
     }
 
-    fun showTicketDetailBottomSheet() {
-        ticketDetailBottomSheet.show(childFragmentManager, LoginModalBottomSheet.TAG)
+    private fun showReservationCancelBottomSheet() {
+        reservationCancelBottomSheet.show(childFragmentManager, LoginModalBottomSheet.TAG)
     }
 
-    fun dismissTicketDetailBottomSheet() {
-        ticketDetailBottomSheet.dismiss()
+    private fun dismissReservationCancelBottomSheet() {
+        reservationCancelBottomSheet.dismiss()
     }
 
     override fun onDestroyView() {
         dismissLoadingDialog()
         super.onDestroyView()
+    }
+
+    companion object {
+        private const val CONFIRM_CANCEL_MESSAGE= "표가 취소되었습니다."
     }
 }
