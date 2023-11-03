@@ -16,11 +16,11 @@ public class DummyController {
 
 	private final DummyService dummyService;
 
-	// @GetMapping("/dummy")
-	// public void dummy() {
-	// 	log.info("컨트롤러 시작");
-	// 	dummyService.insertAllData();
-	// }
+	@GetMapping("/dummy")
+	public void dummy() {
+		log.info("컨트롤러 시작");
+		dummyService.insertAllData();
+	}
 
 	@GetMapping("/dummy/concerts")
 	public void concerts() {
@@ -49,7 +49,7 @@ public class DummyController {
 	@GetMapping("/dummy/batch-seat-info")
 	public void batchSeatInfo(@RequestParam("start") long start, @RequestParam("end") long end) {
 		log.info("batch insert 컨트롤러 시작");
-		dummyService.insertConcertSeatInfosBatch(start, end);
+		// dummyService.insertConcertSeatInfosBatch(start, end);
 		log.info("batch insert 컨트롤러 종료");
 	}
 }

@@ -150,20 +150,17 @@ public class DummyService {
 	public void insertConcertHallSeats() {
 
 		log.info("insertConcertHallSeats 시작");
-		concertHallSeats = new ArrayList<>();
 
-		for (long i = 97; i <= 192; i++) {
+		for (ConcertHall concertHall : concertHalls) {
 			for (char section = 'A'; section <= 'J'; section++) {
 				for (char seatAlphabet = 'A'; seatAlphabet <= 'J'; seatAlphabet++) {
 					for (int seatNumber = 1; seatNumber <= 20; seatNumber++) {
 						ConcertHallSeat concertHallSeat = ConcertHallSeat.builder()
 							.section(String.valueOf(section))
 							.seat(String.valueOf(seatAlphabet) + seatNumber)
+							.concertHall(concertHall)
 							.build();
-						concertHallSeat.setConcertHall(ConcertHall.makeDummyEntityBySeq(i));
-
 						concertHallSeats.add(concertHallSeat);
-
 					}
 				}
 			}
@@ -198,9 +195,6 @@ public class DummyService {
 		List<String> concertName5 = dummyList.getConcertName5();
 		List<String> concertInfos = dummyList.getConcertInfo();
 		List<String> concertImageUrls = dummyList.getConcertImageUrls();
-
-		performers = performerRepository.findAll();
-		concertHalls = concertHallRepository.findAll();
 
 		makeConcertsWithDetailAndPerformersAndGrades(concertName1, concertName2, concertName3, concertName4,
 			concertName5,
@@ -515,10 +509,8 @@ public class DummyService {
 						for (int m = 0; m < concertName5.size(); m++) {
 							String concertName = String.format("%s %s %s %s %s", concertName1.get(i),
 								concertName2.get(j), concertName3.get(k), concertName4.get(l), concertName5.get(m));
-							String concertInfo = getRandomValue(concertInfos);
-							String concertImageUrl = getRandomValue(concertImageUrls);
 
-							int concertHoldPeriod = (int)(Math.random() * 5) + 1;
+							int concertHoldPeriod = (int)(Math.random() * 3) + 2;
 
 							LocalDateTime concertHoldOpenDate = makeRandomConcertHoldOpenDate();
 							LocalDateTime concertHoldCloseDate = makeConcertHoldCloseDate(concertHoldOpenDate,
@@ -529,8 +521,8 @@ public class DummyService {
 							Concert concert = Concert.builder()
 								.concertHall(getRandomValue(concertHalls))
 								.name(concertName)
-								.info(concertInfo)
-								.imageUrl(concertImageUrl)
+								.info(getRandomValue(concertInfos))
+								.imageUrl(getRandomValue(concertImageUrls))
 								.holdOpenDate(concertHoldOpenDate)
 								.holdCloseDate(concertHoldCloseDate)
 								.bookOpenDate(concertBookOpenDate)
