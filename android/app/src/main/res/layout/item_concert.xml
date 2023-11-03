@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_concert"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_240sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="@dimen/_12sdp"
+    android:layout_marginHorizontal="@dimen/_8sdp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/_10sdp"
+            >
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:elevation="@dimen/_4sdp"/>
+
+        </androidx.cardview.widget.CardView>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_4sdp" />
+        <TextView
+            android:id="@+id/textview_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="오페라의 유령"
+            style="@style/Theme.AppCompat.TextView.gSans.Black.Bold"
+            android:textSize="@dimen/_12sdp"
+            />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_4sdp" />
+        <TextView
+            android:id="@+id/textview_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="오페라의 유령"
+            style="@style/Theme.AppCompat.TextView.gSans.Black.Bold"
+            android:textSize="@dimen/_10sdp"
+            />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_4sdp" />
+        <TextView
+            android:id="@+id/textview_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="오페라의 유령"
+            style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/_10sdp"
+            />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

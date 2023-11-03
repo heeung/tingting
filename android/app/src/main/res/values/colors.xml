@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="black">#FF000000</color>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="black">#FF444444</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#FFFFFFFF</color>
+    <color name="grey">#B2B2B2</color>
+    <color name="blue_mild">#FF74ABDE</color>
+
     <!--  바텀네비게이션 컬러  -->
     <color name="nav_selected_color">#FF74ABDE</color>
     <color name="nav_unselected_color">#FFC5C5C5</color>
+    <color name="nav_background_color">#FFFFFFFF</color>
+
+    <!--  login  -->
+    <color name="kakao_container_color">#FFFEE500</color>
+    <color name="kakao_icon_color">#E6000000</color>
+    <color name="kakao_text_color">#FF191919</color>
+
+    <!--  concert detail  -->
+    <color name="schedule_list_background_color">#4DD9D9D9</color>
+    <color name="do_like_button_color">#FFF03B3B</color>
+    <color name="cancle_like_button_color">#FF444444</color>
+
+    <!--  likedList  -->
+    <color name="liked_list_background_color">#4DD9D9D9</color>
+
+    <!--  search  -->
+    <color name="scroll_up_button_color">#8AC7FF</color>
+
+    <!--  reservedlist  -->
+    <color name="reserved_list_background_color">#4DD9D9D9</color>
+    <color name="reseve_cancel_background_color">#FF6767</color>
+
+    <!--  date picker  -->
+    <color name="calendar_day_selected_font_color">#FF444444</color>
+    <color name="calendar_day_selected_background_color">#B38AC7FF</color>
+    <color name="date_picker_sheet_background_color">#FAFAFA</color>
 </resources>

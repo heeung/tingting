@@ -1,3 +1,57 @@
 <resources>
     <string name="app_name">Tingting</string>
+
+    <!--  login  -->
+    <string name="start_with_kakao">카카오로 시작하기</string>
+    <string name="need_login">로그인이 필요한 기능입니다.</string>
+    <string name="policy"><u>개인정보 처리방침</u></string>
+    <string name="logout">로그아웃</string>
+
+    <!--  search  -->
+    <string name="search_hint">보고싶으신 공연이 있으신가요?</string>
+    <string name="menu_hint">지역</string>
+    <string name="start_date_hint">시작일</string>
+    <string name="end_date_hint">종료일</string>
+    <string-array name="select_region">
+        <item>지역</item>
+        <item>서울</item>
+        <item>인천</item>
+        <item>대전</item>
+        <item>광주</item>
+        <item>대구</item>
+        <item>경북</item>
+        <item>부산</item>
+        <item>울산</item>
+    </string-array>
+
+    <!--  viewpager  -->
+    <string name="viewpager2_banner">%1$d / %2$d 모두보기</string>
+
+    <!--  home  -->
+    <string name="on_sale">예매 중</string>
+    <string name="soon_sale">예매 임박</string>
+    <string name="home_item_date">%s ~ %s</string>
+
+    <!--  detail  -->
+    <string name="do_like">찜 하기</string>
+    <string name="cancle_like">찜 취소</string>
+    <string name="detail_item_date">일시 : %s ~ %s</string>
+    <string name="detail_item_locale">장소 : %s / %s</string>
+
+    <!--  likedlist  -->
+    <string name="liked_item_date">%s ~ %s</string>
+
+    <!--  reservedlist  -->
+    <string name="title_seats_detail">예매 좌석</string>
+    <string name="title_reservation_date">예매 일시</string>
+    <string name="title_total_price">총 금액</string>
+    <string name="title_section">구역</string>
+    <string name="title_cancel_date">취소 일시</string>
+    <string name="deleted_ticket">취소 표</string>
+    <string name="go_detail">공연 정보 보기</string>
+    <string name="go_cancel">예매 취소하기</string>
+    <string name="confirm">확인 했습니다.</string>
+    <string name="cancel_confirm_message">정말로 예매를 취소하시겠습니까?</string>
+    <string name="cancel_comfirm_message_2">취소 시 재 예매가 불가능하며\n팅팅은 불가피함에 대해서는 책임지지 않습니다.</string>
+
 </resources>
