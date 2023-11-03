@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.alsif.tingting.user.entity.UserConcert;
 
 @Repository
-public interface UserConcertRepository extends JpaRepository<UserConcert, Long> {
+public interface UserConcertRepository extends JpaRepository<UserConcert, Integer> {
 
-	boolean existsByUser_SeqAndConcert_Seq(Long userSeq, Long concertSeq);
+	boolean existsByUser_SeqAndConcert_Seq(Integer userSeq, Integer concertSeq);
 
-	void deleteByUser_SeqAndConcert_Seq(Long userSeq, Long concertSeq);
+	void deleteByUser_SeqAndConcert_Seq(Integer userSeq, Integer concertSeq);
 }

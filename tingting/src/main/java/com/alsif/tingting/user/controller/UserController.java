@@ -44,7 +44,7 @@ public class UserController {
 			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 	})
 	@GetMapping("/{userSeq}/favorite")
-	ResponseEntity<ConcertListResponseDto> findFavoriteList(@PathVariable("userSeq") Long userSeq,
+	ResponseEntity<ConcertListResponseDto> findFavoriteList(@PathVariable("userSeq") Integer userSeq,
 		PageableDto pageableDto) {
 		log.info("===== 콘서트 찜 목록 요청 시작, url={}, userSeq: {}, {} =====",
 			"/concerts", userSeq, pageableDto.toString());
@@ -68,7 +68,7 @@ public class UserController {
 			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 	})
 	@GetMapping("/{userSeq}/ticket")
-	ResponseEntity<TicketListResponseDto> findTicketList(@PathVariable("userSeq") Long userSeq,
+	ResponseEntity<TicketListResponseDto> findTicketList(@PathVariable("userSeq") Integer userSeq,
 		PageableDto pageableDto) {
 		log.info("===== 콘서트 예매 내역 요청 시작, url={}, userSeq: {}, {} =====",
 			"/concerts", userSeq, pageableDto.toString());

@@ -11,14 +11,14 @@ import com.alsif.tingting.concert.dto.concerthall.SeatBookBaseDto;
 import com.alsif.tingting.concert.entity.ConcertSeatInfo;
 
 @Repository
-public interface ConcertSeatInfoRepository extends JpaRepository<ConcertSeatInfo, Long> {
+public interface ConcertSeatInfoRepository extends JpaRepository<ConcertSeatInfo, Integer> {
 
 	@Query("SELECT NEW com.alsif.tingting.concert.dto.concerthall.SeatBookBaseDto(csi.book) "
 		+ "FROM ConcertSeatInfo csi "
 		+ "WHERE csi.concertDetail.seq = :concertDetailSeq AND csi.concertHallSeat.seq = :concertHallSeatSeq")
 	Optional<SeatBookBaseDto> findBookByConcertDetail_SeqAAndConcertHallSeat_Seq(
-		@Param("concertDetailSeq") Long concertDetailSeq, @Param("concertHallSeatSeq") Long concertHallSeatSeq);
+		@Param("concertDetailSeq") Integer concertDetailSeq, @Param("concertHallSeatSeq") Integer concertHallSeatSeq);
 
 	Optional<ConcertSeatInfo> findByConcertDetail_SeqAndConcertHallSeat_Seq(
-		Long concertDetailSeq, Long concertHallSeatSeq);
+		Integer concertDetailSeq, Integer concertHallSeatSeq);
 }
