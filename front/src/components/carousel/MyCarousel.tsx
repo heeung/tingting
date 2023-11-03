@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Carousel } from 'flowbite';
-import { bannerImg1, bannerImg2, bannerImg3, bannerImg4 } from '../../assets/Images/index.js';
 import './MyCarousel.module.css';
 
 export default function MyCarousel() {
@@ -70,16 +69,16 @@ export default function MyCarousel() {
     <div className="relative w-full">
       <div className="relative h-56 overflow-hidden rounded-lg sm:h-64 xl:h-80 2xl:h-96">
         <div id="carousel-item-1" className="hidden duration-700 ease-in-out w-full h-full">
-          <img src={bannerImg1} className="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-full h-full" alt="bannerImg1" />
+          <img src="http://ticketimage.interpark.com/TCMS3.0/NMain/BbannerPC/2310/231018114336_23014703.gif" className="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-full h-full" alt="bannerImg1" />
         </div>
         <div id="carousel-item-2" className="hidden duration-700 ease-in-out w-full h-full">
-          <img src={bannerImg2} className="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-full h-full" alt="bannerImg2" />
+          <img src="http://ticketimage.interpark.com/TCMS3.0/NMain/BbannerPC/2310/231020093025_23010643.gif" className="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-full h-full" alt="bannerImg2" />
         </div>
         <div id="carousel-item-3" className="hidden duration-700 ease-in-out w-full h-full">
-          <img src={bannerImg3} className="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-full h-full" alt="bannerImg3" />
+          <img src="http://ticketimage.interpark.com/TCMS3.0/NMain/BbannerPC/2310/231017102022_23014431.gif" className="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-full h-full" alt="bannerImg3" />
         </div>
         <div id="carousel-item-4" className="hidden duration-700 ease-in-out w-full h-full">
-          <img src={bannerImg4} className="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-full h-full" alt="bannerImg4" />
+          <img src="http://ticketimage.interpark.com/TCMS3.0/NMain/BbannerPC/2310/231011114905_23012217.gif" className="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-full h-full" alt="bannerImg4" />
         </div>
       </div>
       <div className="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
