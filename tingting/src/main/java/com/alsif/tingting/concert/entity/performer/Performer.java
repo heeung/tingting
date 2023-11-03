@@ -20,7 +20,7 @@ public class Performer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@Column(nullable = false, length = 40)
 	private String name;

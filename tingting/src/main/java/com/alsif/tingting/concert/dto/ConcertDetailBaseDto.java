@@ -18,11 +18,11 @@ import lombok.ToString;
 @Schema(description = "콘서트 상세 정보")
 public class ConcertDetailBaseDto {
 
-	@Schema(description = "콘서트 상세 PK", type = "Long", example = "1")
-	private Long seq;
+	@Schema(description = "콘서트 상세 PK", type = "Integer", example = "1")
+	private Integer seq;
 
-	@Schema(description = "콘서트 PK", type = "Long", example = "1")
-	private Long concertSeq;
+	@Schema(description = "콘서트 PK", type = "Integer", example = "1")
+	private Integer concertSeq;
 
 	@Schema(description = "콘서트 공연일", type = "String", example = "2023-10-26 14:00:00")
 	private String holdDate;

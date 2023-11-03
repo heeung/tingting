@@ -11,11 +11,11 @@ import com.alsif.tingting.concert.dto.performer.PerformerBaseDto;
 import com.alsif.tingting.concert.entity.performer.ConcertPerformer;
 
 @Repository
-public interface ConcertPerformerRepository extends JpaRepository<ConcertPerformer, Long> {
+public interface ConcertPerformerRepository extends JpaRepository<ConcertPerformer, Integer> {
 
 	@Query("SELECT NEW com.alsif.tingting.concert.dto.performer.PerformerBaseDto(p.seq, p.name, p.imageUrl) "
 		+ "FROM ConcertPerformer cp "
 		+ "JOIN Performer p ON (cp.performer.seq = p.seq) "
 		+ "WHERE cp.concert.seq = :concertSeq")
-	List<PerformerBaseDto> findAllByConcertSeq(@Param("concertSeq") Long concertSeq);
+	List<PerformerBaseDto> findAllByConcertSeq(@Param("concertSeq") Integer concertSeq);
 }

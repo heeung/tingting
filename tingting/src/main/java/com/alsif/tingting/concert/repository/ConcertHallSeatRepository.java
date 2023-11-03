@@ -11,7 +11,7 @@ import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoResponse
 import com.alsif.tingting.concert.entity.concerthall.ConcertHallSeat;
 
 @Repository
-public interface ConcertHallSeatRepository extends JpaRepository<ConcertHallSeat, Long> {
+public interface ConcertHallSeatRepository extends JpaRepository<ConcertHallSeat, Integer> {
 
 	@Query(
 		"SELECT NEW com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoResponseDto(csi.seq, chs.section, chs.seat, csi.book, g.name) "
@@ -19,6 +19,6 @@ public interface ConcertHallSeatRepository extends JpaRepository<ConcertHallSeat
 			+ "JOIN ConcertSeatInfo csi ON (chs.seq = csi.concertHallSeat.seq) "
 			+ "JOIN Grade g ON (csi.grade.seq = g.seq) "
 			+ "WHERE chs.concertHall.seq = :concertHallSeq AND chs.section = :section AND csi.concertDetail.seq = :concertDetailSeq")
-	List<ConcertSectionSeatInfoResponseDto> findAllSectionSeatInfo(@Param("concertDetailSeq") Long concertDetailSeq,
-		@Param("concertHallSeq") Long concertHallSeq, @Param("section") String section);
+	List<ConcertSectionSeatInfoResponseDto> findAllSectionSeatInfo(@Param("concertDetailSeq") Integer concertDetailSeq,
+		@Param("concertHallSeq") Integer concertHallSeq, @Param("section") String section);
 }
