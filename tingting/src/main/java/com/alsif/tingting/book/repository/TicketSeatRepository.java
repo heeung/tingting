@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.alsif.tingting.book.entity.TicketSeat;
 
 @Repository
-public interface TicketSeatRepository extends JpaRepository<TicketSeat, Long> {
+public interface TicketSeatRepository extends JpaRepository<TicketSeat, Integer> {
 }

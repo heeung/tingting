@@ -26,6 +26,7 @@ import com.alsif.tingting.concert.repository.ConcertDetailRepository;
 import com.alsif.tingting.concert.repository.ConcertRepository;
 import com.alsif.tingting.concert.repository.ConcertSeatInfoRepository;
 import com.alsif.tingting.concert.repository.GradeRepository;
+import com.alsif.tingting.concert.repository.JDBCRepository;
 import com.alsif.tingting.concert.repository.concerthall.ConcertHallRepository;
 import com.alsif.tingting.concert.repository.concerthall.ConcertHallSeatRepository;
 import com.alsif.tingting.concert.repository.performer.ConcertPerformerRepository;
@@ -58,6 +59,7 @@ public class DummyService {
 	private final PointRepository pointRepository;
 	private final UserConcertRepository userConcertRepository;
 	private final UserRepository userRepository;
+	private final JDBCRepository JDBCRepository;
 	private DummyList dummyList;
 
 	List<Performer> performers;
@@ -82,8 +84,8 @@ public class DummyService {
 		insertUsers();
 		insertConcerts();
 		insertConcertSeatInfos();
-		insertTicket();
-		insertFavorite();
+		// insertTicket();
+		// insertFavorite();
 	}
 
 	public void insertConcertsAndConcertSeatInfos() {
@@ -117,7 +119,6 @@ public class DummyService {
 	// 가수 넣기
 	@Transactional
 	public void insertPerformers() {
-		/*
 		log.info("insertPerformers 시작");
 		List<String> singer = dummyList.getPerformers();
 		List<String> performersImage = dummyList.getPerformersImage();
@@ -126,13 +127,12 @@ public class DummyService {
 
 		performerRepository.saveAll(performers);
 		log.info("insertPerformers 종료");
-		*/
 	}
 
-	// 콘서트홀, 콘서트홀 좌석 넣기 -> 일단 안씀
+	// 콘서트홀, 콘서트홀 좌석 넣기
 	@Transactional
 	public void insertConcertHalls() {
-		/*
+
 		log.info("insertConcertHalls 시작");
 		List<String> concertHallNames = dummyList.getConcertHallName();
 		List<String> concertHallCities = dummyList.getConcertHallCity();
@@ -143,7 +143,32 @@ public class DummyService {
 		concertHallRepository.saveAll(concertHalls);
 		concertHallSeatRepository.saveAll(concertHallSeats);
 		log.info("insertConcertHalls 종료");
-		 */
+
+	}
+
+	@Transactional
+	public void insertConcertHallSeats() {
+
+		log.info("insertConcertHallSeats 시작");
+
+		for (ConcertHall concertHall : concertHalls) {
+			for (char section = 'A'; section <= 'J'; section++) {
+				for (char seatAlphabet = 'A'; seatAlphabet <= 'J'; seatAlphabet++) {
+					for (int seatNumber = 1; seatNumber <= 20; seatNumber++) {
+						ConcertHallSeat concertHallSeat = ConcertHallSeat.builder()
+							.section(String.valueOf(section))
+							.seat(String.valueOf(seatAlphabet) + seatNumber)
+							.concertHall(concertHall)
+							.build();
+						concertHallSeats.add(concertHallSeat);
+					}
+				}
+			}
+		}
+
+		concertHallSeatRepository.saveAll(concertHallSeats);
+		log.info("insertConcertHallSeats 종료");
+
 	}
 
 	// 회원정보, 포인트(회원가입 때 주는거) 정보 넣기
@@ -171,9 +196,6 @@ public class DummyService {
 		List<String> concertInfos = dummyList.getConcertInfo();
 		List<String> concertImageUrls = dummyList.getConcertImageUrls();
 
-		performers = performerRepository.findAll();
-		concertHalls = concertHallRepository.findAll();
-
 		makeConcertsWithDetailAndPerformersAndGrades(concertName1, concertName2, concertName3, concertName4,
 			concertName5,
 			concertInfos, concertImageUrls);
@@ -185,7 +207,7 @@ public class DummyService {
 		log.info("insertConcerts 종료");
 	}
 
-	@Transactional
+	/*@Transactional
 	public void insertGradeSingle(long start, long end) {
 		grades = new ArrayList<>();
 		for (long i = start; i <= end; i++) {
@@ -208,12 +230,11 @@ public class DummyService {
 				grades.add(grade);
 			}
 		}
-
 		gradeRepository.saveAll(grades);
-	}
+	}*/
 
 	// 콘서트 좌석 정보 넣기
-	@Transactional
+	// @Transactional
 	public void insertConcertSeatInfos() {
 		log.info("insertConcertSeatInfos 시작");
 		for (Concert concert : concerts) {
@@ -256,10 +277,12 @@ public class DummyService {
 						concertSeatInfos.add(concertSeatInfo);
 					}
 				}
+				JDBCRepository.saveAllConcertSeatInfo(concertSeatInfos);
+				concertSeatInfos.clear();
 			}
 		}
 
-		concertSeatInfoRepository.saveAll(concertSeatInfos);
+		JDBCRepository.saveAllConcertSeatInfo(concertSeatInfos);
 		log.info("insertConcertSeatInfos 종료");
 	}
 
@@ -293,13 +316,13 @@ public class DummyService {
 
 			// 담은 예매좌석정보수만큼 가격구하고 해당 예매와 관련한 포인트 제거하기
 			// 해당 좌석 포인트
-			long totalPrice = 0L;
+			int totalPrice = 0;
 			for (TicketSeat seat : ticket.getTicketSeats()) {
 				totalPrice += seat.getConcertSeatInfo().getGrade().getPrice();
 			}
 
 			// 나의 최근 포인트
-			long latestTotal = pointRepository.findTop1ByUserSeqOrderByCreatedDateDesc(randomUser.getSeq()).getTotal();
+			int latestTotal = pointRepository.findTop1ByUserSeqOrderByCreatedDateDesc(randomUser.getSeq()).getTotal();
 
 			// 포인트 추가
 			Point point = Point.builder()
@@ -421,9 +444,9 @@ public class DummyService {
 						.build();
 
 					Point point = Point.builder()
-						.pay(10000000L)
+						.pay(10000000)
 						.user(user)
-						.total(10000000L)
+						.total(10000000)
 						.build();
 
 					users.add(user);
@@ -486,10 +509,8 @@ public class DummyService {
 						for (int m = 0; m < concertName5.size(); m++) {
 							String concertName = String.format("%s %s %s %s %s", concertName1.get(i),
 								concertName2.get(j), concertName3.get(k), concertName4.get(l), concertName5.get(m));
-							String concertInfo = getRandomValue(concertInfos);
-							String concertImageUrl = getRandomValue(concertImageUrls);
 
-							int concertHoldPeriod = (int)(Math.random() * 5) + 1;
+							int concertHoldPeriod = (int)(Math.random() * 3) + 2;
 
 							LocalDateTime concertHoldOpenDate = makeRandomConcertHoldOpenDate();
 							LocalDateTime concertHoldCloseDate = makeConcertHoldCloseDate(concertHoldOpenDate,
@@ -500,8 +521,8 @@ public class DummyService {
 							Concert concert = Concert.builder()
 								.concertHall(getRandomValue(concertHalls))
 								.name(concertName)
-								.info(concertInfo)
-								.imageUrl(concertImageUrl)
+								.info(getRandomValue(concertInfos))
+								.imageUrl(getRandomValue(concertImageUrls))
 								.holdOpenDate(concertHoldOpenDate)
 								.holdCloseDate(concertHoldCloseDate)
 								.bookOpenDate(concertBookOpenDate)
@@ -532,17 +553,17 @@ public class DummyService {
 
 	private void makeConcertGrade(Concert concert) {
 		int gradeRandom = (int)(Math.random() * 2) + 1;
-		long priceRandom = (long)(Math.random() * 2) + 5;
+		int priceRandom = (int)(Math.random() * 2) + 5;
 		for (int j = 0; j < gradeRandom; j++) {
 			Grade grade;
 			if (j == 0) {
 				grade = Grade.builder()
-					.price(priceRandom * 11000L)
+					.price(priceRandom * 11000)
 					.name("일반")
 					.build();
 			} else {
 				grade = Grade.builder()
-					.price((priceRandom + 2) * 11000L)
+					.price((priceRandom + 2) * 11000)
 					.name("VIP")
 					.build();
 			}

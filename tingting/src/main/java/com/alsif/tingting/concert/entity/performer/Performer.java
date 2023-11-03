@@ -20,7 +20,7 @@ public class Performer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@Column(nullable = false, length = 40)
 	private String name;
@@ -33,11 +33,11 @@ public class Performer {
 		this.imageUrl = imageUrl;
 	}
 
-	private Performer(Long seq) {
+	private Performer(Integer seq) {
 		this.seq = seq;
 	}
 
-	public static Performer makeDummyEntityBySeq(Long seq) {
+	public static Performer makeDummyEntityBySeq(Integer seq) {
 		return new Performer(seq);
 	}
 

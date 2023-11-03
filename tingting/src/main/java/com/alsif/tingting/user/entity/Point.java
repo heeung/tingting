@@ -26,7 +26,7 @@ public class Point extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_seq", nullable = false)
@@ -37,13 +37,13 @@ public class Point extends BaseEntity {
 	private Ticket ticket;
 
 	@Column(nullable = false)
-	private Long pay;
+	private Integer pay;
 
 	@Column(nullable = false)
-	private Long total;
+	private Integer total;
 
 	@Builder
-	public Point(User user, Ticket ticket, Long pay, Long total) {
+	public Point(User user, Ticket ticket, Integer pay, Integer total) {
 		this.user = user;
 		this.ticket = ticket;
 		this.pay = pay;

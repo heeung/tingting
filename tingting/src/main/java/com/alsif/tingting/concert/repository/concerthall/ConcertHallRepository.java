@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.alsif.tingting.concert.entity.concerthall.ConcertHall;
 
 @Repository
-public interface ConcertHallRepository extends JpaRepository<ConcertHall, Long> {
+public interface ConcertHallRepository extends JpaRepository<ConcertHall, Integer> {
 }

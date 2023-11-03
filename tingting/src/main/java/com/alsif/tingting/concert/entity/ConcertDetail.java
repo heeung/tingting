@@ -25,7 +25,7 @@ public class ConcertDetail {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "concert_seq", nullable = false)

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.alsif.tingting.concert.entity.ConcertSeatInfo;
 
 @Repository
-public interface ConcertSeatInfoRepository extends JpaRepository<ConcertSeatInfo, Long> {
-	List<ConcertSeatInfo> findConcertSeatInfoByConcertDetail_Seq(Long seq);
+public interface ConcertSeatInfoRepository extends JpaRepository<ConcertSeatInfo, Integer> {
+	List<ConcertSeatInfo> findConcertSeatInfoByConcertDetail_Seq(Integer seq);
 
 }

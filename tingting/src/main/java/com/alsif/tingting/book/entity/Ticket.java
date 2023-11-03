@@ -32,7 +32,7 @@ public class Ticket extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_seq", nullable = false)
@@ -60,15 +60,15 @@ public class Ticket extends BaseEntity {
 		this.deletedDate = date;
 	}
 
-	public void setSeq(long seq){
+	public void setSeq(int seq) {
 		this.seq = seq;
 	}
 
-	public void addPoint(Point point){
+	public void addPoint(Point point) {
 		this.points.add(point);
 	}
 
-	public void addTicketSeats(TicketSeat ticketSeat){
+	public void addTicketSeats(TicketSeat ticketSeat) {
 		this.ticketSeats.add(ticketSeat);
 	}
 

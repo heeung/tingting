@@ -27,7 +27,7 @@ public class ConcertSeatInfo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "concert_hall_seat_seq", nullable = false)
@@ -45,7 +45,7 @@ public class ConcertSeatInfo {
 	@Column(nullable = false)
 	private Boolean book;
 
-	public void updateStatus(){
+	public void updateStatus() {
 		this.book = !this.book;
 	}
 

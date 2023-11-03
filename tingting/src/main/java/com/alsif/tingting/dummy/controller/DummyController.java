@@ -34,9 +34,22 @@ public class DummyController {
 		dummyService.initAndInsertUsers();
 	}
 
-	@GetMapping("/dummy/grades")
+	/*@GetMapping("/dummy/grades")
 	public void grades(@RequestParam("start") long start, @RequestParam("end") long end) {
 		log.info("컨트롤러 grades 메서드 시작");
 		dummyService.insertGradeSingle(start, end);
+	}*/
+
+	@GetMapping("/dummy/concert-hall-seat")
+	public void concertHallSeat() {
+		log.info("컨트롤러 insertConcertHallSeats 메서드 시작");
+		dummyService.insertConcertHallSeats();
+	}
+
+	@GetMapping("/dummy/batch-seat-info")
+	public void batchSeatInfo(@RequestParam("start") long start, @RequestParam("end") long end) {
+		log.info("batch insert 컨트롤러 시작");
+		// dummyService.insertConcertSeatInfosBatch(start, end);
+		log.info("batch insert 컨트롤러 종료");
 	}
 }

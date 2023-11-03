@@ -8,10 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.alsif.tingting.user.entity.Point;
 
 @Repository
-public interface PointRepository extends JpaRepository<Point, Long> {
+public interface PointRepository extends JpaRepository<Point, Integer> {
 
+	List<Point> findAllByUser_Seq(Integer seq);
 
-	List<Point> findAllByUser_Seq(Long seq);
-
-	Point findTop1ByUserSeqOrderByCreatedDateDesc(Long seq);
+	Point findTop1ByUserSeqOrderByCreatedDateDesc(Integer seq);
 }
