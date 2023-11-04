@@ -286,6 +286,66 @@ public class DummyService {
 		log.info("insertConcertSeatInfos 종료");
 	}
 
+	// 콘서트 좌석 정보 넣기
+	// @Transactional
+	public void insertConcertSeatInfoSingle(int start, int end) {
+		log.info("insertConcertSeatInfos 시작");
+		concerts = concertRepository.findBySeqBetween(start, end);
+		concertSeatInfos = new ArrayList<>();
+		for (Concert concert : concerts) {
+			List<ConcertDetail> concertDetailsByConcert = concert.getConcertDetails();
+			List<Grade> gradesByConcert = concert.getGrades();
+			Grade grade1 = gradesByConcert.get(0);
+			Grade grade2 = gradesByConcert.get(1);
+			List<ConcertHallSeat> concertHallSeatsByConcert = concert.getConcertHall().getConcertHallSeats();
+			for (ConcertDetail concertDetail : concertDetailsByConcert) {
+				long startTime = System.currentTimeMillis();
+				if (gradesByConcert.size() == 1) {
+					for (ConcertHallSeat concertHallSeat : concertHallSeatsByConcert) {
+						ConcertSeatInfo concertSeatInfo = ConcertSeatInfo.builder()
+							.concertDetail(concertDetail)
+							.book(false)
+							.grade(grade1)
+							.concertHallSeat(concertHallSeat)
+							.build();
+						concertSeatInfos.add(concertSeatInfo);
+					}
+				} else {
+					Grade vip = grade1.getName().equals("VIP") ? grade1 :
+						grade2;
+					Grade common =
+						grade2.getName().equals("일반") ? grade2 : grade1;
+					for (ConcertHallSeat concertHallSeat : concertHallSeatsByConcert) {
+						ConcertSeatInfo concertSeatInfo;
+						if (concertHallSeat.getSection().charAt(0) <= 'E') {
+							concertSeatInfo = ConcertSeatInfo.builder()
+								.concertDetail(concertDetail)
+								.book(false)
+								.grade(vip)
+								.concertHallSeat(concertHallSeat)
+								.build();
+						} else {
+							concertSeatInfo = ConcertSeatInfo.builder()
+								.concertDetail(concertDetail)
+								.book(false)
+								.grade(common)
+								.concertHallSeat(concertHallSeat)
+								.build();
+						}
+						concertSeatInfos.add(concertSeatInfo);
+					}
+				}
+				JDBCRepository.saveAllConcertSeatInfo(concertSeatInfos);
+				long clearStart = System.currentTimeMillis();
+				concertSeatInfos.clear();
+				log.info("detail 하나 끝: {}ms", System.currentTimeMillis() - startTime);
+			}
+		}
+
+		JDBCRepository.saveAllConcertSeatInfo(concertSeatInfos);
+		log.info("insertConcertSeatInfos 종료");
+	}
+
 	@Transactional
 	public void insertTicket() {
 

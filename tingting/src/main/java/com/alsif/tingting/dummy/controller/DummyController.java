@@ -22,6 +22,12 @@ public class DummyController {
 		dummyService.insertAllData();
 	}
 
+	@GetMapping("/dummy/seat-info")
+	public void dummySeatInfoSingle(@RequestParam("start") int start, @RequestParam("end") int end) {
+		log.info("컨트롤러 시작");
+		dummyService.insertConcertSeatInfoSingle(start, end);
+	}
+
 	@GetMapping("/dummy/concerts")
 	public void concerts() {
 		log.info("컨트롤러 concerts 메서드 시작");
