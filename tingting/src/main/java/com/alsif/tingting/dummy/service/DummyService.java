@@ -296,7 +296,6 @@ public class DummyService {
 			List<ConcertDetail> concertDetailsByConcert = concert.getConcertDetails();
 			List<Grade> gradesByConcert = concert.getGrades();
 			Grade grade1 = gradesByConcert.get(0);
-			Grade grade2 = gradesByConcert.get(1);
 			List<ConcertHallSeat> concertHallSeatsByConcert = concert.getConcertHall().getConcertHallSeats();
 			for (ConcertDetail concertDetail : concertDetailsByConcert) {
 				long startTime = System.currentTimeMillis();
@@ -311,6 +310,7 @@ public class DummyService {
 						concertSeatInfos.add(concertSeatInfo);
 					}
 				} else {
+					Grade grade2 = gradesByConcert.get(1);
 					Grade vip = grade1.getName().equals("VIP") ? grade1 :
 						grade2;
 					Grade common =
