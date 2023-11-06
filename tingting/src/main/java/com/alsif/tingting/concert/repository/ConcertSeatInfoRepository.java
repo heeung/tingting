@@ -11,7 +11,7 @@ import com.alsif.tingting.concert.dto.concerthall.SeatBookBaseDto;
 import com.alsif.tingting.concert.entity.ConcertSeatInfo;
 
 @Repository
-public interface ConcertSeatInfoRepository extends JpaRepository<ConcertSeatInfo, Integer> {
+public interface ConcertSeatInfoRepository extends JpaRepository<ConcertSeatInfo, Long> {
 
 	@Query("SELECT NEW com.alsif.tingting.concert.dto.concerthall.SeatBookBaseDto(csi.book) "
 		+ "FROM ConcertSeatInfo csi "
