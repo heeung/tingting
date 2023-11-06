@@ -88,7 +88,7 @@ public class BookService {
 	/*
 		선택 좌석의 예매 가능 여부 확인
 	 */
-	public SuccessResponseDto isSeatAvailable(Long concertDetailSeq, ConcertSeatBookRequestDto requestDto) {
+	public SuccessResponseDto isSeatAvailable(Integer concertDetailSeq, ConcertSeatBookRequestDto requestDto) {
 		// 좌석별 예매 가능 여부 확인
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
 			this.checkSeatAvailability(concertDetailSeq, seatSeq);
@@ -117,7 +117,7 @@ public class BookService {
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
 			// 예매 되지 않은 좌석이라면, 예매 처리
 			ConcertSeatInfo concertSeatInfo = this.checkSeatAvailability(concertDetailSeq, seatSeq);
-			concertSeatInfo.updateBook();
+			concertSeatInfo.updateBook(true);
 
 			// 좌석 가격 조회
 			Integer price = concertSeatInfo.getGrade().getPrice();
@@ -224,7 +224,7 @@ public class BookService {
 	/*
 		좌석 사용 가능 여부 유효성 검사
 	 */
-	private ConcertSeatInfo checkSeatAvailability(Long concertDetailSeq, Long concertSeatInfoSeq) {
+	private ConcertSeatInfo checkSeatAvailability(Integer concertDetailSeq, Long concertSeatInfoSeq) {
 		ConcertSeatInfo concertSeatInfo = concertSeatInfoRepository.findById(concertSeatInfoSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_HALL_SEAT_SEQ));
 

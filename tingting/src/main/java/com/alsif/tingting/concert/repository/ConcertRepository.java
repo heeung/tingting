@@ -104,7 +104,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Integer> {
 			+ "FROM Concert c "
 			+ "JOIN ConcertHall ch ON c.concertHall.seq = ch.seq "
 			+ "WHERE c.seq = :concertSeq")
-	Optional<ConcertDetailResponseDto> findByConcertDetailsByConcertSeq(@Param("concertSeq") Long concertSeq);
+	Optional<ConcertDetailResponseDto> findByConcertDetailsByConcertSeq(@Param("concertSeq") Integer concertSeq);
 
 	@Query(
 		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
