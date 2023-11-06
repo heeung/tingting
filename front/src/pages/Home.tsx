@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import styles from './Home.module.css'
 import Search from '../components/search/Search.js'
-// import ConcertList from '../components/concertlist/ConcertList.js'
+import ConcertList from '../components/concertlist/ConcertList.js'
 import Carousel from '../components/carousel/MyCarousel.js';
+
+import Lottie from 'lottie-react';
+import { animationLoading } from '../assets/Images/index.js';
+
+// import Calendar from '../components/calendar/Calendar.js';
 // import { useRecoilState } from 'recoil';
 // import { ConcertItemAtom } from '../recoil/ConcertItemAtom.tsx';
 import {
@@ -10,6 +15,7 @@ import {
   } from 'react-query';
 
 import axios from 'axios';
+// import { TEST_URL } from '../constants/index.js';
 import {API_BASE_URL} from '../constants/index.ts';
 // import {  BrowserRouter as Router, Route, Routes, Navigate  } from 'react-router-dom';
 
@@ -17,7 +23,7 @@ import {API_BASE_URL} from '../constants/index.ts';
 interface ConcertListProps {
     totalPage : number;
     currentPage : number;
-    concertList: Concert[]
+    concerts: Concert[]
 }
 
 interface Concert {
@@ -45,13 +51,11 @@ const fetchData = async () => {
 
   const concertListRequest = {
     currentPage: 1,
-    itemCount: 18,
-    orderBy: "now"
+    itemCount: 200,
+    orderBy :"now"
   }
 
   const response = await axios.get(`${API_BASE_URL}/concerts`, {params:concertListRequest});
-  // const response = await axios.get(`https://dog.ceo/api/breeds/image/random`);
-  console.log(response)
   return response.data;
 };
 
@@ -60,7 +64,7 @@ function Home(){
     // const [concertList, setConcertList] = useRecoilState(ConcertItemAtom) 
     const { isLoading, isError, data, error } = useQuery("data", fetchData, {
         refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
-        retry: 3, // 실패시 재호출 몇번 할지
+        retry: 1, // 실패시 재호출 몇번 할지
         onSuccess: data => {
           // 성공시 호출
           console.log(data);
@@ -84,6 +88,10 @@ function Home(){
             <Carousel/>
             {/* 검색 컴포넌트 */}
             <Search/>
+            {/* <div>
+                <Calendar/>
+                <Calendar/>
+            </div> */}
                 <div
                 className={styles.toggleButtonBox}>
 
@@ -99,20 +107,23 @@ function Home(){
                     >
                         예매임박
                     </div>
-                </div>
-                
-                { (isLoading) && <div>Loading...</div>}
+                </div>        
 
-                { (isError) && <div>Error: {error?.message}</div>}
-                
+
+                { isError && <div>Error: {error?.message}</div>}
                 {/* 콘서트 리스트컴포넌트 */}
-                {data?.concertList?.map(concert => (
-                    <div key={concert.concertSeq}>
-                        {concert}
-                        {/* 나머지 콘서트 정보를 여기에 렌더링 */}
-                    </div>
-                    ))}
-                {/* <ConcertList/> */}
+                
+                {
+                  !isLoading  && <ConcertList props={data}/>
+                }
+
+                { (isLoading || !data) && 
+                <div>
+                  <Lottie 
+                  className={styles["loading-box"]}
+                  animationData={animationLoading}/>
+                </div>
+                }
 
         </div>
     );

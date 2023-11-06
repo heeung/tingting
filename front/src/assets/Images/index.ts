@@ -8,6 +8,7 @@ import kakakoConnection from "./kakakoConnection.png"
 import moreViewIcon from "./moreViewIcon.png"
 import likeButton from "./likeButton.png"
 import cancelLikeButton from "./cancelLikeButton.png"
+import animationLoading from "./animation_loading.json"
 
 export { kakaoLoginButton, loginBackground, loginLogo, loginLogo2, logo, concertImg, kakakoConnection, 
-    moreViewIcon, likeButton, cancelLikeButton}
+    moreViewIcon, likeButton, cancelLikeButton, animationLoading}

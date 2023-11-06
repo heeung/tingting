@@ -1,8 +1,8 @@
 import { concertImg, moreViewIcon} from '../../assets/Images/index'
 import styles from './BookingInfo.module.css'
 
-export default function BookingInfo(){
-
+export default function BookingInfo({ticket}){
+    console.log(ticket)
     return(
         <div 
         className={styles.container}>
@@ -10,25 +10,25 @@ export default function BookingInfo(){
             className={styles.imgBox}>
                 <img 
                 className={styles.img}
-                src={concertImg} alt="concertImg" />
+                src={ticket.imageUrl} alt="concertImg" />
             </div>
             
             <div
             className={styles.bookingInfo}>
                 <div className={styles.concertName}>
-                    오페라의 유령
+                    {ticket.name}
                 </div>
                 <div className={styles.location}>
-                    서울 
+                    {ticket.concertHallCity}
                 </div>  
                 <div className={styles.paymentDate}>
-                    예매 일시
+                    {ticket.createdDate}
                 </div>
                 <div className={styles.seatCnt}>
                     9석
                 </div>
                 <div className={styles.paymentAmount}>
-                    결제 금액
+                    {ticket.totalPrice}원
                 </div>
                 <div className={styles.period}>
                     2023.7.21 ~ 2023.11.19

@@ -12,16 +12,19 @@ interface Concert {
 }
 
 interface ConcertListProps {
-  concertList: Concert[];
+  totalPage : number;
+  currentPage : number;
+  concerts: Concert[]
 }
 
 export default function ConcertList(props: ConcertListProps) {
   return (
     <div className={styles.container}>
-      {props.concertList ? (
-        props.concertList.map((concert: Concert) => (
+      {props.props?.concerts ? (
+        props.props?.concerts?.map((concert: Concert) => (
           <div className={styles.concertList} key={concert.concertSeq}>
             <ConcertInfo
+              concert={concert}
               // 여기에 ConcertInfo 컴포넌트에 전달할 속성을 추가하세요.
               // 예: concertName={concert.name}
             />

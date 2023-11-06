@@ -8,9 +8,12 @@ export default function Navbar(){
     
     const location = useLocation();
     const [isLoginPage, setIsLoginPage] = useState(location.pathname === '/login');
+    const [isReservationPage, setIsReservationPage] = useState(location.pathname === '/concert/reservation');
   
+
     useEffect(()=>{
       setIsLoginPage( window.location.pathname=== '/login')
+      setIsReservationPage( window.location.pathname=== '/concert/reservation')
     },[location.pathname])
 
     const navigate = useNavigate()
@@ -18,10 +21,11 @@ export default function Navbar(){
         navigate(`/${pageName}`);
     }
 
-    if (isLoginPage) {
-        return null; // 로그인 페이지에서 네비게이션 바를 숨김
+    if (isLoginPage || isReservationPage) {
+        return null; // 로그인 페이지와 공연예약페이지에서 네비게이션 바를 숨김
       }
-    
+  
+
     return (
     <div
     className={styles.container} 
@@ -48,6 +52,12 @@ export default function Navbar(){
         onClick={() => goToOtherPage('concert/detail')}
         className={styles.logout}>
             콘서트 상세 
+        </div>
+
+        <div
+        onClick={() => goToOtherPage('concert/reservation')}
+        className={styles.logout}>
+            공연예매
         </div>
 
         <div

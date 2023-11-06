@@ -3,9 +3,59 @@ import {kakakoConnection} from "../assets/Images/index.ts"
 import { useState } from 'react'
 import BookingInfoList from "../components/bookinginfolist/BookingInfoList.tsx"
 import ConcertList from "../components/concertlist/ConcertList.tsx"
-import { useRecoilState } from "recoil"
+// import { useRecoilState } from "recoil"
+import axios from "axios"
+import { TEST_URL } from "../constants/index.ts"
+import { useQuery } from "react-query"
+
+
+// API 호출 함수
+// const fetchLikedData = async () => {
+//     const userSeq = 1
+//     const concertListRequest = {
+//       currentPage: 1,
+//       itemCount: 18,
+//     }
+//     const response = await axios.get(`${TEST_URL}/users/${userSeq}/favorite`,{params:concertListRequest});
+//     return response.data;
+//   };
+
+const fetchTicketData = async () => {
+const userSeq = 1
+const concertListRequest = {
+    currentPage: 1,
+    itemCount: 18,
+}
+const response = await axios.get(`${TEST_URL}/users/${userSeq}/ticket`,{params:concertListRequest});
+return response.data;
+};
+
+
 
 export default function MyPage(){
+
+    // const { isLoading, isError, data, error } = useQuery("data", fetchLikedData, {
+    //     refetchOnWindowFocus: false,
+    //     retry: 1,
+    //     onSuccess: data => {
+    //       console.log(data);
+    //     },
+    //     onError: e => {
+    //       console.log(e?.message);
+    //     }
+    //   });
+
+    const { isLoading, isError, data, error } = useQuery("data", fetchTicketData, {
+        refetchOnWindowFocus: false,
+        retry: 1,
+        onSuccess: data => {
+          console.log(data);
+        },
+        onError: e => {
+          console.log(e?.message);
+        }
+      });
+
     const [category,setCategory] = useState("reservations");
 
     const toggleCategory = (categoryName:string) => {
@@ -54,12 +104,16 @@ export default function MyPage(){
                 </div>
             </div>
 
+            { (isLoading) && <div>Loading...</div>}
+
+            { (isError) && <div>Error: {error?.message}</div>}
+
             {
                 category == "reservations" 
                 ?
-                <BookingInfoList/>
+                <BookingInfoList props={data}/>
                 :
-                <ConcertList/>
+                <ConcertList props={data}/>
             }
         </div>
     )

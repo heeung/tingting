@@ -14,6 +14,7 @@
     "@heroicons/react": "^2.0.18",
     "axios": "^1.5.1",
     "flowbite": "^1.8.1",
+    "lottie-react": "^2.4.0",
     "react": "^18.2.0",
     "react-datepicker": "^4.21.0",
     "react-dom": "^18.2.0",
@@ -39,6 +40,5 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2",
     "vite": "^4.4.5"
-  },
-  "proxy":"https://k9d209.p.ssafy.io:9000"
+  }
 }
