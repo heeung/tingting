@@ -21,7 +21,7 @@ public interface TicketSeatRepository extends JpaRepository<TicketSeat, Integer>
 			+ "    JOIN ConcertHallSeat chs ON (csi.concertHallSeat.seq = chs.seq) "
 			+ "    JOIN Grade g ON (csi.grade.seq = g.seq) "
 			+ "WHERE ts.ticket.seq IN (:ticketSeqs)")
-	List<SeatBaseDto> findAllPriceByTicketSeq(@Param("ticketSeqs") List<Long> ticketSeqs);
+	List<SeatBaseDto> findAllPriceByTicketSeq(@Param("ticketSeqs") List<Integer> ticketSeqs);
 
 	@Query("SELECT csi "
 		+ "FROM TicketSeat ts "

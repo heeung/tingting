@@ -55,8 +55,8 @@ public class TicketBaseDto {
 	@Schema(description = "콘서트홀 시도", type = "String", example = "서울")
 	private String concertHallCity;
 
-	public TicketBaseDto(Long ticketSeq, LocalDateTime createdDate, LocalDateTime deletedDate, Long pay,
-		Long concertSeq, String name, LocalDateTime holdDate, String imageUrl, String concertHallName,
+	public TicketBaseDto(Integer ticketSeq, LocalDateTime createdDate, LocalDateTime deletedDate, Integer pay,
+		Integer concertSeq, String name, LocalDateTime holdDate, String imageUrl, String concertHallName,
 		String concertHallCity) {
 		this.ticketSeq = ticketSeq;
 		this.createdDate = createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
