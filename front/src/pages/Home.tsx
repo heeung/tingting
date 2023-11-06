@@ -75,6 +75,9 @@ function Home(){
           console.log(e?.message);
         }
       });
+
+      
+    console.log(data)
     const [category,setCategory] = useState("reservationNow");
 
     const toggleCategory = (categoryName:string) => {
@@ -112,12 +115,11 @@ function Home(){
 
                 { isError && <div>Error: {error?.message}</div>}
                 {/* 콘서트 리스트컴포넌트 */}
-                
+
                 {
                   !isLoading  && <ConcertList props={data}/>
                 }
-
-                { (isLoading || !data) && 
+                { (isLoading || data.concerts===undefined) && 
                 <div>
                   <Lottie 
                   className={styles["loading-box"]}

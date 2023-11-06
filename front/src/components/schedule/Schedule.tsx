@@ -1,7 +1,6 @@
 import styles from "./Schedule.module.css"
 
 export default function Schedule({schedule}) {
-    console.log(schedule)
     return (
         <div
             className={styles.container}>

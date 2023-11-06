@@ -15,12 +15,8 @@ export default function ConcertList(){
     
     const [isLike, setIsLike] = useState(false)
     const concertSeq = params.concertseq
-    console.log(concertSeq)
     
     const fetchData = async () => {
-        if (!concertSeq){
-            return
-        } 
 
         const concertDetailRequest = {
             userSeq : 1
@@ -35,7 +31,8 @@ export default function ConcertList(){
         retry: 100, // 실패시 재호출 몇번 할지
         onSuccess: data => {
           // 성공시 호출
-          console.log(data);
+          setIsLike(data.favorite)
+        
         },
         onError: e => {
           // 실패시 호출 (401, 404 같은 error가 아니라 정말 api 호출이 실패한 경우만 호출됩니다.)
@@ -44,8 +41,18 @@ export default function ConcertList(){
         }
       });
 
-    const toggleIsLike = () => {
-        setIsLike(!isLike)
+    const toggleIsLike = async (isLike:boolean) => {
+        const likeRequest = {
+            concertSeq: concertSeq,
+            userSeq : 1
+        }
+        const response = await axios.post(`${API_BASE_URL}/concerts/favorite`, likeRequest);
+        setIsLike(response.data.favorite)
+        if (response.data.favorite){
+            console.log("현재 찜 상태입니다")
+        }else{
+            console.log("현재 찜 안한 상태입니다")
+        }
     }
 
     return(
@@ -109,8 +116,8 @@ export default function ConcertList(){
                             <div>
                                 출연자 : {data?.performers?.map((performer)=>{
                                     return(
-                                    <span key={performer.seq}>
-                                        {performer.performerName}
+                                    <span key={performer?.seq}>
+                                        {performer?.performerName}
                                     </span>
                                     )
                                 })}
