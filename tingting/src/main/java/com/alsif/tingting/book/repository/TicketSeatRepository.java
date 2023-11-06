@@ -12,7 +12,7 @@ import com.alsif.tingting.concert.dto.concerthall.SeatBaseDto;
 import com.alsif.tingting.concert.entity.ConcertSeatInfo;
 
 @Repository
-public interface TicketSeatRepository extends JpaRepository<TicketSeat, Long> {
+public interface TicketSeatRepository extends JpaRepository<TicketSeat, Integer> {
 
 	@Query(
 		"SELECT NEW com.alsif.tingting.concert.dto.concerthall.SeatBaseDto(ts.ticket.seq, chs.section, chs.seat, g.price, g.name) "
@@ -27,5 +27,5 @@ public interface TicketSeatRepository extends JpaRepository<TicketSeat, Long> {
 		+ "FROM TicketSeat ts "
 		+ "JOIN ConcertSeatInfo csi ON (ts.concertSeatInfo.seq = csi.seq) "
 		+ "WHERE ts.ticket.seq = :ticketSeq")
-	List<ConcertSeatInfo> findAllByTicketSeq(@Param("ticketSeq") Long ticketSeq);
+	List<ConcertSeatInfo> findAllByTicketSeq(@Param("ticketSeq") Integer ticketSeq);
 }

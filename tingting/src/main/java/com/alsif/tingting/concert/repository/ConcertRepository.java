@@ -15,7 +15,7 @@ import com.alsif.tingting.concert.dto.ConcertDetailResponseDto;
 import com.alsif.tingting.concert.entity.Concert;
 
 @Repository
-public interface ConcertRepository extends JpaRepository<Concert, Long> {
+public interface ConcertRepository extends JpaRepository<Concert, Integer> {
 
 	@Query(
 		"SELECT NEW com.alsif.tingting.concert.dto.ConcertBaseDto(c.seq, c.name, c.holdOpenDate, c.holdCloseDate, c.imageUrl, ch.name, ch.city) "
@@ -113,5 +113,5 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 			+ "JOIN UserConcert uc ON (c.seq = uc.concert.seq) "
 			+ "WHERE uc.user.seq = :userSeq "
 			+ "ORDER BY c.holdOpenDate DESC")
-	Page<ConcertBaseDto> findAllConcertFavorite(@Param("userSeq") Long userSeq, Pageable pageable);
+	Page<ConcertBaseDto> findAllConcertFavorite(@Param("userSeq") Integer userSeq, Pageable pageable);
 }

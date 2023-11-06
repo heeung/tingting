@@ -18,9 +18,9 @@ import lombok.ToString;
 @Schema(description = "콘서트 찜 요청")
 public class ConcertFavoriteRequestDto {
 
-	@Schema(description = "찜할 콘서트 PK", type = "Long", example = "1")
-	private Long concertSeq;
+	@Schema(description = "찜할 콘서트 PK", type = "Integer", example = "1")
+	private Integer concertSeq;
 
-	@Schema(description = "회원 PK", type = "Long", example = "1")
-	private Long userSeq;
+	@Schema(description = "회원 PK", type = "Integer", example = "1")
+	private Integer userSeq;
 }

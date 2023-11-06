@@ -22,8 +22,8 @@ import lombok.ToString;
 @Schema(description = "예매 정보")
 public class TicketBaseDto {
 
-	@Schema(description = "예매 PK", type = "Long", example = "1")
-	private Long ticketSeq; // Ticket
+	@Schema(description = "예매 PK", type = "Integer", example = "1")
+	private Integer ticketSeq; // Ticket
 
 	@Schema(description = "예매 일시", type = "String", example = "2023-10-20 00:00:00")
 	private String createdDate; // Ticket
@@ -31,14 +31,14 @@ public class TicketBaseDto {
 	@Schema(description = "예매 취소 일시", type = "String", example = "2023-10-20 00:00:00")
 	private String deletedDate; // Ticket
 
-	@Schema(description = "총 예매 가격", type = "Long", example = "150000")
-	private Long totalPrice;
+	@Schema(description = "총 예매 가격", type = "Integer", example = "150000")
+	private Integer totalPrice;
 
 	@Schema(description = "예매 좌석 정보", type = "List<SeatBaseDto>")
 	private List<SeatBaseDto> seats; // concert_hall_seat
 
-	@Schema(description = "콘서트 PK", type = "Long", example = "1")
-	private Long concertSeq;
+	@Schema(description = "콘서트 PK", type = "Integer", example = "1")
+	private Integer concertSeq;
 
 	@Schema(description = "콘서트 이름", type = "String", example = "임영웅 2023 겨울 콘서트 - 서울")
 	private String name;

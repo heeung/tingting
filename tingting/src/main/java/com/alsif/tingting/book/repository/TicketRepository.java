@@ -11,7 +11,7 @@ import com.alsif.tingting.book.dto.TicketBaseDto;
 import com.alsif.tingting.book.entity.Ticket;
 
 @Repository
-public interface TicketRepository extends JpaRepository<Ticket, Long> {
+public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 
 	@Query(
 		"SELECT NEW com.alsif.tingting.book.dto.TicketBaseDto(t.seq, t.createdDate, t.deletedDate, p.pay, c.seq, c.name, cd.holdDate, c.imageUrl, ch.name, ch.city) "
