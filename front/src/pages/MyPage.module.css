@@ -80,3 +80,16 @@
     border: 1px solid var(--_30, rgba(217, 217, 217, 0.30));
     background: var(--_30, rgba(217, 217, 217, 0.30));
 }
+
+.loading{
+    width: 100%;
+    height: 100%;
+}
+
+.loading-box{
+    margin: 20% auto;
+    /* width: 20%; */
+    /* height: 20%; */
+    width: 15rem;
+    height: 15rem;
+}

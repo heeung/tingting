@@ -46,8 +46,14 @@ interface ConcertListRequestDto {
     searchWord?: string;
 }
 
-// API 호출 함수
-const fetchData = async () => {
+
+
+function Home(){
+    // const navigate = useNavigate();
+    // const [concertList, setConcertList] = useRecoilState(ConcertItemAtom) 
+
+    // API 호출 함수
+  const fetchData = async () => {
 
   const concertListRequest = {
     currentPage: 1,
@@ -59,9 +65,6 @@ const fetchData = async () => {
   return response.data;
 };
 
-function Home(){
-    // const navigate = useNavigate();
-    // const [concertList, setConcertList] = useRecoilState(ConcertItemAtom) 
     const { isLoading, isError, data, error } = useQuery("data", fetchData, {
         refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
         retry: 1, // 실패시 재호출 몇번 할지
@@ -117,9 +120,9 @@ function Home(){
                 {/* 콘서트 리스트컴포넌트 */}
 
                 {
-                  !isLoading  && <ConcertList props={data}/>
+                  !isLoading && data?.concerts!==undefined && <ConcertList props={data}/>
                 }
-                { (isLoading || data.concerts===undefined) && 
+                { (isLoading || data?.concerts===undefined) && 
                 <div>
                   <Lottie 
                   className={styles["loading-box"]}

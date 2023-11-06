@@ -16,7 +16,7 @@ export default function ConcertList(){
     const [isLike, setIsLike] = useState(false)
     const concertSeq = params.concertseq
     
-    const fetchData = async () => {
+    const fetchDetailData = async () => {
 
         const concertDetailRequest = {
             userSeq : 1
@@ -26,7 +26,7 @@ export default function ConcertList(){
         return response.data;
       };
 
-    const { isLoading, isError, data, error } = useQuery("data", fetchData, {
+    const { isLoading, isError, data, error } = useQuery("data", fetchDetailData, {
         refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
         retry: 100, // 실패시 재호출 몇번 할지
         onSuccess: data => {

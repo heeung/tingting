@@ -8,44 +8,39 @@ import axios from "axios"
 import { TEST_URL } from "../constants/index.ts"
 import { useQuery } from "react-query"
 
+import Lottie from 'lottie-react';
+import { animationLoading } from '../assets/Images/index.js';
 
-// API 호출 함수
-// const fetchLikedData = async () => {
-//     const userSeq = 1
-//     const concertListRequest = {
-//       currentPage: 1,
-//       itemCount: 18,
-//     }
-//     const response = await axios.get(`${TEST_URL}/users/${userSeq}/favorite`,{params:concertListRequest});
-//     return response.data;
-//   };
 
-const fetchTicketData = async () => {
-const userSeq = 1
-const concertListRequest = {
-    currentPage: 1,
-    itemCount: 18,
-}
-const response = await axios.get(`${TEST_URL}/users/${userSeq}/ticket`,{params:concertListRequest});
-return response.data;
-};
 
 
 
 export default function MyPage(){
 
-    // const { isLoading, isError, data, error } = useQuery("data", fetchLikedData, {
-    //     refetchOnWindowFocus: false,
-    //     retry: 1,
-    //     onSuccess: data => {
-    //       console.log(data);
-    //     },
-    //     onError: e => {
-    //       console.log(e?.message);
-    //     }
-    //   });
+    const [category,setCategory] = useState("reservations");
+    
+    // API 호출 함수
+    const fetchLikedData = async () => {
+        const userSeq = 1
+        const concertListRequest = {
+        currentPage: 1,
+        itemCount: 18,
+        }
+        const response = await axios.get(`${TEST_URL}/users/${userSeq}/favorite`,{params:concertListRequest});
+        return response.data;
+    };
 
-    const { isLoading, isError, data, error } = useQuery("data", fetchTicketData, {
+    const fetchTicketData = async () => {
+    const userSeq = 1
+    const concertListRequest = {
+        currentPage: 1,
+        itemCount: 18,
+    }
+    const response = await axios.get(`${TEST_URL}/users/${userSeq}/ticket`,{params:concertListRequest});
+    return response.data;
+    };
+
+    const { isLikedLoading, isLikedError, data : likedData, likedError } = useQuery("likedData", fetchLikedData, {
         refetchOnWindowFocus: false,
         retry: 1,
         onSuccess: data => {
@@ -56,7 +51,16 @@ export default function MyPage(){
         }
       });
 
-    const [category,setCategory] = useState("reservations");
+    const { isticketLoading, isticketError, data : ticketData, ticketError } = useQuery("ticketData", fetchTicketData, {
+        refetchOnWindowFocus: false,
+        retry: 1,
+        onSuccess: data => {
+          console.log(data);
+        },
+        onError: e => {
+          console.log(e?.message);
+        }
+      });
 
     const toggleCategory = (categoryName:string) => {
         setCategory(categoryName)
@@ -104,17 +108,21 @@ export default function MyPage(){
                 </div>
             </div>
 
-            { (isLoading) && <div>Loading...</div>}
-
-            { (isError) && <div>Error: {error?.message}</div>}
-
             {
-                category == "reservations" 
+                category === "reservations" 
                 ?
-                <BookingInfoList props={data}/>
+                <BookingInfoList props={ticketData}/>
                 :
-                <ConcertList props={data}/>
+                <ConcertList props={likedData}/>
             }
+
+
+            { (isLikedLoading || isticketLoading || ticketData?.tickets === undefined || likedData?.concerts===undefined ) &&           
+                <div>
+                  <Lottie 
+                  className={styles["loading-box"]}
+                  animationData={animationLoading}/>
+                </div>}
         </div>
     )
 }

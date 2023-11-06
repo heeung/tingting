@@ -2,6 +2,7 @@ import styles from "./BookingInfoList.module.css"
 import BookingInfo from "../bookinginfo/BookingInfo"
 
 export default function BookingInfoList({props}){
+    console.log(props)
     return(
         <div
             className={styles.container}>  
