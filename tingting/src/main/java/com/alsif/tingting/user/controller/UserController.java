@@ -1,11 +1,16 @@
 package com.alsif.tingting.user.controller;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
@@ -13,6 +18,7 @@ import com.alsif.tingting.global.dto.ErrorResponseDto;
 import com.alsif.tingting.global.dto.PageableDto;
 import com.alsif.tingting.user.dto.TicketListResponseDto;
 import com.alsif.tingting.user.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -80,5 +86,28 @@ public class UserController {
 
 		log.info("===== 콘서트 예매 내역 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
 		return new ResponseEntity<>(ticketListResponseDto, HttpStatus.OK);
+	}
+
+
+	@GetMapping("/kakao")
+	ResponseEntity<?> test(@RequestParam("code") String code){
+		System.out.println("로그인 => 인가 코드 받는부분 : 사실은 프론트가 해야함");
+		System.out.println(code);
+
+		return null;
+	}
+
+	@PostMapping("/kakao")
+	int getToken(@RequestBody Map<String, String> authorization) throws JsonProcessingException {
+		String code = authorization.get("authorization");
+		String accessToken = "";
+
+		// 카카오 토큰을 받아서
+		// 해당 정보를 가지고 로그인/회원가입을 시도함
+		accessToken = userService.getKaKaoAccessToken(code);
+		int userSeq = userService.createKakaoUser(accessToken);
+
+		return userSeq;
+
 	}
 }
