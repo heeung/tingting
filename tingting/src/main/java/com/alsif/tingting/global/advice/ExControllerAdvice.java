@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ExControllerAdvice {
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponseDto> customErrorHandler(CustomException ex) {
-		ex.printStackTrace();
+		log.info(ex.getErrorCode().getMessage());
 		ErrorResponseDto errorResponseDto = new ErrorResponseDto(ex.getErrorCode().getMessage());
 		return new ResponseEntity<>(errorResponseDto, ex.getErrorCode().getHttpStatus());
 	}

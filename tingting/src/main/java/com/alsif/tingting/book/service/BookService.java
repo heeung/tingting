@@ -51,7 +51,7 @@ public class BookService {
 	/*
 		콘서트장 정보 조회
 	 */
-	public ConcertHallPatternResponseDto findConcertPattern(Long concertSeq) {
+	public ConcertHallPatternResponseDto findConcertPattern(Integer concertSeq) {
 		Concert concert = concertRepository.findById(concertSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_SEQ));
 		log.info(concert.toString());
@@ -70,7 +70,7 @@ public class BookService {
 	/*
 		콘서트장 섹션별 좌석 정보 조회
 	 */
-	public List<ConcertSectionSeatInfoResponseDto> findConcertSectionSeatInfoList(Long concertDetailSeq,
+	public List<ConcertSectionSeatInfoResponseDto> findConcertSectionSeatInfoList(Integer concertDetailSeq,
 		ConcertSectionSeatInfoRequestDto requestDto) {
 
 		List<ConcertSectionSeatInfoResponseDto> concertSectionSeatInfoResponseDtos
@@ -101,7 +101,7 @@ public class BookService {
 		선택 좌석 예매 요청
 	 */
 	@Transactional
-	public SuccessResponseDto book(Long userSeq, Long concertDetailSeq,
+	public SuccessResponseDto book(Integer userSeq, Integer concertDetailSeq,
 		ConcertSeatBookRequestDto requestDto) {
 
 		User user = userRepository.findById(userSeq)
@@ -111,7 +111,7 @@ public class BookService {
 			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_DETAIL_SEQ));
 
 		List<ConcertSeatInfo> concertSeatInfos = new ArrayList<>();
-		long totalPrice = 0;
+		int totalPrice = 0;
 
 		// 좌석별 예매 상태 변경
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
@@ -120,7 +120,7 @@ public class BookService {
 			concertSeatInfo.updateBook();
 
 			// 좌석 가격 조회
-			Long price = concertSeatInfo.getGrade().getPrice();
+			Integer price = concertSeatInfo.getGrade().getPrice();
 			if (price == null) {
 				throw new CustomException(ErrorCode.NO_DATA_FOUND);
 			}
@@ -146,7 +146,7 @@ public class BookService {
 		Point point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.NO_DATA_FOUND));
 
-		long currentMoney = point.getTotal();
+		int currentMoney = point.getTotal();
 		if (currentMoney < totalPrice) {
 			throw new CustomException(ErrorCode.LACK_POINT);
 		}
@@ -165,7 +165,7 @@ public class BookService {
 		예매 취소
 	 */
 	@Transactional
-	public SuccessResponseDto reservationCancellation(Long userSeq, Long ticketSeq) {
+	public SuccessResponseDto reservationCancellation(Integer userSeq, Integer ticketSeq) {
 
 		User user = userRepository.findById(userSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
@@ -190,12 +190,12 @@ public class BookService {
 			throw new CustomException(ErrorCode.NO_DATA_FOUND);
 		}
 
-		long totalPrice = 0;
+		int totalPrice = 0;
 		// 좌석 정보 업데이트, 환불 가격 확인
 		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
-			concertSeatInfo.updateBook();
+			concertSeatInfo.updateBook(false);
 
-			Long price = concertSeatInfo.getGrade().getPrice();
+			Integer price = concertSeatInfo.getGrade().getPrice();
 			if (price == null) {
 				throw new CustomException(ErrorCode.NO_DATA_FOUND);
 			}
@@ -207,7 +207,7 @@ public class BookService {
 		Point point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.NO_DATA_FOUND));
 
-		long currentMoney = point.getTotal();
+		int currentMoney = point.getTotal();
 
 		log.info("현재 포인트: {}, 환불 받을 포인트: {}", currentMoney, totalPrice);
 

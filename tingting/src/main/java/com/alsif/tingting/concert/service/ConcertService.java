@@ -157,7 +157,7 @@ public class ConcertService {
 	/*
 		콘서트 상세 정보 불러오기
 	 */
-	public ConcertDetailResponseDto findConcertDetail(Long concertSeq, Long userSeq) {
+	public ConcertDetailResponseDto findConcertDetail(Integer concertSeq, Integer userSeq) {
 
 		ConcertDetailResponseDto concertDetailResponseDto
 			= concertRepository.findByConcertDetailsByConcertSeq(concertSeq)
