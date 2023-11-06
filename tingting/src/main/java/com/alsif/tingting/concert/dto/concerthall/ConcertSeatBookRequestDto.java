@@ -21,5 +21,5 @@ import lombok.ToString;
 public class ConcertSeatBookRequestDto {
 
 	@Schema(description = "선택 좌석 PK 목록", type = "List<Integer>", example = "[154002,154003,154009]")
-	private List<Integer> seatSeqs;
+	private List<Long> seatSeqs;
 }
