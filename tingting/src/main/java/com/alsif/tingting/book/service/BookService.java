@@ -47,6 +47,7 @@ public class BookService {
 	private final ConcertDetailRepository concertDetailRepository;
 	private final TicketSeatRepository ticketSeatRepository;
 	private final PointRepository pointRepository;
+	private final SaveService saveService;
 
 	/*
 		콘서트장 정보 조회
@@ -157,6 +158,51 @@ public class BookService {
 			.pay(totalPrice * -1)
 			.total(currentMoney - totalPrice)
 			.build());
+
+		return SuccessResponseDto.builder().message("true").build();
+	}
+
+	/*
+		선택 좌석 예매 요청 테스트
+	 */
+	public SuccessResponseDto bookTest(Integer userSeq, Integer concertDetailSeq,
+		ConcertSeatBookRequestDto requestDto) {
+
+		User user = userRepository.findById(userSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
+
+		ConcertDetail concertDetail = concertDetailRepository.findById(concertDetailSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_DETAIL_SEQ));
+
+		List<ConcertSeatInfo> concertSeatInfos = new ArrayList<>();
+		int totalPrice = 0;
+
+		// 좌석별 예매 상태 변경
+		for (Long seatSeq : requestDto.getSeatSeqs()) {
+			// 예매 되지 않은 좌석이라면, 예매 처리
+			ConcertSeatInfo concertSeatInfo = this.checkSeatAvailability(concertDetailSeq, seatSeq);
+			// concertSeatInfo.updateBook(true);
+
+			// 좌석 가격 조회
+			Integer price = concertSeatInfo.getGrade().getPrice();
+			if (price == null) {
+				throw new CustomException(ErrorCode.NO_DATA_FOUND);
+			}
+
+			totalPrice += price;
+			concertSeatInfos.add(concertSeatInfo);
+		}
+
+		// 포인트 차감
+		Point point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.NO_DATA_FOUND));
+
+		int currentMoney = point.getTotal();
+		if (currentMoney < totalPrice) {
+			throw new CustomException(ErrorCode.LACK_POINT);
+		}
+
+		saveService.saveMethods(user, concertDetail, concertSeatInfos, totalPrice, currentMoney);
 
 		return SuccessResponseDto.builder().message("true").build();
 	}

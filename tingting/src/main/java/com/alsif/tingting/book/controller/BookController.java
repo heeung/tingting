@@ -151,6 +151,23 @@ public class BookController {
 		return new ResponseEntity<>(successResponseDto, HttpStatus.OK);
 	}
 
+	@PostMapping("/{concertDetailSeq}/seat-test")
+	ResponseEntity<SuccessResponseDto> bookTest(
+		@PathVariable("concertDetailSeq") Integer concertDetailSeq, @RequestParam Integer userSeq,
+		@RequestBody ConcertSeatBookRequestDto requestDto) {
+		log.info("===== 선택 좌석 예매 요청 시작, url={}, concertDetailSeq: {}, {} =====",
+			"/concerts", concertDetailSeq, requestDto.toString());
+
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		SuccessResponseDto successResponseDto
+			= bookService.bookTest(userSeq, concertDetailSeq, requestDto);
+		stopWatch.stop();
+
+		log.info("===== 선택 좌석 예매 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
+		return new ResponseEntity<>(successResponseDto, HttpStatus.OK);
+	}
+
 	@Operation(summary = "예매 취소")
 	@Parameters(value = {
 		@Parameter(required = true, name = "ticketSeq", description = "예매 PK (ex. 317)"),
