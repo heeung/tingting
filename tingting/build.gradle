@@ -41,6 +41,9 @@ dependencies {
     // spring boot actuator + prometheus
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // login
+    implementation 'com.google.code.gson:gson:2.8.7'
 }
 
 dependencyManagement {
