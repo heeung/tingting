@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
 import com.alsif.tingting.global.dto.ErrorResponseDto;
 import com.alsif.tingting.global.dto.PageableDto;
+import com.alsif.tingting.user.dto.LoginResponseDto;
 import com.alsif.tingting.user.dto.TicketListResponseDto;
 import com.alsif.tingting.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "회원 탈퇴/마이페이지", description = "회원 API")
+@Tag(name = "회원 탈퇴/마이페이지/회원가입/로그인", description = "회원 API")
 public class UserController {
 
 	private final UserService userService;
@@ -93,21 +94,25 @@ public class UserController {
 	ResponseEntity<?> test(@RequestParam("code") String code){
 		System.out.println("로그인 => 인가 코드 받는부분 : 사실은 프론트가 해야함");
 		System.out.println(code);
-
 		return null;
 	}
 
+
+	@Operation(summary = "로그인 및 회원가입")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200"),
+	})
 	@PostMapping("/kakao")
-	int getToken(@RequestBody Map<String, String> authorization) throws JsonProcessingException {
+	ResponseEntity<LoginResponseDto> getToken(@RequestBody Map<String, String> authorization) throws JsonProcessingException {
 		String code = authorization.get("authorization");
 		String accessToken = "";
 
 		// 카카오 토큰을 받아서
 		// 해당 정보를 가지고 로그인/회원가입을 시도함
 		accessToken = userService.getKaKaoAccessToken(code);
-		int userSeq = userService.createKakaoUser(accessToken);
+		LoginResponseDto loginResponseDto = userService.createKakaoUser(accessToken);
 
-		return userSeq;
+		return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
 
 	}
 }

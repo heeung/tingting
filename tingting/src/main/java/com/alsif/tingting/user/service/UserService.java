@@ -26,6 +26,7 @@ import com.alsif.tingting.concert.repository.ConcertRepository;
 import com.alsif.tingting.global.constant.ErrorCode;
 import com.alsif.tingting.global.dto.PageableDto;
 import com.alsif.tingting.global.exception.CustomException;
+import com.alsif.tingting.user.dto.LoginResponseDto;
 import com.alsif.tingting.user.dto.TicketListResponseDto;
 import com.alsif.tingting.user.entity.User;
 import com.alsif.tingting.user.repository.UserRepository;
@@ -113,7 +114,7 @@ public class UserService {
 		// Set parameter
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
-		params.add("client_id", "");
+		params.add("client_id", "534a17c259cc1b90e15a00a30c7446d6");
 		params.add("redirect_uri", "http://localhost:9000/users/kakao");
 		params.add("code", code);
 
@@ -134,7 +135,7 @@ public class UserService {
 		return accessToken;
 	}
 
-	public int createKakaoUser(String accessToken) throws JsonProcessingException {
+	public LoginResponseDto createKakaoUser(String accessToken) throws JsonProcessingException {
 		// 해당 accessToken으로 정보 받아오기
 		String REQUEST_URL = "https://kapi.kakao.com/v2/user/me";
 		RestTemplate restTemplate = new RestTemplate();
@@ -172,7 +173,11 @@ public class UserService {
 
 		}
 
-		return existUser.getSeq();
+		LoginResponseDto loginResponseDto = LoginResponseDto.builder()
+			.userSeq(existUser.getSeq())
+			.build();
+
+		return loginResponseDto;
 
 	}
 }
