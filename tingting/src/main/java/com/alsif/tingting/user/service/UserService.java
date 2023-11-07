@@ -2,8 +2,10 @@ package com.alsif.tingting.user.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +48,9 @@ public class UserService {
 	private final ConcertRepository concertRepository;
 	private final TicketRepository ticketRepository;
 	private final TicketSeatRepository ticketSeatRepository;
+
+	@Value("${spring.kakao.client_id}")
+	private String clientId;
 
 	/*
 		찜 목록 가져오기
@@ -114,8 +119,8 @@ public class UserService {
 		// Set parameter
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
-		params.add("client_id", "534a17c259cc1b90e15a00a30c7446d6");
-		params.add("redirect_uri", "http://localhost:9000/users/kakao");
+		params.add("client_id", clientId);
+		params.add("redirect_uri", "http://k9d209.p.ssafy.io:9000/users/kakao");
 		params.add("code", code);
 
 		// Set http entity
@@ -159,15 +164,12 @@ public class UserService {
 		JsonNode kakaoAccount = responseJson.get("kakao_account");
 		String email = kakaoAccount.get("email").asText();
 
-		System.out.println("email : " + email);
-
-		User existUser = userRepository.findUserByEmail(email);
+		User existUser = userRepository.findUserByEmail(email).orElseThrow(()->new CustomException(ErrorCode.FORBIDDEN_USER));
 
 		if(existUser==null) {
 			User user = User.builder()
 				.email(email)
 				.build();
-
 
 			existUser = userRepository.save(user);
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
 import com.alsif.tingting.global.dto.ErrorResponseDto;
 import com.alsif.tingting.global.dto.PageableDto;
+import com.alsif.tingting.user.dto.LoginRequestDto;
 import com.alsif.tingting.user.dto.LoginResponseDto;
 import com.alsif.tingting.user.dto.TicketListResponseDto;
 import com.alsif.tingting.user.service.UserService;
@@ -90,21 +91,14 @@ public class UserController {
 	}
 
 
-	@GetMapping("/kakao")
-	ResponseEntity<?> test(@RequestParam("code") String code){
-		System.out.println("로그인 => 인가 코드 받는부분 : 사실은 프론트가 해야함");
-		System.out.println(code);
-		return null;
-	}
-
 
 	@Operation(summary = "로그인 및 회원가입")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200"),
 	})
 	@PostMapping("/kakao")
-	ResponseEntity<LoginResponseDto> getToken(@RequestBody Map<String, String> authorization) throws JsonProcessingException {
-		String code = authorization.get("authorization");
+	ResponseEntity<LoginResponseDto> getToken(@RequestBody LoginRequestDto loginRequestDto) throws JsonProcessingException {
+		String code = loginRequestDto.getCode();
 		String accessToken = "";
 
 		// 카카오 토큰을 받아서
