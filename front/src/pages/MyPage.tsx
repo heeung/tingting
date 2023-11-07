@@ -5,7 +5,7 @@ import BookingInfoList from "../components/bookinginfolist/BookingInfoList.tsx"
 import ConcertList from "../components/concertlist/ConcertList.tsx"
 // import { useRecoilState } from "recoil"
 import axios from "axios"
-import { TEST_URL } from "../constants/index.ts"
+import { API_BASE_URL } from "../constants/index.ts"
 import { useQuery } from "react-query"
 
 import Lottie from 'lottie-react';
@@ -26,7 +26,7 @@ export default function MyPage(){
         currentPage: 1,
         itemCount: 18,
         }
-        const response = await axios.get(`${TEST_URL}/users/${userSeq}/favorite`,{params:concertListRequest});
+        const response = await axios.get(`${API_BASE_URL}/users/${userSeq}/favorite`,{params:concertListRequest});
         return response.data;
     };
 
@@ -36,13 +36,12 @@ export default function MyPage(){
         currentPage: 1,
         itemCount: 18,
     }
-    const response = await axios.get(`${TEST_URL}/users/${userSeq}/ticket`,{params:concertListRequest});
+    const response = await axios.get(`${API_BASE_URL}/users/${userSeq}/ticket`,{params:concertListRequest});
     return response.data;
     };
 
     const { isLikedLoading, isLikedError, data : likedData, likedError } = useQuery("likedData", fetchLikedData, {
         refetchOnWindowFocus: false,
-        retry: 1,
         onSuccess: data => {
           console.log(data);
         },
@@ -53,7 +52,6 @@ export default function MyPage(){
 
     const { isticketLoading, isticketError, data : ticketData, ticketError } = useQuery("ticketData", fetchTicketData, {
         refetchOnWindowFocus: false,
-        retry: 1,
         onSuccess: data => {
           console.log(data);
         },
@@ -111,18 +109,29 @@ export default function MyPage(){
             {
                 category === "reservations" 
                 ?
-                <BookingInfoList props={ticketData}/>
+                <div>
+                    <div>
+                        <BookingInfoList props={ticketData}/>
+                    </div>
+                    {(isticketLoading || ticketData?.tickets === undefined) &&
+                    <Lottie 
+                    className={styles["loading-box"]}
+                    animationData={animationLoading}/>}
+    
+                </div>
+                
                 :
-                <ConcertList props={likedData}/>
+                <div>
+                    <div>
+                        <ConcertList props={likedData}/>
+                    </div>
+                    {(isLikedLoading || likedData?.concerts===undefined) &&
+                    <Lottie 
+                    className={styles["loading-box"]}
+                    animationData={animationLoading}/>}
+                </div>
             }
 
-
-            { (isLikedLoading || isticketLoading || ticketData?.tickets === undefined || likedData?.concerts===undefined ) &&           
-                <div>
-                  <Lottie 
-                  className={styles["loading-box"]}
-                  animationData={animationLoading}/>
-                </div>}
         </div>
     )
 }

@@ -13,3 +13,16 @@
 .concertList {
     width: 100%;
 }
+
+.loading{
+    width: 100%;
+    height: 100%;
+}
+
+.loading-box{
+    margin: 20% auto;
+    /* width: 20%; */
+    /* height: 20%; */
+    width: 15rem;
+    height: 15rem;
+}

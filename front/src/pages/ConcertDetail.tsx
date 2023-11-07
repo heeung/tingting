@@ -1,11 +1,14 @@
 import styles from "./ConcertDetail.module.css"
-import {concertImg, likeButton, cancelLikeButton} from "../assets/Images/" 
+import {likeButton, cancelLikeButton} from "../assets/Images/" 
 import {useState} from "react"
 import ScheduleList from "../components/scheduleList/ScheduleList"
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import axios from "axios";
 import {API_BASE_URL} from '../constants/index.ts';
+
+import Lottie from 'lottie-react';
+import { animationLoading } from '../assets/Images/index.js';
 
 
 
@@ -16,6 +19,10 @@ export default function ConcertList(){
     const [isLike, setIsLike] = useState(false)
     const concertSeq = params.concertseq
     
+    const isSameConcert = () => {
+        return concertSeq == data.concertSeq
+    }
+
     const fetchDetailData = async () => {
 
         const concertDetailRequest = {
@@ -28,9 +35,9 @@ export default function ConcertList(){
 
     const { isLoading, isError, data, error } = useQuery("data", fetchDetailData, {
         refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
-        retry: 100, // 실패시 재호출 몇번 할지
         onSuccess: data => {
           // 성공시 호출
+          console.log(data)
           setIsLike(data.favorite)
         
         },
@@ -58,6 +65,17 @@ export default function ConcertList(){
     return(
         <div
         className={styles.container}>
+            {
+                isLoading 
+                || !isSameConcert()
+                
+                ?
+                <div>
+                <Lottie 
+                className={styles["loading-box"]}
+                animationData={animationLoading}/>
+              </div>
+                :
             <div
             className={styles.detailContainer}>
                 <div
@@ -133,6 +151,7 @@ export default function ConcertList(){
                 </div>
 
             </div>
+            }
 
 
         </div>

@@ -10,7 +10,7 @@ export default function BookingInfoList({props}){
             {props?.tickets?.map((ticket)=>{
                 return <div 
                 className={styles.bookingInfo}
-                key={ticket}
+                key={ticket?.ticketSeq}
                 >
                     <BookingInfo ticket={ticket} />
                 </div>

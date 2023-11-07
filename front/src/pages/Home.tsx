@@ -7,7 +7,6 @@ import Carousel from '../components/carousel/MyCarousel.js';
 import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 
-// import Calendar from '../components/calendar/Calendar.js';
 // import { useRecoilState } from 'recoil';
 // import { ConcertItemAtom } from '../recoil/ConcertItemAtom.tsx';
 import {
@@ -49,25 +48,33 @@ interface ConcertListRequestDto {
 
 
 function Home(){
+
+  const [category,setCategory] = useState("now");
+  const [queryKey, setQueryKey] = useState('data'); // Query 키를 관리하는 상태 추가
+
+  const toggleCategory = (categoryName:string) => {
+      setCategory(categoryName)
+      setQueryKey(categoryName); // Query 키를 변경
+  }
     // const navigate = useNavigate();
     // const [concertList, setConcertList] = useRecoilState(ConcertItemAtom) 
 
     // API 호출 함수
-  const fetchData = async () => {
+  const fetchData = async (category:string) => {
 
   const concertListRequest = {
     currentPage: 1,
     itemCount: 200,
-    orderBy :"now"
+    orderBy : category
   }
 
   const response = await axios.get(`${API_BASE_URL}/concerts`, {params:concertListRequest});
   return response.data;
 };
 
-    const { isLoading, isError, data, error } = useQuery("data", fetchData, {
+    const { isLoading, isError, data, error } = useQuery(queryKey, ()=>fetchData(category), {
         refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
-        retry: 1, // 실패시 재호출 몇번 할지
+        // retry: 1, // 실패시 재호출 몇번 할지
         onSuccess: data => {
           // 성공시 호출
           console.log(data);
@@ -79,14 +86,6 @@ function Home(){
         }
       });
 
-      
-    console.log(data)
-    const [category,setCategory] = useState("reservationNow");
-
-    const toggleCategory = (categoryName:string) => {
-        setCategory(categoryName)
-    }
-
     return(        
         <div
         className={styles.container}>
@@ -94,22 +93,18 @@ function Home(){
             <Carousel/>
             {/* 검색 컴포넌트 */}
             <Search/>
-            {/* <div>
-                <Calendar/>
-                <Calendar/>
-            </div> */}
                 <div
                 className={styles.toggleButtonBox}>
 
                     <div 
-                    className={category=="reservationNow" ? `${styles.toggleButton} ${styles.on}` : `${styles.toggleButton} ${styles.off}`}
-                    onClick={()=>toggleCategory("reservationNow")}
+                    className={category=="now" ? `${styles.toggleButton} ${styles.on}` : `${styles.toggleButton} ${styles.off}`}
+                    onClick={()=>toggleCategory("now")}
                     >
                         예매중 
                     </div>
                     <div 
-                    className={category=="reservationImminent" ? `${styles.toggleButton} ${styles.on}` : `${styles.toggleButton} ${styles.off}`}
-                    onClick={()=>toggleCategory("reservationImminent")}
+                    className={category=="soon" ? `${styles.toggleButton} ${styles.on}` : `${styles.toggleButton} ${styles.off}`}
+                    onClick={()=>toggleCategory("soon")}
                     >
                         예매임박
                     </div>

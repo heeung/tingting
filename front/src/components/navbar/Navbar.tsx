@@ -49,12 +49,6 @@ export default function Navbar(){
         </div>
 
         <div
-        onClick={() => goToOtherPage('concert/detail')}
-        className={styles.logout}>
-            콘서트 상세 
-        </div>
-
-        <div
         onClick={() => goToOtherPage('concert/reservation')}
         className={styles.logout}>
             공연예매
