@@ -52,6 +52,8 @@ public class UserService {
 	@Value("${spring.kakao.client_id}")
 	private String clientId;
 
+	@Value("${spring.kakao.redirect_uri")
+	private String redirectUri;
 	/*
 		찜 목록 가져오기
 	 */
@@ -120,7 +122,7 @@ public class UserService {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
 		params.add("client_id", clientId);
-		params.add("redirect_uri", "http://k9d209.p.ssafy.io:9000/users/kakao");
+		params.add("redirect_uri", redirectUri);
 		params.add("code", code);
 
 		// Set http entity
