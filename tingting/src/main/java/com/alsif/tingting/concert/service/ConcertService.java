@@ -201,7 +201,7 @@ public class ConcertService {
 		} else {
 			userConcertRepository.save(UserConcert.builder()
 				.concert(Concert.constructBySeq(concertFavoriteRequestDto.getConcertSeq()))
-				.user(User.constructBySeq(concertFavoriteRequestDto.getUserSeq()))
+				.user(User.seqOf(concertFavoriteRequestDto.getUserSeq()))
 				.build());
 		}
 

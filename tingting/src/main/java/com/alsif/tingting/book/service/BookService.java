@@ -104,8 +104,8 @@ public class BookService {
 	public SuccessResponseDto book(Integer userSeq, Integer concertDetailSeq,
 		ConcertSeatBookRequestDto requestDto) {
 
-		User user = User.constructBySeq(userSeq);
-		ConcertDetail concertDetail = ConcertDetail.constructBySeq(concertDetailSeq);
+		User user = User.seqOf(userSeq);
+		ConcertDetail concertDetail = ConcertDetail.seqOf(concertDetailSeq);
 
 		List<ConcertSeatInfo> concertSeatInfos = new ArrayList<>();
 		int totalPrice = 0;
@@ -181,7 +181,7 @@ public class BookService {
 	@Transactional
 	public SuccessResponseDto reservationCancellation(Integer userSeq, Integer ticketSeq) {
 
-		User user = User.constructBySeq(userSeq);
+		User user = User.seqOf(userSeq);
 
 		Ticket ticket = ticketRepository.findById(ticketSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_TICKET_SEQ));
