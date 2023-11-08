@@ -184,8 +184,7 @@ public class BookService {
 	@Transactional
 	public SuccessResponseDto reservationCancellation(Integer userSeq, Integer ticketSeq) {
 
-		User user = userRepository.findById(userSeq)
-			.orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
+		User user = User.constructBySeq(userSeq);
 
 		Ticket ticket = ticketRepository.findById(ticketSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_TICKET_SEQ));
@@ -234,6 +233,16 @@ public class BookService {
 			.pay(totalPrice)
 			.total(currentMoney + totalPrice)
 			.build());
+
+		// redis 정보 갱신
+		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
+			String hashKey = CONCERT_SEAT_INFO_KEY + concertSeatInfo.getSeq();
+			String seatAvailability = stringRedisTemplate.opsForValue().get(hashKey);
+			if (seatAvailability != null) {
+				stringRedisTemplate.expire(hashKey, 10, TimeUnit.MINUTES);
+				stringRedisTemplate.opsForValue().set(hashKey, "0");
+			}
+		}
 
 		return SuccessResponseDto.builder().message("true").build();
 	}
