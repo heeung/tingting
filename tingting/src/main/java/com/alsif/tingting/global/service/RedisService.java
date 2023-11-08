@@ -21,13 +21,16 @@ public class RedisService {
 	}
 
 	/*
-		hash table 의 값 조회
+		hash table 값 조회
 	 */
-	public String getHashValue(String hashKey) {
+	public String getValue(String hashKey) {
 		return stringRedisTemplate.opsForValue().get(hashKey);
 	}
 
-	public void setHashValue(String hashKey, String value) {
+	/*
+		hash table 값 설정
+	 */
+	public void setValue(String hashKey, String value) {
 		stringRedisTemplate.opsForValue().set(hashKey, value);
 	}
 

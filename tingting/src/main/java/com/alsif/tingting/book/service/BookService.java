@@ -113,7 +113,7 @@ public class BookService {
 		// 좌석별 예매 상태 변경
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
 			String hashKey = CONCERT_SEAT_INFO_KEY + seatSeq;
-			String seatAvailability = redisService.getHashValue(hashKey);
+			String seatAvailability = redisService.getValue(hashKey);
 
 			if (seatAvailability != null) {
 				redisService.setExpireTime(hashKey, 10);
@@ -168,7 +168,7 @@ public class BookService {
 		// redis 좌석 정보 저장
 		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
 			String hashKey = CONCERT_SEAT_INFO_KEY + concertSeatInfo.getSeq();
-			redisService.setHashValue(hashKey, "1");
+			redisService.setValue(hashKey, "1");
 			redisService.setExpireTime(hashKey, 10);
 		}
 
@@ -234,9 +234,9 @@ public class BookService {
 		// redis 정보 갱신
 		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
 			String hashKey = CONCERT_SEAT_INFO_KEY + concertSeatInfo.getSeq();
-			String seatAvailability = redisService.getHashValue(hashKey);
+			String seatAvailability = redisService.getValue(hashKey);
 			if (seatAvailability != null) {
-				redisService.setHashValue(hashKey, "0");
+				redisService.setValue(hashKey, "0");
 				redisService.setExpireTime(hashKey, 10);
 			}
 		}
@@ -257,7 +257,7 @@ public class BookService {
 
 		if (concertSeatInfo.getBook()) {
 			String hashKey = CONCERT_SEAT_INFO_KEY + concertSeatInfo.getSeq();
-			redisService.setHashValue(hashKey, "0");
+			redisService.setValue(hashKey, "0");
 			redisService.setExpireTime(hashKey, 10);
 			throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
 		}
