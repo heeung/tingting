@@ -3,9 +3,7 @@ package com.alsif.tingting.book.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,10 +25,10 @@ import com.alsif.tingting.concert.repository.ConcertRepository;
 import com.alsif.tingting.concert.repository.ConcertSeatInfoRepository;
 import com.alsif.tingting.global.constant.ErrorCode;
 import com.alsif.tingting.global.exception.CustomException;
+import com.alsif.tingting.global.service.RedisService;
 import com.alsif.tingting.user.entity.Point;
 import com.alsif.tingting.user.entity.User;
 import com.alsif.tingting.user.repository.PointRepository;
-import com.alsif.tingting.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,10 +42,9 @@ public class BookService {
 	private final ConcertHallSeatRepository concertHallSeatRepository;
 	private final ConcertSeatInfoRepository concertSeatInfoRepository;
 	private final TicketRepository ticketRepository;
-	private final UserRepository userRepository;
 	private final TicketSeatRepository ticketSeatRepository;
 	private final PointRepository pointRepository;
-	private final StringRedisTemplate stringRedisTemplate;
+	private final RedisService redisService;
 
 	static final String CONCERT_SEAT_INFO_KEY = "concert_seat_info_";
 
@@ -116,10 +113,10 @@ public class BookService {
 		// 좌석별 예매 상태 변경
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
 			String hashKey = CONCERT_SEAT_INFO_KEY + seatSeq;
-			String seatAvailability = stringRedisTemplate.opsForValue().get(hashKey);
+			String seatAvailability = redisService.getHashValue(hashKey);
 
 			if (seatAvailability != null) {
-				stringRedisTemplate.expire(hashKey, 10, TimeUnit.MINUTES);
+				redisService.setExpireTime(hashKey, 10);
 				if (seatAvailability.equals("1")) {
 					throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
 				}
@@ -171,8 +168,8 @@ public class BookService {
 		// redis 좌석 정보 저장
 		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
 			String hashKey = CONCERT_SEAT_INFO_KEY + concertSeatInfo.getSeq();
-			stringRedisTemplate.opsForValue().set(hashKey, "1");
-			stringRedisTemplate.expire(hashKey, 10, TimeUnit.MINUTES);
+			redisService.setHashValue(hashKey, "1");
+			redisService.setExpireTime(hashKey, 10);
 		}
 
 		return SuccessResponseDto.builder().message("true").build();
@@ -237,10 +234,10 @@ public class BookService {
 		// redis 정보 갱신
 		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
 			String hashKey = CONCERT_SEAT_INFO_KEY + concertSeatInfo.getSeq();
-			String seatAvailability = stringRedisTemplate.opsForValue().get(hashKey);
+			String seatAvailability = redisService.getHashValue(hashKey);
 			if (seatAvailability != null) {
-				stringRedisTemplate.expire(hashKey, 10, TimeUnit.MINUTES);
-				stringRedisTemplate.opsForValue().set(hashKey, "0");
+				redisService.setHashValue(hashKey, "0");
+				redisService.setExpireTime(hashKey, 10);
 			}
 		}
 
@@ -259,6 +256,9 @@ public class BookService {
 		}
 
 		if (concertSeatInfo.getBook()) {
+			String hashKey = CONCERT_SEAT_INFO_KEY + concertSeatInfo.getSeq();
+			redisService.setHashValue(hashKey, "0");
+			redisService.setExpireTime(hashKey, 10);
 			throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
 		}
 
