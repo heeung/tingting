@@ -36,7 +36,7 @@ public class User extends BaseEntity {
 		this.email = email;
 	}
 
-	public static User constructBySeq(Integer seq) {
+	public static User seqOf(Integer seq) {
 		return new User(seq);
 	}
 

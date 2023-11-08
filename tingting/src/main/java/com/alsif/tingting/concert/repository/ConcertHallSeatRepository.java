@@ -14,7 +14,7 @@ import com.alsif.tingting.concert.entity.concerthall.ConcertHallSeat;
 public interface ConcertHallSeatRepository extends JpaRepository<ConcertHallSeat, Integer> {
 
 	@Query(
-		"SELECT NEW com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoResponseDto(csi.seq, chs.section, chs.seat, csi.book, g.name) "
+		"SELECT NEW com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoResponseDto(csi.seq, chs.section, chs.seat, csi.book, g.name, g.price) "
 			+ "FROM ConcertHallSeat chs "
 			+ "JOIN ConcertSeatInfo csi ON (chs.seq = csi.concertHallSeat.seq) "
 			+ "JOIN Grade g ON (csi.grade.seq = g.seq) "
