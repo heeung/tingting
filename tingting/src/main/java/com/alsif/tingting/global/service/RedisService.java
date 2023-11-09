@@ -13,25 +13,39 @@ public class RedisService {
 
 	private final StringRedisTemplate stringRedisTemplate;
 
+	private final Long DEFAULT_TIMEOUT = 10L;
+
 	/*
 		만료 시간 설정
 	 */
-	public void setExpireTime(String hashKey, long minutes) {
+	private void setExpireTime(String hashKey, long minutes) {
 		stringRedisTemplate.expire(hashKey, minutes, TimeUnit.MINUTES);
 	}
 
 	/*
 		hash table 값 조회
 	 */
+	public String getValue(String hashKey, long minutes) {
+		String value = stringRedisTemplate.opsForValue().get(hashKey);
+		if (value != null) {
+			setExpireTime(hashKey, minutes);
+		}
+		return value;
+	}
+
 	public String getValue(String hashKey) {
-		return stringRedisTemplate.opsForValue().get(hashKey);
+		return this.getValue(hashKey, DEFAULT_TIMEOUT);
 	}
 
 	/*
 		hash table 값 설정
 	 */
-	public void setValue(String hashKey, String value) {
+	public void setValue(String hashKey, String value, long minutes) {
 		stringRedisTemplate.opsForValue().set(hashKey, value);
+		setExpireTime(hashKey, minutes);
 	}
 
+	public void setValue(String hashKey, String value) {
+		this.setValue(hashKey, value, DEFAULT_TIMEOUT);
+	}
 }
