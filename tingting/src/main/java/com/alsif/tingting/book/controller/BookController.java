@@ -121,7 +121,8 @@ public class BookController {
 	@Operation(summary = "선택 좌석 예매 요청")
 	@Parameters(value = {
 		@Parameter(required = true, name = "concertDetailSeq", description = "콘서트 상세 PK (ex. 1)"),
-		@Parameter(required = true, name = "userSeq", description = "회원 PK (ex. 1)")
+		@Parameter(required = true, name = "userSeq", description = "회원 PK (ex. 1)"),
+		@Parameter(required = true, name = "section", description = "좌석 대분류 코드 (ex. A)")
 	})
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200"),

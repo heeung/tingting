@@ -32,4 +32,7 @@ public class ConcertSectionSeatInfoResponseDto {
 
 	@Schema(description = "좌석 등급 이름", type = "String", example = "일반 / VIP")
 	private String grade;
+
+	@Schema(description = "좌석 등급 가격", type = "Integer", example = "88000")
+	private Integer price;
 }

@@ -20,16 +20,15 @@ import com.alsif.tingting.concert.entity.Concert;
 import com.alsif.tingting.concert.entity.ConcertDetail;
 import com.alsif.tingting.concert.entity.ConcertSeatInfo;
 import com.alsif.tingting.concert.entity.concerthall.ConcertHall;
-import com.alsif.tingting.concert.repository.ConcertDetailRepository;
 import com.alsif.tingting.concert.repository.ConcertHallSeatRepository;
 import com.alsif.tingting.concert.repository.ConcertRepository;
 import com.alsif.tingting.concert.repository.ConcertSeatInfoRepository;
 import com.alsif.tingting.global.constant.ErrorCode;
 import com.alsif.tingting.global.exception.CustomException;
+import com.alsif.tingting.global.service.RedisService;
 import com.alsif.tingting.user.entity.Point;
 import com.alsif.tingting.user.entity.User;
 import com.alsif.tingting.user.repository.PointRepository;
-import com.alsif.tingting.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,10 +42,11 @@ public class BookService {
 	private final ConcertHallSeatRepository concertHallSeatRepository;
 	private final ConcertSeatInfoRepository concertSeatInfoRepository;
 	private final TicketRepository ticketRepository;
-	private final UserRepository userRepository;
-	private final ConcertDetailRepository concertDetailRepository;
 	private final TicketSeatRepository ticketSeatRepository;
 	private final PointRepository pointRepository;
+	private final RedisService redisService;
+
+	static final String CONCERT_SEAT_INFO_KEY = "concert_seat_info_";
 
 	/*
 		콘서트장 정보 조회
@@ -104,17 +104,24 @@ public class BookService {
 	public SuccessResponseDto book(Integer userSeq, Integer concertDetailSeq,
 		ConcertSeatBookRequestDto requestDto) {
 
-		User user = userRepository.findById(userSeq)
-			.orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
-
-		ConcertDetail concertDetail = concertDetailRepository.findById(concertDetailSeq)
-			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_CONCERT_DETAIL_SEQ));
+		User user = User.seqOf(userSeq);
+		ConcertDetail concertDetail = ConcertDetail.seqOf(concertDetailSeq);
 
 		List<ConcertSeatInfo> concertSeatInfos = new ArrayList<>();
 		int totalPrice = 0;
 
 		// 좌석별 예매 상태 변경
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
+			String hashKey = CONCERT_SEAT_INFO_KEY + seatSeq;
+			String seatAvailability = redisService.getValue(hashKey);
+
+			if (seatAvailability != null) {
+				redisService.setExpireTime(hashKey, 10);
+				if (seatAvailability.equals("1")) {
+					throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
+				}
+			}
+
 			// 예매 되지 않은 좌석이라면, 예매 처리
 			ConcertSeatInfo concertSeatInfo = this.checkSeatAvailability(concertDetailSeq, seatSeq);
 			concertSeatInfo.updateBook(true);
@@ -158,6 +165,13 @@ public class BookService {
 			.total(currentMoney - totalPrice)
 			.build());
 
+		// redis 좌석 정보 저장
+		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
+			String hashKey = CONCERT_SEAT_INFO_KEY + concertSeatInfo.getSeq();
+			redisService.setValue(hashKey, "1");
+			redisService.setExpireTime(hashKey, 10);
+		}
+
 		return SuccessResponseDto.builder().message("true").build();
 	}
 
@@ -167,8 +181,7 @@ public class BookService {
 	@Transactional
 	public SuccessResponseDto reservationCancellation(Integer userSeq, Integer ticketSeq) {
 
-		User user = userRepository.findById(userSeq)
-			.orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
+		User user = User.seqOf(userSeq);
 
 		Ticket ticket = ticketRepository.findById(ticketSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST_TICKET_SEQ));
@@ -218,6 +231,16 @@ public class BookService {
 			.total(currentMoney + totalPrice)
 			.build());
 
+		// redis 정보 갱신
+		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
+			String hashKey = CONCERT_SEAT_INFO_KEY + concertSeatInfo.getSeq();
+			String seatAvailability = redisService.getValue(hashKey);
+			if (seatAvailability != null) {
+				redisService.setValue(hashKey, "0");
+				redisService.setExpireTime(hashKey, 10);
+			}
+		}
+
 		return SuccessResponseDto.builder().message("true").build();
 	}
 
@@ -233,6 +256,9 @@ public class BookService {
 		}
 
 		if (concertSeatInfo.getBook()) {
+			String hashKey = CONCERT_SEAT_INFO_KEY + concertSeatInfo.getSeq();
+			redisService.setValue(hashKey, "0");
+			redisService.setExpireTime(hashKey, 10);
 			throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
 		}
 

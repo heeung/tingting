@@ -43,6 +43,14 @@ public class ConcertDetail {
 		this.holdDate = holdDate;
 	}
 
+	public static ConcertDetail seqOf(Integer seq) {
+		return new ConcertDetail(seq);
+	}
+
+	private ConcertDetail(Integer seq) {
+		this.seq = seq;
+	}
+
 	public static ConcertDetailBaseDto convertToConcertDetailBaseDto(ConcertDetail concertDetail) {
 		return ConcertDetailBaseDto.builder()
 			.seq(concertDetail.getSeq())
