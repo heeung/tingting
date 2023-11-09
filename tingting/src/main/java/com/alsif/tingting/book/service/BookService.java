@@ -107,7 +107,6 @@ public class BookService {
 	public SuccessResponseDto book(Integer userSeq, Integer concertDetailSeq,
 		ConcertSeatBookRequestDto requestDto) {
 
-		// TODO: 삭제할 부분들
 		User user = userRepository.findById(userSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
 
@@ -118,7 +117,6 @@ public class BookService {
 		int totalPrice = 0;
 
 		// 좌석별 예매 상태 변경
-		// TODO: 이 부분 전체를 조인과 where in으로 하나의 쿼리문으로 수정할 수 있지 않을까?
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
 			// 예매 되지 않은 좌석이라면, 예매 처리
 			ConcertSeatInfo concertSeatInfo = this.checkSeatAvailability(concertDetailSeq, seatSeq);
@@ -140,7 +138,6 @@ public class BookService {
 			.concertDetail(concertDetail)
 			.build());
 
-		// TODO: 이 부분도 jdbc batch update를 통해서 저장 성능을 높일 수 있을것이다.
 		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
 			ticketSeatRepository.save(TicketSeat.builder()
 				.ticket(ticket)
@@ -178,6 +175,10 @@ public class BookService {
 
 		List<ConcertSeatGradeInfoBaseDto> concertSeatInfoJoinGrades = concertSeatInfoRepository.findByConcertSeatInfoJoinGrade(
 			seatSeqs);
+
+		if (concertSeatInfoJoinGrades.stream().anyMatch(ConcertSeatGradeInfoBaseDto::getBook)) {
+			throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
+		}
 
 		concertSeatInfoRepository.updateBookBySeqs(seatSeqs);
 
