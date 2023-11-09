@@ -43,7 +43,7 @@ public class ConcertDetail {
 		this.holdDate = holdDate;
 	}
 
-	public static ConcertDetail constructBySeq(Integer seq) {
+	public static ConcertDetail seqOf(Integer seq) {
 		return new ConcertDetail(seq);
 	}
 
