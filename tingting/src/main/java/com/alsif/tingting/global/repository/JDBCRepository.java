@@ -19,7 +19,6 @@ public class JDBCRepository {
 
 	private final JdbcTemplate jdbcTemplate;
 
-	@Transactional
 	public void saveTicketSeats(List<Long> concertSeatInfoSeqs, Ticket ticket) {
 		String sql = "INSERT INTO ticket_seat (ticket_seq, concert_seat_info_seq) "
 			+ "VALUES (?, ?)";
