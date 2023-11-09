@@ -33,7 +33,7 @@ public interface ConcertSeatInfoRepository extends JpaRepository<ConcertSeatInfo
 
 	@Modifying
 	@Query("UPDATE ConcertSeatInfo "
-		+ "SET book = true "
+		+ "SET book = :bool "
 		+ "WHERE seq in :seqs")
-	int updateBookBySeqs(@Param("seqs") List<Long> concertSeatInfos);
+	int updateBooks(@Param("seqs") List<Long> concertSeatInfoSeqs, @Param("bool") Boolean bool);
 }
