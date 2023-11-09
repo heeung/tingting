@@ -11,6 +11,7 @@ import com.alsif.tingting.book.entity.Ticket;
 import com.alsif.tingting.book.entity.TicketSeat;
 import com.alsif.tingting.book.repository.TicketRepository;
 import com.alsif.tingting.book.repository.TicketSeatRepository;
+import com.alsif.tingting.concert.dto.ConcertSeatGradeInfoBaseDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertHallPatternResponseDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSeatBookRequestDto;
 import com.alsif.tingting.concert.dto.concerthall.ConcertSectionSeatInfoRequestDto;
@@ -26,6 +27,7 @@ import com.alsif.tingting.concert.repository.ConcertRepository;
 import com.alsif.tingting.concert.repository.ConcertSeatInfoRepository;
 import com.alsif.tingting.global.constant.ErrorCode;
 import com.alsif.tingting.global.exception.CustomException;
+import com.alsif.tingting.global.repository.JDBCRepository;
 import com.alsif.tingting.user.entity.Point;
 import com.alsif.tingting.user.entity.User;
 import com.alsif.tingting.user.repository.PointRepository;
@@ -47,6 +49,7 @@ public class BookService {
 	private final ConcertDetailRepository concertDetailRepository;
 	private final TicketSeatRepository ticketSeatRepository;
 	private final PointRepository pointRepository;
+	private final JDBCRepository jdbcRepository;
 
 	/*
 		콘서트장 정보 조회
@@ -104,6 +107,7 @@ public class BookService {
 	public SuccessResponseDto book(Integer userSeq, Integer concertDetailSeq,
 		ConcertSeatBookRequestDto requestDto) {
 
+		// TODO: 삭제할 부분들
 		User user = userRepository.findById(userSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_USER));
 
@@ -114,6 +118,7 @@ public class BookService {
 		int totalPrice = 0;
 
 		// 좌석별 예매 상태 변경
+		// TODO: 이 부분 전체를 조인과 where in으로 하나의 쿼리문으로 수정할 수 있지 않을까?
 		for (Long seatSeq : requestDto.getSeatSeqs()) {
 			// 예매 되지 않은 좌석이라면, 예매 처리
 			ConcertSeatInfo concertSeatInfo = this.checkSeatAvailability(concertDetailSeq, seatSeq);
@@ -135,6 +140,7 @@ public class BookService {
 			.concertDetail(concertDetail)
 			.build());
 
+		// TODO: 이 부분도 jdbc batch update를 통해서 저장 성능을 높일 수 있을것이다.
 		for (ConcertSeatInfo concertSeatInfo : concertSeatInfos) {
 			ticketSeatRepository.save(TicketSeat.builder()
 				.ticket(ticket)
@@ -143,6 +149,49 @@ public class BookService {
 		}
 
 		// 포인트 차감
+		Point point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq)
+			.orElseThrow(() -> new CustomException(ErrorCode.NO_DATA_FOUND));
+
+		int currentMoney = point.getTotal();
+		if (currentMoney < totalPrice) {
+			throw new CustomException(ErrorCode.LACK_POINT);
+		}
+
+		pointRepository.save(Point.builder()
+			.user(user)
+			.ticket(ticket)
+			.pay(totalPrice * -1)
+			.total(currentMoney - totalPrice)
+			.build());
+
+		return SuccessResponseDto.builder().message("true").build();
+	}
+
+	@Transactional
+	public SuccessResponseDto bookTest(Integer userSeq, Integer concertDetailSeq,
+		ConcertSeatBookRequestDto requestDto) {
+
+		User user = User.constructBySeq(userSeq);
+		ConcertDetail concertDetail = ConcertDetail.constructBySeq(concertDetailSeq);
+
+		List<Long> seatSeqs = requestDto.getSeatSeqs();
+
+		List<ConcertSeatGradeInfoBaseDto> concertSeatInfoJoinGrades = concertSeatInfoRepository.findByConcertSeatInfoJoinGrade(
+			seatSeqs);
+
+		concertSeatInfoRepository.updateBookBySeqs(seatSeqs);
+
+		int totalPrice = concertSeatInfoJoinGrades.stream()
+			.mapToInt(ConcertSeatGradeInfoBaseDto::getPrice)
+			.sum();
+
+		Ticket ticket = ticketRepository.save(Ticket.builder()
+			.user(user)
+			.concertDetail(concertDetail)
+			.build());
+
+		jdbcRepository.saveAllTicketSeat(seatSeqs, ticket);
+
 		Point point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq)
 			.orElseThrow(() -> new CustomException(ErrorCode.NO_DATA_FOUND));
 
