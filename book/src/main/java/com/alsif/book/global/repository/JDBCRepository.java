@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.alsif.book.book.entity.Ticket;
 
@@ -27,8 +26,8 @@ public class JDBCRepository {
 			concertSeatInfoSeqs,
 			concertSeatInfoSeqs.size(),
 			(PreparedStatement ps, Long seq) -> {
-				ps.setLong(1, seq);
-				ps.setInt(2, ticket.getSeq());
+				ps.setInt(1, ticket.getSeq());
+				ps.setLong(2, seq);
 			});
 	}
 
