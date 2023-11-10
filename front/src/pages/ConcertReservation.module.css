@@ -12,7 +12,7 @@
 }
 
 .concertView{
-    width: 80%;
+    width: 75%;
     height: 100%;
     background: var(--_30, rgba(217, 217, 217, 0.30));
     min-height: 93vh;
@@ -20,14 +20,18 @@
 
 }
 
-.selectedSeat{
-
+.selectedSeatView{
     position: relative;
     z-index: 100;
-    width: 20%;
+    width: 25%;
     height: 100%;
     background: #FFF;
     min-height: 93vh;
+}
+
+.selectedSeat{
+    max-height: 29.5rem;
+    overflow-y: scroll;
 }
 
 .loading{
@@ -86,7 +90,7 @@
     align-items: center;
 }
 
-.button{
+.active-button{
     padding: 2rem 4rem;
     margin: 1rem;
     background: #74ABDE;
@@ -102,7 +106,44 @@
     letter-spacing: 0.03125rem;
 }
 
+.inactive-button{
+    padding: 2rem 4rem;
+    margin: 1rem;
+    background:#D9D9D9;
+    position: absolute;
+    bottom: 0;
+
+    color: #FFF;
+    font-family: Gmarket Sans TTF;
+    font-size: 1.875rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.5rem; /* 80% */
+    letter-spacing: 0.03125rem;
+}
+
 .selected-seat-component{
     margin: 0 auto;
+
+}
+
+.total-price{
+    margin: 2rem auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+    height: 3.6875rem;
+
+    background: #FFF;
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
+
+    color: var(--_, #444);
+    font-family: Gmarket Sans TTF;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.5rem; /* 100% */
+    letter-spacing: 0.03125rem;
 
 }

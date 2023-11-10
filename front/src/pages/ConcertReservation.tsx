@@ -30,6 +30,15 @@ export default function ConcertReservation(){
       return selectedSeat.length
     }
 
+    const totalPrice = selectedSeat.reduce(function add(sum, currValue) {
+      if(currValue.price === undefined){
+        return 0
+      }else{
+        return sum + currValue.price;
+      }
+    }, 0);
+
+
     const fetchConcertType= async () => {
         const response = await axios.get(`${API_BASE_URL}/book/${concertSeq}`);
         SetConcertHallSeq(response.data.concertHallSeq)
@@ -74,7 +83,6 @@ export default function ConcertReservation(){
 
       
     }
-
 
     // useQuery를 이용하는게 맞는가?, 콘서트장 정보조회
     // const { isLoading, isError, data, error } = useQuery("concertType", ()=>fetchConcertType(), {
@@ -130,21 +138,22 @@ export default function ConcertReservation(){
                 className={styles.concertView}>
                 {/* seat component */}
                 <SeatList seats={seatData} setSelectedSeat={setSelectedSeat} selectedSeat={selectedSeat}/>
-                <div
-                className={styles["seat-cnt-bar"]}
-                >
-                  <span
-                  className={styles["seat-cnt-comment"]}>
-                    선택한 좌석 총 {(getSeatCnt() > 0) && <span className={styles["seat-cnt"]}>{getSeatCnt()}석</span>}이 선택되었습니다.
-                  </span>
-                </div>
+                  <div
+                  className={styles["seat-cnt-bar"]}
+                  >
+                    <span
+                    className={styles["seat-cnt-comment"]}>
+                      선택한 좌석 총 {(getSeatCnt() > 0) && <span className={styles["seat-cnt"]}>{getSeatCnt()}석</span>}이 선택되었습니다.
+                    </span>
+                  </div>
                 </div>
                 
                 {/* 우측 사용자 좌석 선택 확인 페이지 */}
                 <div
-                className={styles.selectedSeat}>
+                className={styles.selectedSeatView}>
                   {/* max-height를 설정하고 overflow를 y로 설정해서 아래로 내려서 볼 수 있게 구성 */}
-                  <div>
+                  <div
+                  className={styles.selectedSeat}>
                     {selectedSeat?.map((seat)=>{
                       return<div
                       className={styles['selected-seat-component']}
@@ -154,14 +163,33 @@ export default function ConcertReservation(){
                       </div>
                     })}
                   </div>
+                  {
+                    (selectedSeat.length>0) &&
+                    <div
+                    className={styles['total-price']}>
+                      총 결제금액 <span>{totalPrice}원</span>
+                    </div>
+                  }
+
                   
                   
                   <div
                   className={styles.buttonBox}>
+
+                    {
+                    (selectedSeat.length>0)
+                    ?
                     <button
-                    className={styles.button}
+                    className={styles['active-button']}
                     onClick={()=>reservation()}
-                    >예매하기</button>
+                    >예매하기
+                    </button>
+                    :
+                    <button
+                    className={styles['inactive-button']}
+                    >예매하기
+                    </button>
+                    }
                   </div>
 
                 </div>
