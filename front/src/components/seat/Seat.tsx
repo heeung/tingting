@@ -8,6 +8,13 @@ export default function Seat({seat,selectedSeat}){
         }
         return false
     }
+
+    const isVip = () => {
+        if(seat.grade=="VIP"){
+            return true
+        }
+        return false
+    }
     return(
         <div className={styles.container}>
             <div className={styles.seat}>
@@ -24,7 +31,11 @@ export default function Seat({seat,selectedSeat}){
                         ?
                         <rect width="30" height="30" fill="#F03B3B"/>
                         :
+                        isVip()
+                        ?
                         <rect width="30" height="30" fill="#EB7BFD"/>
+                        :
+                        <rect width="30" height="30" fill="#90BCE5"/>
                     }
                 </svg>
             </div>

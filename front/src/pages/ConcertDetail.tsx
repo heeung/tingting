@@ -48,7 +48,7 @@ export default function ConcertList(){
         }
       });
 
-    const toggleIsLike = async (isLike:boolean) => {
+    const toggleIsLike = async () => {
         const likeRequest = {
             concertSeq: concertSeq,
             userSeq : 1

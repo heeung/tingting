@@ -4,26 +4,55 @@ import ConcertList from '../components/concertlist/ConcertList'
 import axios from 'axios';
 import {API_BASE_URL} from '../constants/index.ts';
 import {useQuery} from 'react-query';
+import { useState } from 'react';
 
 import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 
 export default function SearchPage(){
 
+  const [place,SetPlace] = useState("")
+  const [searchWord,SetSearchWord] = useState("")
+  const [isSearch,SetIsSearch] = useState(false)
+
     // API 호출 함수
   const fetchData = async () => {
+    console.log(place)
+    console.log(searchWord)
 
-    const concertListRequest = {
+    let concertListRequest = {
       currentPage: 1,
       itemCount: 200,
-      orderBy :"now"
     }
+
+    if(searchWord=="" && place==""){
+      concertListRequest = {
+        ...concertListRequest,
+        orderBy : "now"
+      }
+    }
+
+    if(searchWord!=""){
+      concertListRequest = {
+        ...concertListRequest,
+        searchWord : searchWord
+      }
+    }
+
+    if(place!=""){
+      concertListRequest = {
+        ...concertListRequest,
+        place : place
+      }
+    }
+
+    console.log(concertListRequest)
   
     const response = await axios.get(`${API_BASE_URL}/concerts`, {params:concertListRequest});
     return response.data;
   };
 
-  const { isLoading, isError, data, error } = useQuery("data", fetchData, {
+  const { isLoading, isError, data, error } = useQuery([isSearch], fetchData, {
     refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
     onSuccess: data => {
       // 성공시 호출
@@ -40,7 +69,11 @@ export default function SearchPage(){
         <div className={styles.container}>
             <div
             className={styles.searchBar}>
-                <Search/>
+                <Search 
+                place={place} SetPlace={SetPlace} 
+                searchWord={searchWord} SetSearchWord={SetSearchWord}
+                isSearch={isSearch} SetIsSearch={SetIsSearch}
+                />
             </div>
 
                 { isError && <div>Error: {error?.message}</div>}

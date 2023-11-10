@@ -21,8 +21,7 @@ export default function ConcertReservation(){
 
     const [selectedSeat,setSelectedSeat] = useState([])
     const [concertHallSeq,SetConcertHallSeq] = useState(0)
-    const [concertPattern,SetConcertPattern] = useState("")
-    // const [nowSection, SetNowSection] = useState("")
+    const [nowSection, SetNowSection] = useState("")
     const [queryKey, setQueryKey] = useState(""); 
 
 
@@ -42,8 +41,7 @@ export default function ConcertReservation(){
     const fetchConcertType= async () => {
         const response = await axios.get(`${API_BASE_URL}/book/${concertSeq}`);
         SetConcertHallSeq(response.data.concertHallSeq)
-        SetConcertPattern(response.data.pattern)
-        // SetNowSection(response.data.pattern)
+        SetNowSection(response.data.pattern)
         setQueryKey("fetched")
 
     }
@@ -51,7 +49,7 @@ export default function ConcertReservation(){
     const fetchSeats= async () => {
         const requestDto = {
             concertHallSeq:concertHallSeq,
-            target:concertPattern
+            target:nowSection
         }
 
         const response = await axios.get(`${API_BASE_URL}/book/${seq}/section`,{params:requestDto});
@@ -84,26 +82,8 @@ export default function ConcertReservation(){
       
     }
 
-    // useQuery를 이용하는게 맞는가?, 콘서트장 정보조회
-    // const { isLoading, isError, data, error } = useQuery("concertType", ()=>fetchConcertType(), {
-    //     refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
-    //     // retry: 1, // 실패시 재호출 몇번 할지
-    //     onSuccess: data => {
-    //       // 성공시 호출
-    //       console.log(data);
-    //       // useQuery 이용하면 안써도..?
-    //       SetConcertHallSeq(data.concertHallSeq)
-    //       SetConcertPattern(data.pattern)
-    //     },
-    //     onError: e => {
-    //       // 실패시 호출 (401, 404 같은 error가 아니라 정말 api 호출이 실패한 경우만 호출됩니다.)
-    //       // 강제로 에러 발생시키려면 api단에서 throw Error 날립니다. (참조: https://react-query.tanstack.com/guides/query-functions#usage-with-fetch-and-other-clients-that-do-not-throw-by-default)
-    //       console.log(e?.message);
-    //     }
-    //   });
 
-
-      const { isLoading, data: seatData} = useQuery(queryKey, ()=>fetchSeats(), {
+      const { isLoading, data: seatData} = useQuery([nowSection,queryKey], ()=>fetchSeats(), {
         refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
         // retry: 1, // 실패시 재호출 몇번 할지
         // enabled : false,
@@ -121,7 +101,7 @@ export default function ConcertReservation(){
     return(
         <div
         className={styles.container} >
-            <Navbar holdDate={holdDate} concertName={concertName}/>
+            <Navbar holdDate={holdDate} concertName={concertName} section={nowSection} SetSection={SetNowSection}/>
             {isLoading
                 ?
                 <div>
@@ -134,10 +114,41 @@ export default function ConcertReservation(){
             className={styles.body}>
                 {/* 좌측 공연 섹션, 좌석 선택 페이지  */}
                 
+                <div
+                className={styles["seat-grade-view"]}>
+                  <div 
+                  className={styles["seat-grade-box"]}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                       <rect width="30" height="30" fill="#EB7BFD"/>
+                    </svg>
+                    <div
+                    className={styles["seat-grade-name"]}
+                    >VIP</div>
+                  </div>
+                  <div
+                  className={styles["seat-grade-box"]}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                        <rect width="30" height="30" fill="#90BCE5"/>
+                    </svg>
+                    <div
+                    className={styles["seat-grade-name"]}
+                    >일반</div>
+                  </div>
+                </div>
+                
+                
                 <div 
                 className={styles.concertView}>
-                {/* seat component */}
-                <SeatList seats={seatData} setSelectedSeat={setSelectedSeat} selectedSeat={selectedSeat}/>
+
+                <div
+                className={styles.stage}>
+                  STAGE
+                </div>
+
+                <div
+                className={styles["seat-list-box"]}>
+                  <SeatList seats={seatData} setSelectedSeat={setSelectedSeat} selectedSeat={selectedSeat}/>
+                </div>
                   <div
                   className={styles["seat-cnt-bar"]}
                   >
@@ -151,7 +162,6 @@ export default function ConcertReservation(){
                 {/* 우측 사용자 좌석 선택 확인 페이지 */}
                 <div
                 className={styles.selectedSeatView}>
-                  {/* max-height를 설정하고 overflow를 y로 설정해서 아래로 내려서 볼 수 있게 구성 */}
                   <div
                   className={styles.selectedSeat}>
                     {selectedSeat?.map((seat)=>{
