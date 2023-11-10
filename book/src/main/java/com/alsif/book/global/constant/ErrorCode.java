@@ -20,6 +20,8 @@ public enum ErrorCode {
 	ALREADY_CANCELED_TICKET(HttpStatus.CONFLICT, "이미 예매가 취소된 티켓"),
 	NO_DATA_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "예매 불가능"),
 	LACK_POINT(HttpStatus.FORBIDDEN, "포인트 부족"),
+	TASK_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러"),
+	WAIT_TIME_OUT(HttpStatus.REQUEST_TIMEOUT, "요청 처리 시간 초과"),
 	FORBIDDEN_USER(HttpStatus.FORBIDDEN, "권한이 없는 회원");
 
 	private final HttpStatus httpStatus;

@@ -12,10 +12,11 @@ import com.alsif.book.concert.dto.concerthall.ConcertSeatBookRequestDto;
 import com.alsif.book.concert.dto.concerthall.SuccessResponseDto;
 import com.alsif.book.concert.entity.ConcertDetail;
 import com.alsif.book.concert.repository.ConcertSeatInfoRepository;
+import com.alsif.book.global.TaskManager;
 import com.alsif.book.global.constant.ErrorCode;
 import com.alsif.book.global.exception.CustomException;
-import com.alsif.book.global.service.RedisService;
 import com.alsif.book.global.repository.JDBCRepository;
+import com.alsif.book.global.service.RedisService;
 import com.alsif.book.user.entity.Point;
 import com.alsif.book.user.entity.User;
 import com.alsif.book.user.repository.PointRepository;
@@ -33,6 +34,7 @@ public class BookService {
 	private final PointRepository pointRepository;
 	private final RedisService redisService;
 	private final JDBCRepository jdbcRepository;
+	private final TaskManager taskManager;
 
 	static final String CONCERT_SEAT_INFO_KEY = "concert_seat_info_";
 
@@ -67,6 +69,7 @@ public class BookService {
 
 		int currentMoney = point.getTotal();
 		if (currentMoney < totalPrice) {
+			taskManager.removeTask(seatSeqs);
 			throw new CustomException(ErrorCode.LACK_POINT);
 		}
 
@@ -90,6 +93,7 @@ public class BookService {
 		seatSeqs.forEach(seatSeq -> {
 			String seatAvailability = redisService.getValue(CONCERT_SEAT_INFO_KEY + seatSeq);
 			if ("1".equals(seatAvailability)) {
+				taskManager.removeTask(seatSeqs);
 				throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
 			}
 		});
@@ -98,6 +102,7 @@ public class BookService {
 			seatSeqs);
 
 		if (concertSeatGradeInfos.stream().anyMatch(ConcertSeatGradeInfoBaseDto::getBook)) {
+			taskManager.removeTask(seatSeqs);
 			throw new CustomException(ErrorCode.NOT_AVAILABLE_SEAT);
 		}
 		return concertSeatGradeInfos;
