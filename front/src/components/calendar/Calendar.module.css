@@ -1,0 +1,18 @@
+.inputform {
+    width: 100%;
+    /* border: 1px solid white; */
+}
+
+.inputform span {
+  color: white;
+}
+
+.inputform .error {
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.inputbox {
+    margin-bottom: 10px;
+    width: 100%;
+}

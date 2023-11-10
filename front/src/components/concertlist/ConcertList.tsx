@@ -25,8 +25,6 @@ export default function ConcertList(props: ConcertListProps) {
           <div className={styles.concertList} key={concert.concertSeq}>
             <ConcertInfo
               concert={concert}
-              // 여기에 ConcertInfo 컴포넌트에 전달할 속성을 추가하세요.
-              // 예: concertName={concert.name}
             />
           </div>
         ))

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 // import { useEffect, useState } from 'react'
 
 
-export default function Navbar(){
+export default function Navbar({holdDate,concertName}){
     
     const navigate = useNavigate()
     const goToOtherPage = (pageName:string) => {
@@ -19,7 +19,7 @@ export default function Navbar(){
                 좌석선택
             </div>
             <div>
-                콘서트 이름
+                {concertName}
             </div>
             <div
                 className={styles.selectbar}>
@@ -38,7 +38,7 @@ export default function Navbar(){
                     </select>
                 </div>
             <div>
-                공연일시 
+                {holdDate} 
             </div>
             <img
             onClick={() => goToOtherPage('')}
