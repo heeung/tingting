@@ -1,5 +1,6 @@
 package com.alsif.tingting.data.repository
 
+import com.alsif.tingting.data.model.ConcertHallInfoDto
 import com.alsif.tingting.data.model.response.ReservedListResponseDto
 import com.alsif.tingting.util.handleApi
 import com.alsif.tingtinqg.data.service.ReserveService
@@ -17,5 +18,9 @@ class ReserveRepositoryImpl @Inject constructor(
         itemCount: Int
     ): ReservedListResponseDto {
         return handleApi { reserveService.getReservedTicketList(userSeq, currentPage, itemCount) }
+    }
+
+    override suspend fun getConcertHallInfo(concertSeq: Int): ConcertHallInfoDto {
+        return handleApi { reserveService.getConcertHallInfo(concertSeq) }
     }
 }

@@ -94,12 +94,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             when (destination.id) {
                 R.id.searchFragment -> {
                     binding.layoutAppbar.visibility = View.GONE
+                    binding.bottomNavigation.visibility = View.VISIBLE
                 }
                 R.id.concertDetailFragment -> {
                     binding.layoutAppbar.visibility = View.GONE
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                }
+                R.id.reserveFragment -> {
+                    binding.layoutAppbar.visibility = View.GONE
+                    binding.bottomNavigation.visibility = View.GONE
                 }
                 else -> {
                     binding.layoutAppbar.visibility = View.VISIBLE
+                    binding.bottomNavigation.visibility = View.VISIBLE
                 }
             }
         }

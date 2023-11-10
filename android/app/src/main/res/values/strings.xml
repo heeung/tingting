@@ -37,6 +37,10 @@
     <string name="cancle_like">찜 취소</string>
     <string name="detail_item_date">일시 : %s ~ %s</string>
     <string name="detail_item_locale">장소 : %s / %s</string>
+    <string name="performer">출연</string>
+    <string name="date">날짜</string>
+    <string name="time">시간</string>
+    <string name="do_reservation">예매하러 가기</string>
 
     <!--  likedlist  -->
     <string name="liked_item_date">%s ~ %s</string>
@@ -53,5 +57,8 @@
     <string name="confirm">확인 했습니다.</string>
     <string name="cancel_confirm_message">정말로 예매를 취소하시겠습니까?</string>
     <string name="cancel_comfirm_message_2">취소 시 재 예매가 불가능하며\n팅팅은 불가피함에 대해서는 책임지지 않습니다.</string>
+
+    <!--  reserve  -->
+    <string name="title_reserve">예매 하기</string>
 
 </resources>

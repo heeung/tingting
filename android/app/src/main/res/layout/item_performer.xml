@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_performer"
+    android:layout_width="@dimen/_80sdp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:elevation="@dimen/_2sdp"
+    android:layout_marginHorizontal="@dimen/_12sdp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="@dimen/_4sdp"
+        app:cardCornerRadius="@dimen/_17sdp">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/img_concert_detail_dummy"
+            android:scaleType="centerCrop"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textview_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+        android:textSize="@dimen/_10sdp"
+        android:layout_gravity="center"/>
+
+</LinearLayout>
