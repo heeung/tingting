@@ -159,7 +159,7 @@ export default function ConcertReservation(){
                       className={styles['selected-seat-component']}
                       >
                         <SelectedSeat 
-                        seat={seat?.seat} price={seat?.price}/>
+                        seat={seat}/>
                       </div>
                     })}
                   </div>

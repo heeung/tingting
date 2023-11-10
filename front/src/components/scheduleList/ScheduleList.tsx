@@ -5,6 +5,11 @@ export default function ScheduleList({concertDetails, concertName}){
     return(
         <div
             className={styles.container}>
+                <div
+                className={styles.header}>
+                    <div className={styles.date}>날짜</div>
+                    <div className={styles.time}>시간</div>
+                </div>
                 {concertDetails?.map((schedule)=>{
                 return <div 
                 className={styles.concertList}

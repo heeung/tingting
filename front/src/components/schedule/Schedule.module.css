@@ -28,6 +28,16 @@
     letter-spacing: 0.03125rem;
 }
 
+.date, .time{
+    color: var(--_, #444);
+    font-family: Gmarket Sans TTF;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.5rem; /* 120% */
+    letter-spacing: 0.03125rem;
+}
+
 .button:hover {
     background-color: #1365b2 ;
 

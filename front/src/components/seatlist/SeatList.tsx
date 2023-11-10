@@ -23,6 +23,7 @@ export default function SeatList({seats,setSelectedSeat,selectedSeat}){
         >
             {seats && seats.map((seat)=>{
                     return <div 
+                    className={styles.seat}
                     key={seat?.concertSeatInfoSeq}
                     onClick ={()=>{addSeat(seat)}}
                     >
