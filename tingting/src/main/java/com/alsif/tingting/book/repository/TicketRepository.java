@@ -20,6 +20,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 			+ "    JOIN Concert c ON (cd.concert.seq = c.seq) "
 			+ "    JOIN ConcertHall ch ON (c.concertHall.seq = ch.seq) "
 			+ "    JOIN Point p ON (p.ticket.seq = t.seq) "
-			+ "WHERE t.user.seq = :userSeq AND p.pay < 0")
+			+ "WHERE t.user.seq = :userSeq AND p.pay < 0 "
+			+ "ORDER BY t.seq DESC")
 	Page<TicketBaseDto> findAllByUserSeq(@Param("userSeq") Integer userSeq, Pageable pageable);
 }
