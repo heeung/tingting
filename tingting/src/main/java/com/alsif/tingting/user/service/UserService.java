@@ -2,6 +2,7 @@ package com.alsif.tingting.user.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -172,20 +173,20 @@ public class UserService {
 		JsonNode kakaoAccount = responseJson.get("kakao_account");
 		String email = kakaoAccount.get("email").asText();
 
-		User existUser = userRepository.findUserByEmail(email)
-			.orElseThrow(() -> new CustomException(ErrorCode.FORBIDDEN_USER));
+		Optional<User> existUser = userRepository.findUserByEmail(email);
 
-		if (existUser == null) {
+		if (existUser.isEmpty()) {
 			User user = User.builder()
 				.email(email)
 				.build();
 
-			existUser = userRepository.save(user);
+			existUser = Optional.of(userRepository.save(user));
 
 		}
 
 		LoginResponseDto loginResponseDto = LoginResponseDto.builder()
-			.userSeq(existUser.getSeq())
+			.userSeq(existUser.get().getSeq())
+			.userEmail(existUser.get().getEmail())
 			.build();
 
 		return loginResponseDto;
