@@ -175,7 +175,7 @@ public class UserService {
 
 		Optional<User> existUser = userRepository.findUserByEmail(email);
 
-		if (existUser == null) {
+		if (existUser.isEmpty()) {
 			User user = User.builder()
 				.email(email)
 				.build();
@@ -186,6 +186,7 @@ public class UserService {
 
 		LoginResponseDto loginResponseDto = LoginResponseDto.builder()
 			.userSeq(existUser.get().getSeq())
+			.userEmail(existUser.get().getEmail())
 			.build();
 
 		return loginResponseDto;

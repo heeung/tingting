@@ -9,4 +9,5 @@ import lombok.Setter;
 @Builder
 public class LoginResponseDto {
 	private int userSeq;
+	private String userEmail;
 }
