@@ -12,14 +12,19 @@ import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 
 
-
-
-
 export default function MyPage(){
 
     const [category,setCategory] = useState("reservations");
     
     // API 호출 함수
+    
+    const fetchPoint = async () => {
+        const userSeq = 1
+        // /users/{userSeq}/point
+        const response = await axios.get(`${API_BASE_URL}/users/${userSeq}/point`);
+        return response.data.point;
+    }
+    
     const fetchLikedData = async () => {
         const userSeq = 1
         const concertListRequest = {
@@ -30,9 +35,6 @@ export default function MyPage(){
         return response.data;
     };
 
-    const nextPage = () => {
-        
-    }
 
     const fetchTicketData = async () => {
     const userSeq = 1
@@ -44,7 +46,7 @@ export default function MyPage(){
     return response.data;
     };
 
-    const { isLikedLoading, isLikedError, data : likedData, likedError } = useQuery("likedData", fetchLikedData, {
+    const { isLoading : isLikedLoading, isLikedError, data : likedData, likedError } = useQuery("likedData", fetchLikedData, {
         refetchOnWindowFocus: false,
         onSuccess: data => {
           console.log(data);
@@ -54,7 +56,18 @@ export default function MyPage(){
         }
       });
 
-    const { isticketLoading, isticketError, data : ticketData, ticketError } = useQuery("ticketData", fetchTicketData, {
+    const { isLoading: isticketLoading, isticketError, data : ticketData, ticketError } = useQuery("ticketData", fetchTicketData, {
+        refetchOnWindowFocus: false,
+        onSuccess: data => {
+          console.log(data);
+        },
+        onError: e => {
+          console.log(e?.message);
+        }
+      });
+
+
+      const { isLoading: ispointLoading, ispointError, data : pointData } = useQuery([ticketData], fetchPoint, {
         refetchOnWindowFocus: false,
         onSuccess: data => {
           console.log(data);
@@ -88,8 +101,9 @@ export default function MyPage(){
                 </div>
                 <div
                 className={styles.point}> 
+                
                     <h2>
-                    TT Money : 10000000
+                    TT Money : {!ispointLoading && pointData}
                     </h2>
                 </div>
             </div>
