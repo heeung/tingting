@@ -55,7 +55,7 @@ public class UserService {
 	@Value("${spring.kakao.client_id}")
 	private String clientId;
 
-	@Value("${spring.kakao.redirect_uri")
+	@Value("${spring.kakao.redirect_uri}")
 	private String redirectUri;
 
 	/*
