@@ -29,7 +29,6 @@ export default function ConcertDetail(){
         const concertDetailRequest = {
             userSeq : 1
         }
-    
         const response = await axios.get(`${API_BASE_URL}/concerts/${concertSeq}`, {params:concertDetailRequest});
         return response.data;
       };
@@ -131,8 +130,10 @@ export default function ConcertDetail(){
                                 출연자 : {data?.performers?.map((performer)=>{
                                     return(
                                         <div
-                                        className={styles['host-list']}>
-                                            <span key={performer?.seq}
+                                        className={styles['host-list']}
+                                        key={performer?.seq}
+                                        >
+                                            <span
                                             onMouseEnter={()=>setIsHover(true)}
                                             onMouseLeave={()=>setIsHover(false)}
                                             className={styles['host-name']}

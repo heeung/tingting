@@ -1,5 +1,6 @@
 import styles from './ConcertList.module.css';
 import ConcertInfo from '../concertinfo/ConcertInfo';
+import {deactivatedLogo} from '../../assets/Images/index'
 
 interface Concert {
   concertSeq: number;
@@ -17,13 +18,16 @@ interface ConcertListProps {
   concerts: Concert[]
 }
 
-export default function ConcertList(props: ConcertListProps) {
+export default function ConcertList(props) {
+  const concerts = props.props?.concerts 
+  const searchWord = props.searchWord
+
   return (
     <div className={styles.container}>
-      {props.props?.concerts 
+      {concerts.length > 0 
       ? 
       (
-        props.props?.concerts?.map((concert: Concert) => (
+        concerts?.map((concert: Concert) => (
           <div className={styles.concertList} key={concert.concertSeq}>
             <ConcertInfo
               concert={concert}
@@ -31,8 +35,19 @@ export default function ConcertList(props: ConcertListProps) {
           </div>
         ))
       ) : 
-      (
-        <div>데이터가 없습니다.</div>
+      ( 
+        <div
+        className={styles['comment-background']}
+        >
+          <div>
+          <img 
+          className={styles.img}
+          src={deactivatedLogo} alt="deactivatedLogo" />
+          </div>
+          <div
+          className={styles.comment}
+          >"{searchWord}"로 검색한 결과가 없습니다.</div>
+        </div>
       )}
     </div>
   );

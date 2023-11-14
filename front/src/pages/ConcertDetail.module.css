@@ -21,6 +21,10 @@
     justify-content: flex-end;
 }
 
+.likeButton:hover{
+    cursor: pointer;
+}
+
 .concertBox{
     display: flex;
     width: 92%;
@@ -99,6 +103,10 @@
 .host-list{
     display: flex;
     position: relative;
+}
+
+.host-list:hover{
+    cursor: pointer;
 }
 
 .host-image{

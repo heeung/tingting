@@ -35,6 +35,10 @@
     box-shadow: none;
 }
 
+.logo:hover{
+    cursor: pointer;
+}
+
 .buttonbox {
     margin-top: 10%;
     display: flex;

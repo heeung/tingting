@@ -16,6 +16,10 @@
     margin: 0.5rem;
 }
 
+.logo:hover{
+    cursor: pointer;
+}
+
 .logout {
     font-weight: 900;
     display: flex;
@@ -23,6 +27,10 @@
     justify-content: center;
     margin-right: 1rem;
 
+}
+
+.logout:hover{
+    cursor: pointer;
 }
 
 .reservationContainer {

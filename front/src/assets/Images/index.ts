@@ -12,6 +12,8 @@ import animationLoading from "./animation_loading.json"
 import canceledTicket from './canceledTicket.png'
 import cancelButton from './cancelButton.png'
 import cancelButtonRed from './cancelButtonRed.png'
+import deactivatedLogo from './deactivatedLogo.png'
 
 export { kakaoLoginButton, loginBackground, loginLogo, loginLogo2, logo, concertImg, kakakoConnection, 
-    moreViewIcon, likeButton, cancelLikeButton, animationLoading, canceledTicket, cancelButton, cancelButtonRed}
+    moreViewIcon, likeButton, cancelLikeButton, animationLoading, canceledTicket, cancelButton, cancelButtonRed
+    ,deactivatedLogo}

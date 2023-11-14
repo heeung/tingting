@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import styles from './Home.module.css'
 import Search from '../components/search/Search.js'
 import ConcertList from '../components/concertlist/ConcertList.js'
@@ -6,7 +6,7 @@ import Carousel from '../components/carousel/MyCarousel.js';
 
 import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
-// import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 // import { useRecoilState } from 'recoil';
 // import { ConcertItemAtom } from '../recoil/ConcertItemAtom.tsx';
@@ -50,7 +50,11 @@ interface ConcertListRequestDto {
 
 function Home(){
 
-  // const navigate = Navigate()
+  const navigate = useNavigate()
+
+  const [place,SetPlace] = useState("")
+  const [searchWord,SetSearchWord] = useState("")
+  const [isSearch,SetIsSearch] = useState(false)
 
   const [nowPage,setNowPage] = useState(1)
   const [category,setCategory] = useState("now");
@@ -61,9 +65,16 @@ function Home(){
       setQueryKey(categoryName); 
   }
 
-  // const goSearchPage = () => {
-  //   navigate(`/search`, { state: { place, searchWord } });
-  // };
+
+  useEffect(()=>{
+    if(isSearch==true){
+      search()
+      SetIsSearch(false)
+    } 
+  },[isSearch])
+  const search = () => {
+    navigate(`/search`, { state: { place, searchWord } });
+  };
     // const navigate = useNavigate();
     // const [concertList, setConcertList] = useRecoilState(ConcertItemAtom) 
 
@@ -100,7 +111,11 @@ function Home(){
             {/* 배너 이후에 캐러셀로 대체 */}
             <Carousel/>
             {/* 검색 컴포넌트 */}
-            <Search/>
+            <Search
+            place={place} SetPlace={SetPlace} 
+            searchWord={searchWord} SetSearchWord={SetSearchWord}
+            isSearch={isSearch} SetIsSearch={SetIsSearch}
+            />
                 <div
                 className={styles.toggleButtonBox}>
 

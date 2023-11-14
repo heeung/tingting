@@ -4,8 +4,8 @@ import ConcertList from '../components/concertlist/ConcertList'
 import axios from 'axios';
 import {API_BASE_URL} from '../constants/index.ts';
 import {useQuery} from 'react-query';
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 
@@ -14,11 +14,31 @@ export default function SearchPage(){
   const [place,SetPlace] = useState("")
   const [searchWord,SetSearchWord] = useState("")
   const [isSearch,SetIsSearch] = useState(false)
+  const location = useLocation();
+  
+  useEffect(()=>{
+    const state = location.state as { place: string; searchWord: string };
+    let searchFlag = false
+    if(state==null){
+      return 
+    }
+    if(state.place!==null){
+      SetPlace(state.place)
+      searchFlag = true
+    }
+    if(state.searchWord!==null){
+      SetSearchWord(state.searchWord)
+      searchFlag = true
+    }
+    if (searchFlag == true){
+      SetIsSearch(true)
+    }
+
+  
+  },[])
 
     // API 호출 함수
   const fetchData = async () => {
-    console.log(place)
-    console.log(searchWord)
 
     let concertListRequest = {
       currentPage: 1,
@@ -80,7 +100,7 @@ export default function SearchPage(){
                 {/* 콘서트 리스트컴포넌트 */}
 
                 {
-                  !isLoading && data?.concerts!==undefined && <ConcertList props={data}/>
+                  !isLoading && data?.concerts!==undefined && <ConcertList props={data} searchWord={searchWord}/>
                 }
                 { (isLoading || data?.concerts===undefined) && 
                 <div>

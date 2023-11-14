@@ -36,9 +36,6 @@ function Login(){
       navigate(`/${pageName}`);
   }
 
-  const ClickLogin = ()=>{
-    alert("영업 안해요")
-  }
 
     return(
         <div

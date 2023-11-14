@@ -22,3 +22,7 @@
 .logo {
     margin: 0.5rem;
 }
+
+.logo:hover{
+    cursor: pointer;
+}
