@@ -110,7 +110,7 @@ public class UserController {
 		@ApiResponse(responseCode = "200"),
 	})
 
-	@GetMapping("/kakao")
+	@GetMapping("/kakao/issue")
 	ResponseEntity<?> getToken() {
 		return null;
 	}
