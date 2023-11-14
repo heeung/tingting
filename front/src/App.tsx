@@ -7,6 +7,7 @@ import MyPage from './pages/MyPage.tsx'
 import SearchPage from './pages/SearchPage.tsx';
 import ConcertDetail from './pages/ConcertDetail.tsx'
 import ConcertReservation from './pages/ConcertReservation.tsx';
+import Redirection from './pages/Redirection.tsx';
 import "./index.css"
 import {
   RecoilRoot,
@@ -33,6 +34,7 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/concert/detail/:concertseq" element={<ConcertDetail/>} />
             <Route path="/concert/reservation" element={<ConcertReservation/>}></Route>
+            <Route path='/users/kakao' element={<Redirection />} ></Route>
           </Routes>  
         </RecoilRoot>
       </Router>

@@ -5,6 +5,7 @@ import axios from 'axios'
 
 
 export default function BookingInfo({ticket}){
+    console.log(ticket)
 
     const cancelTicket = async () => {
         const requestDto = {
@@ -40,13 +41,13 @@ export default function BookingInfo({ticket}){
                     {ticket.createdDate}
                 </div>
                 <div className={styles.seatCnt}>
-                    9석
+                    {ticket.seats.length}석
                 </div>
                 <div className={styles.paymentAmount}>
                     {ticket.totalPrice}원
                 </div>
                 <div className={styles.period}>
-                    2023.7.21 ~ 2023.11.19
+                    {ticket.createdDate.slice(0,10)} ~ {ticket.deletedDate.slice(0,10)}
                 </div>
             </div>
 
@@ -63,7 +64,15 @@ export default function BookingInfo({ticket}){
                 <img 
                     className={styles.img}
                     src={cancelTiket} alt="cancelTiket" />
+        
+                    {(ticket.deletedDate !== null)
+                    && 
+                    <div className={styles["cancel-comment"]}>
+                        취소됨
+                    </div>
+                    }
             </div>
+
             
         </div>
     );

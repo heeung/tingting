@@ -70,3 +70,16 @@
 .cancel-button:hover {
     cursor:pointer
 }
+
+.cancel-comment{
+    margin-top: 40%;
+
+    font-family: Gmarket Sans TTF;
+    font-size: 0.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-emphasis:  1000;
+    
+
+}

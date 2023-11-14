@@ -91,3 +91,19 @@
     width: 15rem;
     height: 15rem;
 }
+
+.host{
+    display: flex;
+}
+
+.host-list{
+    display: flex;
+    position: relative;
+}
+
+.host-image{
+    position: absolute;
+    top:1.5rem;
+    left:3rem;
+    width:15rem;
+}

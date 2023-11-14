@@ -12,10 +12,11 @@ import { animationLoading } from '../assets/Images/index.js';
 
 
 
-export default function ConcertList(){
+export default function ConcertDetail(){
 
     const params = useParams();
     
+    const [isHover, setIsHover] = useState(false)
     const [isLike, setIsLike] = useState(false)
     const concertSeq = params.concertseq
     
@@ -37,7 +38,7 @@ export default function ConcertList(){
         refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
         onSuccess: data => {
           // 성공시 호출
-        //   console.log(data)
+          console.log(data.performers)
           setIsLike(data.favorite)
         
         },
@@ -126,19 +127,34 @@ export default function ConcertList(){
                             <div>
                                 공연 장소 : {data?.concertHallCity} / {data?.concertHallName}
                             </div>
-                            <div>
+                            <div className={styles.host}>
                                 출연자 : {data?.performers?.map((performer)=>{
                                     return(
-                                    <span key={performer?.seq}>
-                                        {performer?.performerName}
-                                    </span>
+                                        <div
+                                        className={styles['host-list']}>
+                                            <span key={performer?.seq}
+                                            onMouseEnter={()=>setIsHover(true)}
+                                            onMouseLeave={()=>setIsHover(false)}
+                                            className={styles['host-name']}
+                                            >
+                                                {performer?.performerName}
+                                            </span>
+                                            {
+                                                isHover &&
+                                                <div 
+                                                className={styles["host-image"]}>
+                                                    <img src={performer?.performerImageUrl} alt="" />
+                                                </div>
+                                            }
+
+                                        </div>
+
                                     )
                                 })}
                             </div>
                         </div>
                     </div>
                 </div>
-                
                 
                 <div
                 className={styles.concert}>
