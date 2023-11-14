@@ -20,7 +20,9 @@ interface ConcertListProps {
 export default function ConcertList(props: ConcertListProps) {
   return (
     <div className={styles.container}>
-      {props.props?.concerts ? (
+      {props.props?.concerts 
+      ? 
+      (
         props.props?.concerts?.map((concert: Concert) => (
           <div className={styles.concertList} key={concert.concertSeq}>
             <ConcertInfo
@@ -28,7 +30,8 @@ export default function ConcertList(props: ConcertListProps) {
             />
           </div>
         ))
-      ) : (
+      ) : 
+      (
         <div>데이터가 없습니다.</div>
       )}
     </div>

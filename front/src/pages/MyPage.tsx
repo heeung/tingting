@@ -30,6 +30,10 @@ export default function MyPage(){
         return response.data;
     };
 
+    const nextPage = () => {
+        
+    }
+
     const fetchTicketData = async () => {
     const userSeq = 1
     const concertListRequest = {
@@ -111,7 +115,9 @@ export default function MyPage(){
                 ?
                 <div>
                     <div>
+                        { 
                         <BookingInfoList props={ticketData}/>
+                        }
                     </div>
                     {(isticketLoading || ticketData?.tickets === undefined) &&
                     <Lottie 
@@ -123,7 +129,9 @@ export default function MyPage(){
                 :
                 <div>
                     <div>
+                        {
                         <ConcertList props={likedData}/>
+                        }
                     </div>
                     {(isLikedLoading || likedData?.concerts===undefined) &&
                     <Lottie 

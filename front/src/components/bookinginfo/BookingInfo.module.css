@@ -66,3 +66,7 @@
     line-height: normal;
     text-emphasis:  1000; 
 }
+
+.cancel-button:hover {
+    cursor:pointer
+}

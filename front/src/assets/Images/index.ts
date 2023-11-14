@@ -9,6 +9,7 @@ import moreViewIcon from "./moreViewIcon.png"
 import likeButton from "./likeButton.png"
 import cancelLikeButton from "./cancelLikeButton.png"
 import animationLoading from "./animation_loading.json"
+import cancelTiket from './cancelTicket.png'
 
 export { kakaoLoginButton, loginBackground, loginLogo, loginLogo2, logo, concertImg, kakakoConnection, 
-    moreViewIcon, likeButton, cancelLikeButton, animationLoading}
+    moreViewIcon, likeButton, cancelLikeButton, animationLoading, cancelTiket}

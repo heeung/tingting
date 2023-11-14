@@ -1,8 +1,23 @@
-import { concertImg, moreViewIcon} from '../../assets/Images/index'
+import {cancelTiket} from '../../assets/Images/index'
 import styles from './BookingInfo.module.css'
+import { API_BASE_URL } from '../../constants'
+import axios from 'axios'
+
 
 export default function BookingInfo({ticket}){
-    console.log(ticket)
+
+    const cancelTicket = async () => {
+        const requestDto = {
+            userSeq : 1
+        }
+
+        const response = await axios.delete(`${API_BASE_URL}/book/${ticket.ticketSeq}`,{params:requestDto});
+        //response.message가 true면 예약 취소 완료 아니면 이미 취소된 공연
+        return response.data;
+
+    }
+
+
     return(
         <div 
         className={styles.container}>
@@ -35,11 +50,19 @@ export default function BookingInfo({ticket}){
                 </div>
             </div>
 
-            <div
+            {/* <div
             className={styles.moreView}>
                 <img 
                     className={styles.img}
                     src={moreViewIcon} alt="moreViewIcon" />
+            </div> */}
+            
+            <div
+            className={styles["cancel-button"]}
+            onClick={cancelTicket}>
+                <img 
+                    className={styles.img}
+                    src={cancelTiket} alt="cancelTiket" />
             </div>
             
         </div>

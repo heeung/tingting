@@ -1,5 +1,5 @@
 import styles from './Search.module.css'
-import Calendar from '../calendar/Calendar.js';
+// import Calendar from '../calendar/Calendar.js';
 
 export default function Search({place,SetPlace,searchWord,SetSearchWord,isSearch,SetIsSearch}){
 
