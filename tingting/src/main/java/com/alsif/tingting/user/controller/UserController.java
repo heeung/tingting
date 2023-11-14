@@ -97,6 +97,11 @@ public class UserController {
 		@ApiResponse(responseCode = "200"),
 	})
 
+	@GetMapping("/kakao")
+	ResponseEntity<?> getToken(){
+		return null;
+	}
+
 
 	@PostMapping("/kakao")
 	ResponseEntity<LoginResponseDto> getToken(@RequestBody LoginRequestDto loginRequestDto) throws JsonProcessingException {
