@@ -1,7 +1,5 @@
 package com.alsif.tingting.user.controller;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alsif.tingting.concert.dto.ConcertListResponseDto;
@@ -18,6 +15,7 @@ import com.alsif.tingting.global.dto.ErrorResponseDto;
 import com.alsif.tingting.global.dto.PageableDto;
 import com.alsif.tingting.user.dto.LoginRequestDto;
 import com.alsif.tingting.user.dto.LoginResponseDto;
+import com.alsif.tingting.user.dto.PointResponseDto;
 import com.alsif.tingting.user.dto.TicketListResponseDto;
 import com.alsif.tingting.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -90,7 +88,22 @@ public class UserController {
 		return new ResponseEntity<>(ticketListResponseDto, HttpStatus.OK);
 	}
 
+	@Operation(summary = "포인트 보유량")
+	@Parameters(value = {
+		@Parameter(required = true, name = "userSeq", description = "회원 PK (ex. 435)")
+	})
+	@GetMapping("/{userSeq}/point")
+	ResponseEntity<PointResponseDto> findMyPoint(@PathVariable("userSeq") Integer userSeq) {
+		log.info("===== 보유 포인트량 조회 요청 시작, url={}, userSeq: {} =====", "/point", userSeq);
 
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		PointResponseDto pointResponseDto = userService.findMyPoint(userSeq);
+		stopWatch.stop();
+
+		log.info("===== 보유 포인트량 조회 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
+		return new ResponseEntity<>(pointResponseDto, HttpStatus.OK);
+	}
 
 	@Operation(summary = "로그인 및 회원가입")
 	@ApiResponses(value = {
@@ -98,13 +111,13 @@ public class UserController {
 	})
 
 	@GetMapping("/kakao")
-	ResponseEntity<?> getToken(){
+	ResponseEntity<?> getToken() {
 		return null;
 	}
 
-
 	@PostMapping("/kakao")
-	ResponseEntity<LoginResponseDto> getToken(@RequestBody LoginRequestDto loginRequestDto) throws JsonProcessingException {
+	ResponseEntity<LoginResponseDto> getToken(@RequestBody LoginRequestDto loginRequestDto) throws
+		JsonProcessingException {
 		String code = loginRequestDto.getCode();
 		String accessToken = "";
 
