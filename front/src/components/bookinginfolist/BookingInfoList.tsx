@@ -1,7 +1,8 @@
 import styles from "./BookingInfoList.module.css"
 import BookingInfo from "../bookinginfo/BookingInfo"
 
-export default function BookingInfoList({props}){
+export default function BookingInfoList({props,setQueryKey}){
+    console.log(setQueryKey)
     return(
         <div
             className={styles.container}>  
@@ -11,7 +12,7 @@ export default function BookingInfoList({props}){
                 className={styles.bookingInfo}
                 key={ticket?.ticketSeq}
                 >
-                    <BookingInfo ticket={ticket} />
+                    <BookingInfo ticket={ticket} setQueryKey={setQueryKey} />
                 </div>
 
             })}

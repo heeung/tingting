@@ -1,21 +1,23 @@
-import {cancelTiket} from '../../assets/Images/index'
+import { canceledTicket, cancelButton, cancelButtonRed } from '../../assets/Images/index'
 import styles from './BookingInfo.module.css'
 import { API_BASE_URL } from '../../constants'
 import axios from 'axios'
+import {useState} from "react"
 
 
-export default function BookingInfo({ticket}){
-    console.log(ticket)
-
+export default function BookingInfo({ticket,setQueryKey}){
+    const [isHover, setIsHover] = useState(false)
+    
     const cancelTicket = async () => {
         const requestDto = {
             userSeq : 1
         }
-
-        const response = await axios.delete(`${API_BASE_URL}/book/${ticket.ticketSeq}`,{params:requestDto});
+        axios.delete(`${API_BASE_URL}/book/${ticket.ticketSeq}`,{params:requestDto})
+        .then(response => {
+            setQueryKey(ticket.ticketSeq.toString())
+            return response.data
+        })
         //response.message가 true면 예약 취소 완료 아니면 이미 취소된 공연
-        return response.data;
-
     }
 
 
@@ -41,13 +43,13 @@ export default function BookingInfo({ticket}){
                     {ticket.createdDate}
                 </div>
                 <div className={styles.seatCnt}>
-                    {ticket.seats.length}석
+                    {ticket.srats ? ticket?.seats.length : 0}석
                 </div>
                 <div className={styles.paymentAmount}>
                     {ticket.totalPrice}원
                 </div>
                 <div className={styles.period}>
-                    {ticket.createdDate.slice(0,10)} ~ {ticket.deletedDate.slice(0,10)}
+                    {ticket.createdDate && ticket?.createdDate.slice(0,10)} ~ {ticket.deletedDate && ticket?.deletedDate.slice(0,10)}
                 </div>
             </div>
 
@@ -58,20 +60,47 @@ export default function BookingInfo({ticket}){
                     src={moreViewIcon} alt="moreViewIcon" />
             </div> */}
             
-            <div
-            className={styles["cancel-button"]}
-            onClick={cancelTicket}>
-                <img 
+
+            {
+                (ticket.deletedDate !== null) 
+                ?
+                <div>
+                    <img 
+                        className={styles.img}
+                        src={canceledTicket} alt="canceledTicket" />
+                        <div className={styles["cancel-comment"]}>
+                            취소됨
+                        </div>
+                </div>
+                :
+                isHover
+                ?
+                <div
+                className={styles['cancel-button']}
+                onMouseEnter={()=>setIsHover(true)}
+                onMouseLeave={()=>setIsHover(false)}
+                onClick={cancelTicket}>
+                    <img 
                     className={styles.img}
-                    src={cancelTiket} alt="cancelTiket" />
-        
-                    {(ticket.deletedDate !== null)
-                    && 
+                    src={cancelButton} alt="cancelButton" />
                     <div className={styles["cancel-comment"]}>
-                        취소됨
-                    </div>
-                    }
-            </div>
+                            예약취소
+                        </div>
+                </div>
+                :
+                <div
+                className={styles['cancel-button']}
+                onMouseEnter={()=>setIsHover(true)}
+                onMouseLeave={()=>setIsHover(false)}
+                onClick={cancelTicket}>
+                    <img 
+                    className={styles.img}
+                    src={cancelButtonRed} alt="cancelButtonRed" />
+                    <div className={styles["cancel-comment"]}>
+                            예약취소
+                        </div>
+                </div>
+            }
 
             
         </div>

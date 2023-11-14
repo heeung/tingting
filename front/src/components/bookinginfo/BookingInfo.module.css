@@ -67,12 +67,17 @@
     text-emphasis:  1000; 
 }
 
+.cancel-button{
+    color : red;
+}
+
 .cancel-button:hover {
-    cursor:pointer
+    cursor:pointer;
+    color : #444;
 }
 
 .cancel-comment{
-    margin-top: 40%;
+    margin-top: 25%;
 
     font-family: Gmarket Sans TTF;
     font-size: 0.5rem;
@@ -80,6 +85,5 @@
     font-weight: 700;
     line-height: normal;
     text-emphasis:  1000;
-    
 
 }

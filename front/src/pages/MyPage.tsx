@@ -15,6 +15,7 @@ import { animationLoading } from '../assets/Images/index.js';
 export default function MyPage(){
 
     const [category,setCategory] = useState("reservations");
+    const [queryKey, setQueryKey] = useState('');
     
     // API 호출 함수
     
@@ -29,7 +30,7 @@ export default function MyPage(){
         const userSeq = 1
         const concertListRequest = {
         currentPage: 1,
-        itemCount: 18,
+        itemCount: 100,
         }
         const response = await axios.get(`${API_BASE_URL}/users/${userSeq}/favorite`,{params:concertListRequest});
         return response.data;
@@ -40,13 +41,13 @@ export default function MyPage(){
     const userSeq = 1
     const concertListRequest = {
         currentPage: 1,
-        itemCount: 18,
+        itemCount: 100,
     }
     const response = await axios.get(`${API_BASE_URL}/users/${userSeq}/ticket`,{params:concertListRequest});
     return response.data;
     };
 
-    const { isLoading : isLikedLoading, isLikedError, data : likedData, likedError } = useQuery("likedData", fetchLikedData, {
+    const { isLoading : isLikedLoading, data : likedData } = useQuery("likedData", fetchLikedData, {
         refetchOnWindowFocus: false,
         onSuccess: data => {
           console.log(data);
@@ -56,7 +57,7 @@ export default function MyPage(){
         }
       });
 
-    const { isLoading: isticketLoading, isticketError, data : ticketData, ticketError } = useQuery("ticketData", fetchTicketData, {
+    const { isLoading: isticketLoading, data : ticketData } = useQuery([queryKey], fetchTicketData, {
         refetchOnWindowFocus: false,
         onSuccess: data => {
           console.log(data);
@@ -67,7 +68,7 @@ export default function MyPage(){
       });
 
 
-      const { isLoading: ispointLoading, ispointError, data : pointData } = useQuery([ticketData], fetchPoint, {
+      const { isLoading: ispointLoading, data : pointData } = useQuery([ticketData], fetchPoint, {
         refetchOnWindowFocus: false,
         onSuccess: data => {
           console.log(data);
@@ -130,7 +131,7 @@ export default function MyPage(){
                 <div>
                     <div>
                         { 
-                        <BookingInfoList props={ticketData}/>
+                        <BookingInfoList props={ticketData} setQueryKey={setQueryKey}/>
                         }
                     </div>
                     {(isticketLoading || ticketData?.tickets === undefined) &&
