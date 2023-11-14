@@ -2,7 +2,6 @@ package com.alsif.tingting.user.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -29,8 +28,11 @@ import com.alsif.tingting.global.constant.ErrorCode;
 import com.alsif.tingting.global.dto.PageableDto;
 import com.alsif.tingting.global.exception.CustomException;
 import com.alsif.tingting.user.dto.LoginResponseDto;
+import com.alsif.tingting.user.dto.PointResponseDto;
 import com.alsif.tingting.user.dto.TicketListResponseDto;
+import com.alsif.tingting.user.entity.Point;
 import com.alsif.tingting.user.entity.User;
+import com.alsif.tingting.user.repository.PointRepository;
 import com.alsif.tingting.user.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,12 +50,14 @@ public class UserService {
 	private final ConcertRepository concertRepository;
 	private final TicketRepository ticketRepository;
 	private final TicketSeatRepository ticketSeatRepository;
+	private final PointRepository pointRepository;
 
 	@Value("${spring.kakao.client_id}")
 	private String clientId;
 
 	@Value("${spring.kakao.redirect_uri")
 	private String redirectUri;
+
 	/*
 		찜 목록 가져오기
 	 */
@@ -107,7 +111,11 @@ public class UserService {
 			.build();
 	}
 
-
+	public PointResponseDto findMyPoint(Integer userSeq) {
+		Point point = pointRepository.findTop1ByUser_SeqOrderBySeqDesc(userSeq).orElseThrow(() -> new CustomException(
+			ErrorCode.NO_DATA_FOUND));
+		return PointResponseDto.builder().point(point.getTotal()).build();
+	}
 
 	public String getKaKaoAccessToken(String code) throws JsonProcessingException {
 		String REQUEST_URL = "https://kauth.kakao.com/oauth/token";
@@ -130,7 +138,6 @@ public class UserService {
 		ResponseEntity<String> stringResponseEntity = null;
 
 		stringResponseEntity = restTemplate.postForEntity(REQUEST_URL, request, String.class);
-
 
 		// JSON 문자열을 ObjectMapper를 사용하여 파싱
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -157,7 +164,6 @@ public class UserService {
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(headers);
 		ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity(REQUEST_URL, request, String.class);
 
-
 		// JSON 문자열을 ObjectMapper를 사용하여 파싱
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode responseJson = objectMapper.readTree(stringResponseEntity.getBody());
@@ -166,9 +172,10 @@ public class UserService {
 		JsonNode kakaoAccount = responseJson.get("kakao_account");
 		String email = kakaoAccount.get("email").asText();
 
-		User existUser = userRepository.findUserByEmail(email).orElseThrow(()->new CustomException(ErrorCode.FORBIDDEN_USER));
+		User existUser = userRepository.findUserByEmail(email)
+			.orElseThrow(() -> new CustomException(ErrorCode.FORBIDDEN_USER));
 
-		if(existUser==null) {
+		if (existUser == null) {
 			User user = User.builder()
 				.email(email)
 				.build();
