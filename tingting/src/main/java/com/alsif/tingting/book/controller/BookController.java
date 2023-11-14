@@ -176,7 +176,7 @@ public class BookController {
 
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
-		SuccessResponseDto successResponseDto = bookService.reservationCancellation(userSeq, ticketSeq);
+		SuccessResponseDto successResponseDto = bookService.cancelTicket(userSeq, ticketSeq);
 		stopWatch.stop();
 
 		log.info("===== 콘서트 예매 취소 요청 종료, 소요시간: {} milliseconds =====", stopWatch.getTotalTimeMillis());
