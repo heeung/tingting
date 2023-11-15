@@ -8,46 +8,23 @@ import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 import { useNavigate } from 'react-router-dom'
 
-// import { useRecoilState } from 'recoil';
-// import { ConcertItemAtom } from '../recoil/ConcertItemAtom.tsx';
+
+import { useRecoilValue } from 'recoil';
+import { userEmailState, userSeqState } from "../recoil/UserAtom.tsx";
 import {
     useQuery, 
   } from 'react-query';
 
 import axios from 'axios';
 import {API_BASE_URL} from '../constants/index.ts';
-// import {  BrowserRouter as Router, Route, Routes, Navigate  } from 'react-router-dom';
-
-
-// interface ConcertListProps {
-//     totalPage : number;
-//     currentPage : number;
-//     concerts: Concert[]
-// }
-
-// interface Concert {
-//     concertSeq : number;
-//     name : string;    
-//     holdOpenDate : string;
-//     holdCloseDate : string;
-//     imageUrl : string;
-//     concertHallName : string;
-//     concertHallCity : string;
-// }
-
-// interface ConcertListRequestDto {
-//     currentPage: number;
-//     itemCount: number;
-//     orderBy?: string;
-//     startDate?: string;
-//     endDate?: string;
-//     place?: string;
-//     searchWord?: string;
-// }
-
-
 
 function Home(){
+
+  const userEmail = useRecoilValue(userEmailState);
+  const userSeq = useRecoilValue(userSeqState);
+
+  console.log('userEmail:',userEmail)
+  console.log('userSeq:',userSeq)
 
   const navigate = useNavigate()
 
@@ -71,11 +48,10 @@ function Home(){
       SetIsSearch(false)
     } 
   },[isSearch])
+
   const search = () => {
     navigate(`/search`, { state: { place, searchWord } });
   };
-    // const navigate = useNavigate();
-    // const [concertList, setConcertList] = useRecoilState(ConcertItemAtom) 
 
     // API 호출 함수
   const fetchData = async ({ pageParam=1 }) => {
