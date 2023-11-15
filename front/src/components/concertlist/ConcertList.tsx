@@ -12,13 +12,14 @@ interface Concert {
   concertHallCity: string;
 }
 
-interface ConcertListProps {
-  totalPage : number;
-  currentPage : number;
-  concerts: Concert[]
+interface Props {
+  searchWord : string;
+  props : {
+    concerts : Concert[]
+  }
 }
 
-export default function ConcertList(props) {
+export default function ConcertList(props:Props) {
   const concerts = props.props?.concerts 
   const searchWord = props.searchWord
 

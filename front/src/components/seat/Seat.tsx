@@ -1,6 +1,21 @@
 import styles from './Seat.module.css'
 
-export default function Seat({seat,selectedSeat}){
+interface Seat{
+    concertSeatInfoSeq:number;
+    section:string;
+    seat:string;  
+    book:boolean;
+    grade:string;
+    price:number;
+  }
+
+interface SeatProps{
+    seat:Seat;
+    selectedSeat:Seat[];
+
+}
+
+export default function Seat({seat,selectedSeat}:SeatProps){
 
     const isSelectedSeat = () => {
         if(selectedSeat.includes(seat)){

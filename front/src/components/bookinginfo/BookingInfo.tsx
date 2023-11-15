@@ -4,8 +4,34 @@ import { API_BASE_URL } from '../../constants'
 import axios from 'axios'
 import {useState} from "react"
 
+interface Seat{
+    ticketSeq:number;
+    section:string;
+    seat:string;
+    price:number;
+    name:string;
+}
 
-export default function BookingInfo({ticket,setQueryKey}){
+interface Ticket{
+    ticketSeq:number;
+    createdDate:string;
+    deletedDate:string;
+    totalPrice:number;
+    seats:Seat[];
+    concertSeq:number;
+    name:string;
+    holdDate:string;
+    imageUrl:string
+    concertHallName:string;
+    concertHallCity:string;
+}
+
+interface BookingInfoProps {
+    ticket: Ticket;
+    setQueryKey: (key: string) => void;
+  }
+
+export default function BookingInfo({ticket,setQueryKey}:BookingInfoProps){
     const [isHover, setIsHover] = useState(false)
     
     const cancelTicket = async () => {
@@ -43,7 +69,7 @@ export default function BookingInfo({ticket,setQueryKey}){
                     {ticket.createdDate}
                 </div>
                 <div className={styles.seatCnt}>
-                    {ticket.srats ? ticket?.seats.length : 0}석
+                    {ticket.seats ? ticket?.seats.length : 0}석
                 </div>
                 <div className={styles.paymentAmount}>
                     {ticket.totalPrice}원

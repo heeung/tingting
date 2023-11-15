@@ -2,6 +2,7 @@ import { kakaoLoginButton, loginBackground, loginLogo, loginLogo2} from '../asse
 import styles from "./Login.module.css"
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {REST_API_KEY,REDIRECT_URI} from '../constants'
 
 function Login(){
  
@@ -17,13 +18,6 @@ function Login(){
       clearInterval(intervalId);
     };
   }, []); // 마운트될 때 한 번만 실행
-
-
-  
- 
-  const REST_API_KEY = '534a17c259cc1b90e15a00a30c7446d6';
-  const REDIRECT_URI = 'http://localhost:5173/users/kakao';
-  // const REDIRECT_URI = 'http://k9d209.p.ssafy.io:9000/users/kakao';
 
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   

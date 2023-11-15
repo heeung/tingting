@@ -1,8 +1,20 @@
 import styles from './SelectedSeat.module.css'
 import Seat from '../seat/Seat'
 
-export default function SelectedSeat({seat}){
-    console.log(seat)
+interface Seat{
+    concertSeatInfoSeq:number;
+    section:string;
+    seat:string;  
+    book:boolean;
+    grade:string;
+    price:number;
+  }
+
+interface SelectedSeat{
+    seat:Seat
+}
+
+export default function SelectedSeat({seat}:SelectedSeat){
     return(
         <div
         className={styles.container}>

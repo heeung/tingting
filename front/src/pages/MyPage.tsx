@@ -21,7 +21,6 @@ export default function MyPage(){
     
     const fetchPoint = async () => {
         const userSeq = 1
-        // /users/{userSeq}/point
         const response = await axios.get(`${API_BASE_URL}/users/${userSeq}/point`);
         return response.data.point;
     }
@@ -49,32 +48,32 @@ export default function MyPage(){
 
     const { isLoading : isLikedLoading, data : likedData } = useQuery("likedData", fetchLikedData, {
         refetchOnWindowFocus: false,
-        onSuccess: data => {
-          console.log(data);
-        },
+        // onSuccess: data => {
+        //   console.log(data);
+        // },
         onError: e => {
-          console.log(e?.message);
+          console.log(e);
         }
       });
 
     const { isLoading: isticketLoading, data : ticketData } = useQuery([queryKey], fetchTicketData, {
         refetchOnWindowFocus: false,
-        onSuccess: data => {
-          console.log(data);
-        },
+        // onSuccess: data => {
+        //   console.log(data);
+        // },
         onError: e => {
-          console.log(e?.message);
+          console.log(e);
         }
       });
 
 
       const { isLoading: ispointLoading, data : pointData } = useQuery([ticketData], fetchPoint, {
         refetchOnWindowFocus: false,
-        onSuccess: data => {
-          console.log(data);
-        },
+        // onSuccess: data => {
+        //   console.log(data);
+        // },
         onError: e => {
-          console.log(e?.message);
+          console.log(e);
         }
       });
 
@@ -145,7 +144,7 @@ export default function MyPage(){
                 <div>
                     <div>
                         {
-                        <ConcertList props={likedData}/>
+                        <ConcertList props={likedData} searchWord=""/>
                         }
                     </div>
                     {(isLikedLoading || likedData?.concerts===undefined) &&

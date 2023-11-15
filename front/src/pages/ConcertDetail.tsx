@@ -10,7 +10,11 @@ import {API_BASE_URL} from '../constants/index.ts';
 import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 
-
+interface Performer{
+    seq : number;
+    performerName : string;
+    performerImageUrl : string;
+}
 
 export default function ConcertDetail(){
 
@@ -33,18 +37,17 @@ export default function ConcertDetail(){
         return response.data;
       };
 
-    const { isLoading, isError, data, error } = useQuery("data", fetchDetailData, {
+    const { isLoading, data } = useQuery("data", fetchDetailData, {
         refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
         onSuccess: data => {
           // 성공시 호출
-          console.log(data.performers)
           setIsLike(data.favorite)
         
         },
         onError: e => {
           // 실패시 호출 (401, 404 같은 error가 아니라 정말 api 호출이 실패한 경우만 호출됩니다.)
           // 강제로 에러 발생시키려면 api단에서 throw Error 날립니다. (참조: https://react-query.tanstack.com/guides/query-functions#usage-with-fetch-and-other-clients-that-do-not-throw-by-default)
-          console.log(e?.message);
+          console.log(e);
         }
       });
 
@@ -79,12 +82,10 @@ export default function ConcertDetail(){
                         isLike 
                         ?
                         <img 
-                        // className={styles.img}
                         src={cancelLikeButton} alt="cancelLikeButton"
                         onClick={toggleIsLike} />
                         :
                         <img 
-                        // className={styles.img}
                         src={likeButton} alt="likeButton" 
                         onClick={toggleIsLike} />
                     }
@@ -127,7 +128,7 @@ export default function ConcertDetail(){
                                 공연 장소 : {data?.concertHallCity} / {data?.concertHallName}
                             </div>
                             <div className={styles.host}>
-                                출연자 : {data?.performers?.map((performer)=>{
+                                출연자 : {data?.performers?.map((performer:Performer)=>{
                                     return(
                                         <div
                                         className={styles['host-list']}
