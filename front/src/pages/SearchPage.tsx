@@ -20,9 +20,9 @@ type ConcertListRequest = {
 
 export default function SearchPage(){
 
-  const [place,SetPlace] = useState("")
-  const [searchWord,SetSearchWord] = useState("")
-  const [isSearch,SetIsSearch] = useState(false)
+  const [place,SetPlace] = useState<string>("")
+  const [searchWord,SetSearchWord] = useState<string>("")
+  const [isSearch,SetIsSearch] = useState<boolean>(false)
   const location = useLocation();
   
   useEffect(()=>{
