@@ -1,7 +1,21 @@
 import styles from './ConcertInfo.module.css'
 import { useNavigate } from 'react-router-dom'
 
-export default function ConcertInfo({concert}){
+interface Concert{
+    concertSeq:number;
+    name:string;
+    holdOpenDate:string;
+    holdCloseDate:string;
+    imageUrl:string;
+    concertHallName:string;
+    concertHallCity:string;
+}
+
+interface ConcertInfoProps{
+    concert:Concert;
+}
+
+export default function ConcertInfo({concert}:ConcertInfoProps){
 
     const navigate = useNavigate()
     const goToOtherPage = (pageName:string) => {

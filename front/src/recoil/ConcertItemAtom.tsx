@@ -13,10 +13,10 @@ export const TotalQuantitySelector = selector({
     }
 })
 
-export const TotalPriceSelector = selector({
-    key : "TotalPriceSelector",
-    get: ({get})=> {
-        const ConcertItem = get(ConcertItemAtom)
-        return ConcertItem.reduce((누적값, 현재값) => 누적값, 현재값?.price, 0)
-    },
-});
+// export const TotalPriceSelector = selector({
+//     key : "TotalPriceSelector",
+//     get: ({get})=> {
+//         const ConcertItem = get(ConcertItemAtom)
+//         return ConcertItem.reduce((누적값, 현재값) => 누적값, 현재값?.price, 0)
+//     },
+// });

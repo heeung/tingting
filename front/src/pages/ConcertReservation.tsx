@@ -30,8 +30,8 @@ export default function ConcertReservation(){
 
     const [selectedSeat,setSelectedSeat] = useState<Seat[]>([])
     const [concertHallSeq,SetConcertHallSeq] = useState(0)
-    const [nowSection, SetNowSection] = useState("")
-    const [queryKey, setQueryKey] = useState(""); 
+    const [nowSection, SetNowSection] = useState<string>("")
+    const [queryKey, setQueryKey] = useState<string>(""); 
 
 
     const getSeatCnt = () => {

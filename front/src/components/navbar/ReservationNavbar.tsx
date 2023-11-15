@@ -4,14 +4,21 @@ import { useNavigate } from 'react-router-dom';
 // import { useEffect, useState } from 'react'
 
 
-export default function Navbar({section,SetSection,holdDate,concertName}){
+interface ReservationNavbarProps{
+    section:string;
+    SetSection:(key:string)=>void;
+    holdDate:string;
+    concertName:string;
+}
+
+export default function ReservationNavbar({section,SetSection,holdDate,concertName}:ReservationNavbarProps){
     
     const navigate = useNavigate()
     const goToOtherPage = (pageName:string) => {
         navigate(`/${pageName}`);
     }
 
-    const onChangeSection = (event) => {
+    const onChangeSection:React.ChangeEventHandler<HTMLSelectElement> = (event) => {
         SetSection(event.target.value)
     }
 
