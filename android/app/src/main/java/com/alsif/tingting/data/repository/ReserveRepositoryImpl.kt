@@ -1,6 +1,8 @@
 package com.alsif.tingting.data.repository
 
 import com.alsif.tingting.data.model.ConcertHallInfoDto
+import com.alsif.tingting.data.model.SeatSelectionDto
+import com.alsif.tingting.data.model.response.DeleteTicketResponseDto
 import com.alsif.tingting.data.model.response.ReservedListResponseDto
 import com.alsif.tingting.util.handleApi
 import com.alsif.tingtinqg.data.service.ReserveService
@@ -23,4 +25,17 @@ class ReserveRepositoryImpl @Inject constructor(
     override suspend fun getConcertHallInfo(concertSeq: Int): ConcertHallInfoDto {
         return handleApi { reserveService.getConcertHallInfo(concertSeq) }
     }
+
+    override suspend fun deleteTicket(ticketSeq: Int, userSeq: Int): DeleteTicketResponseDto {
+        return handleApi { reserveService.deleteTicket(ticketSeq, userSeq) }
+    }
+
+    override suspend fun getSectionSeatList(
+        concertDetailSeq: Int,
+        concertHallSeq: Int,
+        target: String
+    ): List<SeatSelectionDto> {
+        return handleApi { reserveService.getSectionSeatList(concertDetailSeq, concertHallSeq, target) }
+    }
+
 }

@@ -15,7 +15,7 @@ import com.alsif.tingting.util.scaleAnimation
 import javax.inject.Inject
 
 class ReservationCancelModalBottomSheet @Inject constructor (
-    private val viewModel: ReservedListFragmentViewModel
+    private val viewModel: ReservedListFragmentViewModel,
 ) : BaseBottomSheet<BottomSheetReservationCancelBinding>(BottomSheetReservationCancelBinding::bind, R.layout.bottom_sheet_reservation_cancel)  {
     private val sharedViewModel: MainActivityViewModel by activityViewModels()
 //    private val viewModel: ReservedListFragmentViewModel by viewModels()

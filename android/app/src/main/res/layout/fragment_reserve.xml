@@ -48,6 +48,23 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/layout_reservation_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/schedule_list_background_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_appbar" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_select_seat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_reservation_frame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

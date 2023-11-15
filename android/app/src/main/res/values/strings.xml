@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tingting</string>
+    <string name="app_name">팅팅</string>
 
     <!--  login  -->
     <string name="start_with_kakao">카카오로 시작하기</string>
@@ -60,5 +60,24 @@
 
     <!--  reserve  -->
     <string name="title_reserve">예매 하기</string>
+
+    <string name="vip">VIP석</string>
+    <string name="common">일반석</string>
+
+    <string name="selected">선택 좌석</string>
+    <string name="impossible">예매 불가</string>
+    <string name="possible">예매 가능</string>
+
+    <string name="vip_1">A</string>
+    <string name="vip_2">B</string>
+    <string name="vip_3">C</string>
+    <string name="vip_4">D</string>
+
+    <string name="common_1">E</string>
+    <string name="common_2">F</string>
+    <string name="common_3">G</string>
+    <string name="common_4">H</string>
+    <string name="common_5">I</string>
+    <string name="common_6">J</string>
 
 </resources>
