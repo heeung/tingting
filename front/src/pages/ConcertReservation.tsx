@@ -10,7 +10,7 @@ import SeatList from "../components/seatlist/SeatList";
 import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 import SelectedSeat from '../components/selectedseat/SelectedSeat.js';
-import Seat from "components/seat/Seat.js";
+import Seat from "../components/seat/Seat.js";
 
 interface Seat{
   concertSeatInfoSeq:number;
