@@ -1,7 +1,18 @@
 import styles from "./ScheduleList.module.css"
 import Schedule from "../schedule/Schedule"
 
-export default function ScheduleList({concertDetails, concertName}){
+interface Schedule{
+    seq:number;
+    concertSeq:number;
+    holdDate:string;
+}
+
+interface ScheduleListProps{
+    concertDetails:Schedule[];
+    concertName:string
+}
+
+export default function ScheduleList({concertDetails, concertName}:ScheduleListProps){
     return(
         <div
             className={styles.container}>

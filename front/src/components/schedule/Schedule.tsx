@@ -2,10 +2,21 @@ import styles from "./Schedule.module.css";
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
-export default function Schedule({ schedule, concertName }) {
+interface Schedule{
+    seq:number;
+    concertSeq:number;
+    holdDate:string;
+}
+
+interface ScheduleProps{
+    schedule:Schedule;
+    concertName:string
+}
+
+export default function Schedule({ schedule, concertName }:ScheduleProps) {
     const navigate = useNavigate();
 
-    const goToOtherPage = (pageName) => {
+    const goToOtherPage = (pageName:string) => {
         navigate(`/${pageName}`, { state: { schedule, concertName } });
     };
 
