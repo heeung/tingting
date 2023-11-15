@@ -1,8 +1,9 @@
 .container {
+    margin-left: 2%;
     min-width: 98%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     border-radius: 0rem 0.5rem 0.5rem 0.5rem;
     border-top: 1px solid var(--, #D9D9D9);
     background: rgba(217, 217, 217, 0.12);
@@ -12,3 +13,36 @@
     width : 32%
 }
 
+
+.comment-background{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 98%;
+    height: 30rem;
+    flex-shrink: 0;
+
+    border-radius: 0rem 0.5rem 0.5rem 0.5rem;
+    border-top: 1px solid var(--, #D9D9D9);
+    background: rgba(217, 217, 217, 0.12); 
+    text-align: center;
+}
+
+.img{
+    margin-top: 5rem;
+    width: 100%;
+}
+
+.comment{
+    width: 100%;
+    color: var(--_, #444);
+    font-family: Gmarket Sans TTF;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.5rem; /* 60% */
+    letter-spacing: 0.03125rem;
+    margin-bottom: 10rem;
+
+}

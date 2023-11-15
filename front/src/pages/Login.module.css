@@ -32,7 +32,11 @@
 }
 
 .logo{
+    box-shadow: none;
+}
 
+.logo:hover{
+    cursor: pointer;
 }
 
 .buttonbox {

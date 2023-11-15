@@ -1,8 +1,9 @@
 .container {
     width: 100%;
     min-height: 2.5rem;
-    
-    border-top: 1px solid var(--_, #444);
+
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+    /* border-bottom: 1px solid var(--_, #444); */
     background: rgba(217, 217, 217, 0.12);
     display: flex;
 
@@ -15,6 +16,10 @@
     margin: 0.5rem;
 }
 
+.logo:hover{
+    cursor: pointer;
+}
+
 .logout {
     font-weight: 900;
     display: flex;
@@ -22,4 +27,29 @@
     justify-content: center;
     margin-right: 1rem;
 
+}
+
+.logout:hover{
+    cursor: pointer;
+}
+
+.reservationContainer {
+    width: 100%;
+    min-height: 2.5rem;
+
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+    background: rgba(217, 217, 217, 0.12);
+    display: flex;
+
+    justify-content: space-around;
+    align-items: center;
+
+    /* 상단바 폰트 */
+    color: var(--_, #444);
+    font-family: Gmarket Sans TTF;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    
 }
