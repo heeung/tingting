@@ -37,7 +37,7 @@ private const val TAG = "MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     private lateinit var navHostFragment: NavHostFragment
-    private lateinit var navController: NavController
+    lateinit var navController: NavController
     lateinit var bottomNavigationView: BottomNavigationView
     lateinit var loginBottomSheet: LoginModalBottomSheet
 
@@ -94,12 +94,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             when (destination.id) {
                 R.id.searchFragment -> {
                     binding.layoutAppbar.visibility = View.GONE
+                    binding.bottomNavigation.visibility = View.VISIBLE
                 }
                 R.id.concertDetailFragment -> {
                     binding.layoutAppbar.visibility = View.GONE
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                }
+                R.id.reserveFragment -> {
+                    binding.layoutAppbar.visibility = View.GONE
+                    binding.bottomNavigation.visibility = View.GONE
                 }
                 else -> {
                     binding.layoutAppbar.visibility = View.VISIBLE
+                    binding.bottomNavigation.visibility = View.VISIBLE
                 }
             }
         }

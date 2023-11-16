@@ -51,5 +51,19 @@
         <argument
             android:name="concertSeq"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_concertDetailFragment_to_reserveFragment"
+            app:destination="@id/reserveFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reserveFragment"
+        android:name="com.alsif.tingting.ui.reserve.ReserveFragment"
+        android:label="ReserveFragment">
+        <argument
+            android:name="concertDetailSeq"
+            app:argType="integer" />
+        <argument
+            android:name="concertHallSeq"
+            app:argType="integer" />
     </fragment>
 </navigation>

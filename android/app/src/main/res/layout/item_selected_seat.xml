@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_50sdp"
+    android:orientation="vertical">
+
+<LinearLayout
+    android:id="@+id/item_selected_seat"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+    android:layout_marginHorizontal="@dimen/_12sdp"
+    android:gravity="center|left">
+
+    <View
+        android:id="@+id/frame_grade"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:background="@drawable/frame_section_vip"/>
+
+    <Space
+        android:layout_width="@dimen/_8sdp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textview_section"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="wrap_content"
+        style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+        android:text="A"/>
+
+    <TextView
+        android:id="@+id/textview_seat_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+        android:text="지정석"/>
+
+    <TextView
+        android:id="@+id/textview_cost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAlignment="textEnd"
+        style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+        android:text="50000 원" />
+
+</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@drawable/frame_button_go_detail"
+        android:layout_marginHorizontal="@dimen/_16sdp"/>
+</LinearLayout>

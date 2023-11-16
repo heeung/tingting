@@ -14,7 +14,7 @@ private fun <T> Response<T>.isDelete(): Boolean {
 @Suppress("UNCHECKED_CAST")
 fun <T> Response<T>.getValueOrThrow(): T {
     if (this.isSuccessful) {
-        if (this.isDelete()) { return Unit as T }
+//        if (this.isDelete()) { return Unit as T }
         return this.body() ?: throw DataThrowable.IllegalStateThrowable()
     }
 

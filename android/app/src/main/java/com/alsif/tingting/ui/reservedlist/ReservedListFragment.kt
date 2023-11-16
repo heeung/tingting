@@ -74,9 +74,11 @@ class ReservedListFragment : BaseFragment<FragmentReservedListBinding>(FragmentR
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.refreshEvent.collectLatest {
-                dismissReservationCancelBottomSheet()
-                showSnackbar(binding.root, CONFIRM_CANCEL_MESSAGE)
-                getReservedListWithLoadingDialog()
+                if (it) {
+                    dismissReservationCancelBottomSheet()
+                    showSnackbar(binding.root, CONFIRM_CANCEL_MESSAGE)
+                    getReservedListWithLoadingDialog()
+                }
             }
         }
     }
@@ -101,6 +103,7 @@ class ReservedListFragment : BaseFragment<FragmentReservedListBinding>(FragmentR
         reservedListAdapter.reservationCancelClickListener = object: ReservedListPagingAdapter.ReservationCancelClickListener {
             @SuppressLint("ClickableViewAccessibility")
             override fun onClick(view: View, ticketDto: TicketDto) {
+                viewModel.pickTicketSeq = ticketDto.ticketSeq
                 showReservationCancelBottomSheet()
             }
         }

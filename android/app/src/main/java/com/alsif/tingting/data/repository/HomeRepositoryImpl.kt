@@ -2,6 +2,7 @@ package com.alsif.tingting.data.repository
 
 import com.alsif.tingting.data.model.ConcertDetailDto
 import com.alsif.tingting.data.model.ConcertDto
+import com.alsif.tingting.data.model.MoneyDto
 import com.alsif.tingting.data.model.request.ConcertListRequestDto
 import com.alsif.tingting.data.model.response.ConcertListResponseDto
 import com.alsif.tingting.data.service.HomeService
@@ -30,5 +31,9 @@ class HomeRepositoryImpl @Inject constructor(
      */
     override suspend fun getConcertDetail(concertSeq: Int, userSeq: Int): ConcertDetailDto {
         return handleApi { homeService.getConcertDetail(concertSeq, userSeq) }
+    }
+
+    override suspend fun getMyMoneyInfo(userSeq: Int): MoneyDto {
+        return handleApi { homeService.getMyMoneyInfo(userSeq) }
     }
 }

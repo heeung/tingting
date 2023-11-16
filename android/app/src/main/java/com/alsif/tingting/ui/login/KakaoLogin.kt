@@ -11,6 +11,7 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import javax.inject.Inject
 
+private const val TAG = "KakaoLogin"
 /**
  * 카카오 SDK 로그인 구현부입니다.
  */
@@ -21,6 +22,7 @@ fun kakaoLogin(
     loginEvent: () -> Unit
 ) {
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        Log.d(TAG, "kakaoLogin: 콜백이 불렸어요")
         if (error != null) {
             Log.e(ContentValues.TAG, "카카오계정으로 로그인 실패", error)
         } else if (token != null) {

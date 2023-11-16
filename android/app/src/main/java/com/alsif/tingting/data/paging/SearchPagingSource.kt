@@ -21,6 +21,7 @@ class SearchPagingSource @Inject constructor (
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ConcertDto> {
         val page = params.key ?: 1
+        Log.d(TAG, "load: 페이징 불림 ${page}")
 
         return try {
             val response: ConcertListResponseDto =
