@@ -1,6 +1,9 @@
 import styles from "./Schedule.module.css";
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
+import { useRecoilValue } from 'recoil';
+import { userSeqState } from "../../recoil/UserAtom.tsx";
+
 
 interface Schedule{
     seq:number;
@@ -14,9 +17,15 @@ interface ScheduleProps{
 }
 
 export default function Schedule({ schedule, concertName }:ScheduleProps) {
+    
+    const userSeq = useRecoilValue(userSeqState);
     const navigate = useNavigate();
 
     const goToOtherPage = (pageName:string) => {
+        if(userSeq==null){
+            alert("예약을 위해서는 로그인이 필요합니다")
+            return
+        }
         navigate(`/${pageName}`, { state: { schedule, concertName } });
     };
 

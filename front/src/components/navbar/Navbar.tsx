@@ -2,9 +2,14 @@ import styles from './Navbar.module.css'
 import { logo } from '../../assets/Images/index'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil';
+import { userEmailState, userSeqState } from "../../recoil/UserAtom.tsx";
 
 
 export default function Navbar(){
+
+    const [userEmail,setUserEmail] = useRecoilState(userEmailState);
+    const [userSeq,setUserSeq] = useRecoilState(userSeqState);
     
     const location = useLocation();
     const [isLoginPage, setIsLoginPage] = useState(location.pathname === '/login');
@@ -19,6 +24,10 @@ export default function Navbar(){
     const navigate = useNavigate()
     const goToOtherPage = (pageName:string) => {
         navigate(`/${pageName}`);
+    }
+    const logout = () => {
+        setUserEmail(null)
+        setUserSeq(null)
     }
 
     if (isLoginPage || isReservationPage) {
@@ -39,20 +48,34 @@ export default function Navbar(){
         <div
         onClick={() => goToOtherPage('search')}
         className={styles.logout}>
-            검색페이지
+            Search
         </div>
-
+        {
+            userSeq &&
+            <div
+            onClick={() => goToOtherPage('mypage')}
+            className={styles.logout}>
+                MyPage
+            </div>
+        }
         <div
-        onClick={() => goToOtherPage('mypage')}
-        className={styles.logout}>
-            마이페이지
+        onClick={() => goToOtherPage('mypage')}>
+            {userEmail}
         </div>
-
-        <div
-        onClick={() => goToOtherPage('login')}
-        className={styles.logout}>
-            로그인
-        </div>
+        {userSeq == null
+            ? 
+            <div
+            onClick={() => goToOtherPage('login')}
+            className={styles.logout}>
+                로그인
+            </div>
+            :
+            <div
+            onClick={() => logout()}
+            className={styles.logout}>
+                로그아웃
+            </div>
+        }
     </div>
     );
 }
