@@ -104,7 +104,7 @@ export default function ConcertReservation(){
     
         return response.data;
       } catch (error) {
-        console.error('Error during API call:', error);
+        alert("해당 좌석은 예매하실 수 없습니다.")
         throw error;
       }
     };
