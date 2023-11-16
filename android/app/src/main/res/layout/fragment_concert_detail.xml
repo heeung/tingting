@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Theme.AppCompat.TextView.gSans.Black.Bold"
-                android:textSize="@dimen/_18sdp"
+                android:textSize="@dimen/_16sdp"
                 tools:text="타이틀"/>
 
         </LinearLayout>
@@ -145,15 +145,79 @@
                 android:layout_height="@dimen/_12sdp" />
 
             <TextView
-                android:id="@+id/textview_performer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_12sdp"
                 style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
                 android:layout_marginHorizontal="@dimen/_12sdp"
-                tools:text="콘서트 설명"/>
+                android:text="@string/performer"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_6sdp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_performer"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_12sdp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/frame_schedule_list"
+                android:paddingTop="@dimen/_16sdp"
+                android:paddingHorizontal="@dimen/_16sdp">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/date"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        style="@style/Theme.AppCompat.TextView.gSans.Black.Bold"
+                        android:textSize="@dimen/_10sdp"
+                        android:layout_gravity="center" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/time"
+                        android:textAlignment="center"
+                        style="@style/Theme.AppCompat.TextView.gSans.Black.Bold"
+                        android:textSize="@dimen/_10sdp"
+                        android:layout_gravity="center"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_concert_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_350sdp" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

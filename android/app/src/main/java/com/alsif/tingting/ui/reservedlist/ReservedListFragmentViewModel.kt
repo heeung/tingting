@@ -31,12 +31,13 @@ class ReservedListFragmentViewModel @Inject constructor(
 )  : ViewModel() {
     var isFirstRander = true
 
-    // TODO api연결
     private val _refreshEvent = MutableSharedFlow<Boolean>()
     val refreshEvent = _refreshEvent.asSharedFlow()
 
     private val _reservedListPagingDataFlow = MutableStateFlow<PagingData<TicketDto>>(PagingData.empty())
     val reservedListPagingDataFlow = _reservedListPagingDataFlow.asStateFlow()
+
+    var pickTicketSeq: Long = 0
 
     private val _error = MutableSharedFlow<DataThrowable>()
     var error = _error.asSharedFlow()
@@ -79,10 +80,19 @@ class ReservedListFragmentViewModel @Inject constructor(
         }.flow.cachedIn(viewModelScope)
     }
 
-    // TODO api연결
     fun confirmReservationCancel() {
         viewModelScope.launch {
-            _refreshEvent.emit(true)
+            runCatching {
+                reserveRepository.deleteTicket(pickTicketSeq.toInt(), TEST_USER_SEQ)
+            }.onSuccess {
+                _refreshEvent.emit(true)
+            }.onFailure {
+                if (it is SocketTimeoutException) {
+                    _error.emit(DataThrowable.NetworkTrafficThrowable())
+                } else {
+                    _error.emit(DataThrowable.NetworkErrorThrowable())
+                }
+            }
         }
     }
 

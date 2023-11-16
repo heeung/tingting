@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tingting</string>
+    <string name="app_name">팅팅</string>
 
     <!--  login  -->
     <string name="start_with_kakao">카카오로 시작하기</string>
@@ -37,6 +37,10 @@
     <string name="cancle_like">찜 취소</string>
     <string name="detail_item_date">일시 : %s ~ %s</string>
     <string name="detail_item_locale">장소 : %s / %s</string>
+    <string name="performer">출연</string>
+    <string name="date">날짜</string>
+    <string name="time">시간</string>
+    <string name="do_reservation">예매하러 가기</string>
 
     <!--  likedlist  -->
     <string name="liked_item_date">%s ~ %s</string>
@@ -53,5 +57,31 @@
     <string name="confirm">확인 했습니다.</string>
     <string name="cancel_confirm_message">정말로 예매를 취소하시겠습니까?</string>
     <string name="cancel_comfirm_message_2">취소 시 재 예매가 불가능하며\n팅팅은 불가피함에 대해서는 책임지지 않습니다.</string>
+
+    <!--  reserve  -->
+    <string name="title_reserve">예매 하기</string>
+
+    <string name="vip">VIP석</string>
+    <string name="common">일반석</string>
+
+    <string name="selected">선택 좌석</string>
+    <string name="impossible">예매 불가</string>
+    <string name="possible">예매 가능</string>
+
+    <string name="vip_1">A</string>
+    <string name="vip_2">B</string>
+    <string name="vip_3">C</string>
+    <string name="vip_4">D</string>
+
+    <string name="common_1">E</string>
+    <string name="common_2">F</string>
+    <string name="common_3">G</string>
+    <string name="common_4">H</string>
+    <string name="common_5">I</string>
+    <string name="common_6">J</string>
+
+    <string name="do_reserve">예매하기</string>
+    <string name="confirm_message">정말로 예매를 하시겠습니까?</string>
+    <string name="comfirm_message_2">예매 진행시 예매 취소 가능합니다.</string>
 
 </resources>

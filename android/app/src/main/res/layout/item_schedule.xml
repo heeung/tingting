@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_schedule"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_50sdp"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/textview_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="name"
+        style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+        android:textSize="@dimen/_11sdp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/textview_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:layout_weight="1"
+        style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+        android:textSize="@dimen/_11sdp"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/button_reservation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/frame_button_reservation"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_16sdp"
+        android:elevation="@dimen/_2sdp"
+        android:layout_marginRight="@dimen/_2sdp">
+
+        <TextView
+            style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_12sdp"
+            android:text="@string/do_reservation"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp" />
+
+    </LinearLayout>
+
+</LinearLayout>
