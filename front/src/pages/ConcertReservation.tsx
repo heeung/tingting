@@ -10,7 +10,7 @@ import SeatList from "../components/seatlist/SeatList";
 import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 import SelectedSeat from '../components/selectedseat/SelectedSeat.js';
-import Seat from "components/seat/Seat.js";
+import Seat from "../components/seat/Seat.js";
 
 interface Seat{
   concertSeatInfoSeq:number;
@@ -92,7 +92,7 @@ export default function ConcertReservation(){
 
       const { isLoading, data: seatData} = useQuery([nowSection,queryKey], ()=>fetchSeats(), {
         refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
-        retry: 3, // 실패시 재호출 몇번 할지
+        retry: 1, // 실패시 재호출 몇번 할지
         // enabled : false,
         // onSuccess: data => {
         //     console.log(data);
