@@ -212,8 +212,10 @@ export default function MyPage(){
             {
                 category === "reservations" 
                 ?
-                <div>
-                    <div>
+                <div
+                className={styles.w100}>
+                    <div
+                    className={styles.w100}>
                         { 
                         <BookingInfoList props={allTicketsContent} setQueryKey={setQueryKey}/>
                         }
@@ -238,8 +240,10 @@ export default function MyPage(){
                 </div>
                 
                 :
-                <div>
-                    <div>
+                <div
+                className={styles.w100}>
+                    <div
+                    className={styles.w100}>
                         {
                         <ConcertList props={allPagesContent} searchWord=""/>
                         }
