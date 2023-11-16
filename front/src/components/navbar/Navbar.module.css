@@ -20,7 +20,7 @@
     cursor: pointer;
 }
 
-.logout {
+.logout,.login,.mypage{
     font-weight: 900;
     display: flex;
     align-items: center;

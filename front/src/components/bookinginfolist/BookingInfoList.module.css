@@ -3,7 +3,7 @@
     min-width: 98%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     border-radius: 0rem 0.5rem 0.5rem 0.5rem;
     border-top: 1px solid var(--, #D9D9D9);

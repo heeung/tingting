@@ -54,19 +54,23 @@ export default function Navbar(){
             userSeq &&
             <div
             onClick={() => goToOtherPage('mypage')}
-            className={styles.logout}>
+            className={styles.mypage}>
                 MyPage
             </div>
         }
-        <div
-        onClick={() => goToOtherPage('mypage')}>
-            {userEmail}
-        </div>
+
+        {
+            userSeq &&
+            <div>
+                {userEmail}
+            </div>
+        }
+
         {userSeq == null
             ? 
             <div
             onClick={() => goToOtherPage('login')}
-            className={styles.logout}>
+            className={styles.login}>
                 로그인
             </div>
             :

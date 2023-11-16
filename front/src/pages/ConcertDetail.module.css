@@ -32,6 +32,7 @@
 }
 
 .concertInfoBox{
+    text-align: start;
     width: 60%;
     margin: 1%;
 
