@@ -1,11 +1,19 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist({
+  key: "localStorage",
+  storage: localStorage,
+});
 
 export const userEmailState = atom({
-    key: 'userEmailState',
-    default: null, // 초기값은 로그인되어 있지 않음을 나타냅니다.
-  });
-  
-  export const userSeqState = atom({
-    key: 'userSeqState',
-    default: null,
-  });
+  key: 'userEmailState',
+  default: null,
+  effects_UNSTABLE: [persistAtom], 
+});
+
+export const userSeqState = atom({
+  key: 'userSeqState',
+  default: null,
+  effects_UNSTABLE: [persistAtom], 
+});
