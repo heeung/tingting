@@ -80,4 +80,8 @@
     <string name="common_5">I</string>
     <string name="common_6">J</string>
 
+    <string name="do_reserve">예매하기</string>
+    <string name="confirm_message">정말로 예매를 하시겠습니까?</string>
+    <string name="comfirm_message_2">예매 진행시 예매 취소 가능합니다.</string>
+
 </resources>

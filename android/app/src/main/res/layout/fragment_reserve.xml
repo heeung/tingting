@@ -62,9 +62,69 @@
         android:id="@+id/recycler_select_seat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintBottom_toTopOf="@+id/layout_reserve_confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_reservation_frame" />
+
+    <LinearLayout
+        android:id="@+id/layout_reserve_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_60sdp"
+        android:orientation="vertical"
+        android:background="@drawable/frame_schedule_list"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/textview_total_price"
+                    style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_16sdp"
+                    android:text="티켓금액" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/button_reservation"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="@dimen/_6sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:background="@drawable/frame_button_reservation"
+                android:elevation="@dimen/_2sdp"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_12sdp"
+                    android:text="@string/do_reserve"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

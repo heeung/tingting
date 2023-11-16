@@ -2,7 +2,9 @@ package com.alsif.tingting.data.repository
 
 import com.alsif.tingting.data.model.ConcertHallInfoDto
 import com.alsif.tingting.data.model.SeatSelectionDto
+import com.alsif.tingting.data.model.request.ReserveRequestDto
 import com.alsif.tingting.data.model.response.DeleteTicketResponseDto
+import com.alsif.tingting.data.model.response.MessageResponseDto
 import com.alsif.tingting.data.model.response.ReservedListResponseDto
 import com.alsif.tingting.util.handleApi
 import com.alsif.tingtinqg.data.service.ReserveService
@@ -36,6 +38,22 @@ class ReserveRepositoryImpl @Inject constructor(
         target: String
     ): List<SeatSelectionDto> {
         return handleApi { reserveService.getSectionSeatList(concertDetailSeq, concertHallSeq, target) }
+    }
+
+    override suspend fun getIsPossibleSeat(
+        concertDetailSeq: Int,
+        seatSeqs: List<Long>
+    ): MessageResponseDto {
+        return handleApi { reserveService.getIsPossibleSeat(concertDetailSeq, seatSeqs) }
+    }
+
+    override suspend fun postReservation(
+        concertDetailSeq: Int,
+        userSeq: Int,
+        section: String,
+        seatSeqs: ReserveRequestDto
+    ): MessageResponseDto {
+        return handleApi { reserveService.postReservation(concertDetailSeq, userSeq, section, seatSeqs) }
     }
 
 }

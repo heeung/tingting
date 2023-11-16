@@ -12,30 +12,36 @@ import com.alsif.tingting.data.model.SeatSelectionDto
 import com.alsif.tingting.databinding.FragmentSelectSeatBinding
 import com.alsif.tingting.ui.reserve.ReserveFragment
 import com.alsif.tingting.ui.reserve.ReserveFragmentViewModel
+import com.alsif.tingting.ui.reserve.recyclerview.SelectSeatListAdapter
 import com.kakao.sdk.friend.m.v
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.lang.Package.getPackage
 import java.util.Arrays
+import java.util.Collections
 import javax.inject.Inject
+import kotlin.text.Typography.section
 
 private const val TAG = "SelectSeatFragment"
 @AndroidEntryPoint
 class SelectSeatFragment @Inject constructor(
     private val viewModel : ReserveFragmentViewModel,
-    private val mFragment: ReserveFragment
+    private val mFragment: ReserveFragment,
+    private val section: String
 ) : BaseFragment<FragmentSelectSeatBinding>(FragmentSelectSeatBinding::bind, com.alsif.tingting.R.layout.fragment_select_seat) {
 
 //    private var resList: Array<Array<Int>> = Array(10) { Array(21) { 0 } }
     private var mapStoI: HashMap<String, Int> = hashMapOf()
     private var mapViewToSeat: HashMap<View, SeatSelectionDto> = hashMapOf()
+    private var list: MutableList<SeatSelectionDto> = mutableListOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         subscribe()
         setClickListeners()
+        binding.textviewSection.text = section
     }
 
     private fun setClickListeners() {
@@ -87,6 +93,7 @@ class SelectSeatFragment @Inject constructor(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun subscribe() {
         // TODO 데이터 갱신 차이 문제,,
         viewLifecycleOwner.lifecycleScope.launch {
@@ -123,11 +130,10 @@ class SelectSeatFragment @Inject constructor(
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.selectListSize.collectLatest {
-                mFragment.seatListAdapter.submitList(viewModel.selectList.value.values.toList())
-                for (d in viewModel.selectList.value) {
-                    // TODO 리사이클러뷰 갱신
-                    Log.d(TAG, "selectSeat: $d")
+                for (a in viewModel.selectListList.value) {
+                    Log.d(TAG, "selectSeat: $a")
                 }
+                mFragment.initRecyclerView()
             }
         }
     }

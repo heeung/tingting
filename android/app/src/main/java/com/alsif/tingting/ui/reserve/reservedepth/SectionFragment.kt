@@ -72,7 +72,7 @@ class SectionFragment @Inject constructor(
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.nowSection.collectLatest {
                 mFragment.showLoadingDialog()
-                mFragment.changeFragment(SELECT_SEAT_FRAGMENT_NAME)
+                mFragment.changeFragment(SELECT_SEAT_FRAGMENT_NAME, it)
                 viewModel.getSeatList(mFragment.args.concertDetailSeq, mFragment.args.concertHallSeq, it)
             }
         }

@@ -19,4 +19,13 @@ data class SeatSelectionDto(
     val seat: String,
     @SerializedName("section")
     val section: String
-) : Parcelable
+) : Parcelable, Comparable<SeatSelectionDto> {
+    override fun compareTo(other: SeatSelectionDto): Int {
+        if (this.concertSeatInfoSeq - other.concertSeatInfoSeq > 0L)
+            return -1
+        else if (this.concertSeatInfoSeq - other.concertSeatInfoSeq == 0L)
+            return 0
+        else
+            return 1
+    }
+}

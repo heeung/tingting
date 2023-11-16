@@ -16,86 +16,104 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="@dimen/_80sdp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingVertical="@dimen/_10sdp">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_10sdp">
 
-                <View
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
-                    android:background="@drawable/frame_seat_impossible"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-                <Space
-                    android:layout_width="@dimen/_10sdp"
-                    android:layout_height="wrap_content"/>
+                    <View
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:background="@drawable/frame_seat_impossible"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
-                    android:text="@string/impossible"
-                    android:textSize="@dimen/_9sdp"/>
+                    <Space
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                        android:text="@string/impossible"
+                        android:textSize="@dimen/_9sdp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:background="@drawable/frame_seat_possible"/>
+
+                    <Space
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                        android:text="@string/possible"
+                        android:textSize="@dimen/_9sdp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:background="@drawable/frame_seat_selected"/>
+
+                    <Space
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
+                        android:text="@string/selected"
+                        android:textSize="@dimen/_9sdp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+            <TextView
+                android:id="@+id/textview_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="구역"
+                android:textSize="@dimen/_30sdp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <View
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
-                    android:background="@drawable/frame_seat_possible"/>
-
-                <Space
-                    android:layout_width="@dimen/_10sdp"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
-                    android:text="@string/possible"
-                    android:textSize="@dimen/_9sdp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <View
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
-                    android:background="@drawable/frame_seat_selected"/>
-
-                <Space
-                    android:layout_width="@dimen/_10sdp"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Theme.AppCompat.TextView.gSans.Black.Medium"
-                    android:text="@string/selected"
-                    android:textSize="@dimen/_9sdp"/>
-
-            </LinearLayout>
+                android:textAlignment="textEnd"
+                android:textColor="@color/grey"
+                style="@style/Theme.AppCompat.TextView.gSans.Black.Bold"/>
 
         </LinearLayout>
 

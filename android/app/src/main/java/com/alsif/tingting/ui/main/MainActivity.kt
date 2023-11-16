@@ -37,7 +37,7 @@ private const val TAG = "MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     private lateinit var navHostFragment: NavHostFragment
-    private lateinit var navController: NavController
+    lateinit var navController: NavController
     lateinit var bottomNavigationView: BottomNavigationView
     lateinit var loginBottomSheet: LoginModalBottomSheet
 

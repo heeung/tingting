@@ -2,6 +2,7 @@ package com.alsif.tingting.data.service
 
 import com.alsif.tingting.data.model.ConcertDetailDto
 import com.alsif.tingting.data.model.ConcertDto
+import com.alsif.tingting.data.model.MoneyDto
 import com.alsif.tingting.data.model.request.ConcertListRequestDto
 import com.alsif.tingting.data.model.response.ConcertListResponseDto
 import retrofit2.Response
@@ -21,4 +22,9 @@ interface HomeService {
         @Path("concertSeq") concertSeq: Int,
         @Query("userSeq") userSeq: Int
     ): Response<ConcertDetailDto>
+
+    @GET("users/{userSeq}/point")
+    suspend fun getMyMoneyInfo(
+        @Path("userSeq") userSeq: Int
+    ): Response<MoneyDto>
 }
