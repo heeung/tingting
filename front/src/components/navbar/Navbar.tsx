@@ -47,7 +47,7 @@ export default function Navbar(){
         
         <div
         onClick={() => goToOtherPage('search')}
-        className={styles.logout}>
+        className={styles.search}>
             Search
         </div>
         {
@@ -62,7 +62,9 @@ export default function Navbar(){
         {
             userSeq &&
             <div>
+                <th>
                 {userEmail}
+                </th>
             </div>
         }
 
