@@ -8,9 +8,6 @@ import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 import { useNavigate } from 'react-router-dom'
 
-
-import { useRecoilValue } from 'recoil';
-import { userEmailState, userSeqState } from "../recoil/UserAtom.tsx";
 import {
   useInfiniteQuery, 
   } from 'react-query';
@@ -19,12 +16,6 @@ import axios from 'axios';
 import {API_BASE_URL} from '../constants/index.ts';
 
 function Home(){
-
-  const userEmail = useRecoilValue(userEmailState);
-  const userSeq = useRecoilValue(userSeqState);
-
-  console.log('userEmail:',userEmail)
-  console.log('userSeq:',userSeq)
 
   const navigate = useNavigate()
 
