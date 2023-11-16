@@ -71,7 +71,7 @@ export default function BookingInfo({ticket,setQueryKey}:BookingInfoProps){
                     {ticket.concertHallCity}
                 </div>  
                 <div className={styles.paymentDate}>
-                    {ticket.createdDate}
+                    {ticket.holdDate}
                 </div>
                 <div className={styles.seatCnt}>
                     {ticket.seats ? ticket?.seats.length : 0}석
@@ -80,7 +80,12 @@ export default function BookingInfo({ticket,setQueryKey}:BookingInfoProps){
                     {ticket.totalPrice}원
                 </div>
                 <div className={styles.period}>
-                    {ticket.createdDate && ticket?.createdDate.slice(0,10)} ~ {ticket.deletedDate && ticket?.deletedDate.slice(0,10)}
+                    <div>
+                        예매일자 : {ticket.createdDate && ticket?.createdDate}
+                    </div>
+                    {   ticket.deletedDate &&
+                        <div>취소일자 : {ticket.deletedDate && ticket?.deletedDate}</div>
+                    }
                 </div>
             </div>
 

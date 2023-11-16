@@ -23,7 +23,7 @@ export default function Schedule({ schedule, concertName }:ScheduleProps) {
 
     const goToOtherPage = (pageName:string) => {
         if(userSeq==null){
-            alert("예약을 위해서는 로그인이 필요합니다")
+            alert("예약하기 위해서는 로그인이 필요합니다.")
             return
         }
         navigate(`/${pageName}`, { state: { schedule, concertName } });
