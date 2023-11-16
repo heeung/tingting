@@ -28,8 +28,8 @@ export default function ConcertList(props:Props) {
       {concerts.length > 0 
       ? 
       (
-        concerts?.map((concert: Concert, index) => (
-          <div className={styles.concertList} key={`${concert.concertSeq}-${index}`}>
+        concerts?.map((concert: Concert) => (
+          <div className={styles.concertList} key={concert.concertSeq}>
             <ConcertInfo
               concert={concert}
             />
