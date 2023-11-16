@@ -12,6 +12,9 @@ import { animationLoading } from '../assets/Images/index.js';
 import SelectedSeat from '../components/selectedseat/SelectedSeat.js';
 import Seat from "../components/seat/Seat.js";
 
+import { useRecoilValue } from 'recoil';
+import { userSeqState } from "../recoil/UserAtom.tsx";
+
 interface Seat{
   concertSeatInfoSeq:number;
   section:string;
@@ -24,6 +27,7 @@ interface Seat{
 
 export default function ConcertReservation(){
 
+    const userSeq = useRecoilValue(userSeqState);
     const location = useLocation();
     const {seq, concertSeq, holdDate} = location.state.schedule
     const {concertName} = location.state
@@ -78,7 +82,7 @@ export default function ConcertReservation(){
 
       const seatSeqs = selectedSeat.map((seat:Seat)=>seat.concertSeatInfoSeq)
       const requestDto = {
-        userSeq : 1
+        userSeq : userSeq
       }
       
       const response = await axios.post(`${API_BASE_URL}/book/${seq}/seat`,{seatSeqs:seatSeqs},{params:requestDto});
