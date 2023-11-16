@@ -239,7 +239,7 @@ export default function MyPage(){
                     <div
                     className={styles.w100}>
                         {
-                        <ConcertList props={allPagesContent} searchWord=""/>
+                        <ConcertList props={allPagesContent} searchWord="" isLiked={true}/>
                         }
                     </div>
                     {(isLikedLoading||isFetchingNextLikedPage)  &&

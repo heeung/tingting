@@ -9,32 +9,6 @@ import { useLocation } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 
-
-// interface Concert {
-//   concertSeq: number;
-//   name: string;
-//   holdOpenDate: string;
-//   holdCloseDate: string;
-//   imageUrl: string;
-//   concertHallName: string;
-//   concertHallCity: string;
-// }
-
-// interface Page{
-//   totalPage	: number;
-//   currentPage : number;
-//   concerts: Concert[];
-// }
-
-// interface ConcertListResponse {
-//   pageParams: number[];
-//   pages: {
-//     totalPage: number;
-//     currentPage: number;
-//     concerts: Concert[]; // 'concerts' 속성 추가
-//   }[];
-// }
-
 type ConcertListRequest = {
   currentPage: number;
   itemCount: number;
@@ -183,7 +157,7 @@ export default function SearchPage(){
             </div>
                 {
                   !isLoading && 
-                  <div>
+                  <div className={styles.w100}>
                   <ConcertList props={allPagesContent} searchWord={searchWord} />
                   </div>
                 }

@@ -19,12 +19,14 @@ interface Props {
     currentPage : number;
     totalPage : number;
   }
+  isLiked? : boolean
 }
 
 export default function ConcertList(props:Props) {
   const concerts = props?.props?.concerts 
   const searchWord = props.searchWord
-
+  const isLiked = props.isLiked
+  console.log(isLiked)
   return (
     <div className={styles.container}>
       {concerts && (concerts.length > 0) 
@@ -47,9 +49,17 @@ export default function ConcertList(props:Props) {
           className={styles.img}
           src={deactivatedLogo} alt="deactivatedLogo" />
           </div>
-          <div
-          className={styles.comment}
-          >"{searchWord}"로 검색한 결과가 없습니다.</div>
+          {
+            isLiked 
+            ?
+            <div
+            className={styles.comment}
+            >찜한 공연이 없습니다</div>            
+            :
+            <div
+            className={styles.comment}
+            >"{searchWord}"로 검색한 결과가 없습니다.</div>
+          }
         </div>
       )}
     </div>
