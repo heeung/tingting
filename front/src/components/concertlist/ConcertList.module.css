@@ -1,6 +1,6 @@
 .container {
-    margin-left: 0 auto;
-    max-width: 85rem;
+    margin: 0 auto;
+    max-width: 90%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -45,4 +45,8 @@
     letter-spacing: 0.03125rem;
     margin-bottom: 10rem;
 
+}
+
+.w100{
+    width: 100%;
 }

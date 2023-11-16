@@ -52,7 +52,7 @@
 .toggleButtonBox {
     margin-top: 10%;
     display: flex;
-    width: 100%;
+    width: 90%;
     margin: 5% 3% 3%;
 }
 
@@ -96,4 +96,8 @@
 
 .loader {
     height: 4rem;
+}
+
+.w100{
+    width: 100%;
 }
