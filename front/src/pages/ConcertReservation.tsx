@@ -1,6 +1,6 @@
 import styles from "./ConcertReservation.module.css"
 import Navbar from "../components/navbar/ReservationNavbar"
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { API_BASE_URL } from "../constants";
 import { useQuery  } from "react-query";
@@ -38,6 +38,11 @@ export default function ConcertReservation(){
     const [queryKey, setQueryKey] = useState<string>(""); 
 
 
+    const navigate = useNavigate()
+    const goToOtherPage = (pageName:string) => {
+        navigate(`/${pageName}`);
+    }
+
     const getSeatCnt = () => {
       return selectedSeat.length
     }
@@ -64,10 +69,8 @@ export default function ConcertReservation(){
             concertHallSeq:concertHallSeq,
             target:nowSection
         }
-
         const response = await axios.get(`${API_BASE_URL}/book/${seq}/section`,{params:requestDto});
         return response.data;
-
     }
     
     useEffect(()=>{
@@ -75,6 +78,46 @@ export default function ConcertReservation(){
         fetchConcertType()
     },[])
 
+
+    // 좌석 예약 가능여부 확인 API
+    const checkSeats = async (selectedSeat: Seat[]) => {
+      try {
+        // Check if selected seats array is empty
+        if (!selectedSeat.length) {
+          console.log('No seats selected. Exiting checkSeats function.');
+          return;
+        }
+    
+        // Extract seat sequence numbers from selected seats
+        const seatSeqs = selectedSeat.map((seat: Seat) => seat.concertSeatInfoSeq);
+    
+        // Prepare request DTO
+        const requestDto = {
+          seatSeqs: seatSeqs,
+        };
+    
+        // Log request DTO and API URL
+        console.log('Request DTO:', requestDto);
+        console.log('API URL:', `${API_BASE_URL}/book/${seq}/seat`);
+    
+        // Make API request using axios
+        const response = await axios.get(`${API_BASE_URL}/book/${seq}/seat`, { params: requestDto });
+    
+        // Log response data
+        console.log('API Response:', response.data);
+    
+        return response.data;
+      } catch (error) {
+        // Handle errors
+        console.error('Error during API call:', error);
+        // You may want to throw the error or return a default value
+        // depending on your error handling strategy.
+        throw error;
+      }
+    };
+    
+    
+    // 공연 예약 API
     const reservation = async (selectedSeat:Seat[]) => {
       if(selectedSeat.length==0){
         return 
@@ -89,6 +132,7 @@ export default function ConcertReservation(){
       if(response.data){
         setQueryKey(selectedSeat[0]?.seat)
         setSelectedSeat([])
+        goToOtherPage("mypage")
       }
       return response.data
     }
@@ -200,7 +244,7 @@ export default function ConcertReservation(){
                     ?
                     <button
                     className={styles['active-button']}
-                    onClick={()=>reservation(selectedSeat)}
+                    onClick={()=>checkSeats(selectedSeat)}
                     >예매하기
                     </button>
                     :
@@ -214,6 +258,7 @@ export default function ConcertReservation(){
                 </div>
             </div>
             }
+          
         </div>
     )
 }
