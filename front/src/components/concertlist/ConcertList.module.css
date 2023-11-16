@@ -1,9 +1,9 @@
 .container {
-    margin-left: 2%;
-    min-width: 98%;
+    margin-left: 0 auto;
+    max-width: 85rem;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     border-radius: 0rem 0.5rem 0.5rem 0.5rem;
     border-top: 1px solid var(--, #D9D9D9);
     background: rgba(217, 217, 217, 0.12);
