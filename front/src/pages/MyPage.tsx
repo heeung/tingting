@@ -11,23 +11,28 @@ import { useInfiniteQuery, useQuery } from "react-query"
 import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 
+import { useRecoilValue } from 'recoil';
+import { userEmailState,userSeqState } from "../recoil/UserAtom.tsx";
+
 
 export default function MyPage(){
+
+    const userEmail = useRecoilValue(userEmailState);
+    const userSeq = useRecoilValue(userSeqState);
 
     const [category,setCategory] = useState("reservations");
     const [queryKey, setQueryKey] = useState('');
     const [maxPage,SetMaxPage] = useState(1)
     
+    
     // API 호출 함수
     
     const fetchPoint = async () => {
-        const userSeq = 1
         const response = await axios.get(`${API_BASE_URL}/users/${userSeq}/point`);
         return response.data.point;
     }
     
     const fetchLikedData = async (page=1) => {
-        const userSeq = 1
         const concertListRequest = {
         currentPage: page,
         itemCount: 20,
@@ -38,7 +43,6 @@ export default function MyPage(){
 
 
     const fetchTicketData = async (page=1) => {
-    const userSeq = 1
     const concertListRequest = {
         currentPage: page,
         itemCount: 20,
@@ -172,7 +176,7 @@ export default function MyPage(){
                     <div 
                     className={styles.id}>
                         <h2>
-                        아이디 : ssafy.ssafy.com
+                        아이디 : {userEmail}
                         </h2>
                     </div>
                     <div

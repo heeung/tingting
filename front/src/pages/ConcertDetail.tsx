@@ -10,6 +10,10 @@ import {API_BASE_URL} from '../constants/index.ts';
 import Lottie from 'lottie-react';
 import { animationLoading } from '../assets/Images/index.js';
 
+import { useRecoilValue } from 'recoil';
+import { userSeqState } from "../recoil/UserAtom.tsx";
+
+
 interface Performer{
     seq : number;
     performerName : string;
@@ -19,6 +23,7 @@ interface Performer{
 export default function ConcertDetail(){
 
     const params = useParams();
+    const userSeq = useRecoilValue(userSeqState);
     
     const [isHover, setIsHover] = useState(false)
     const [isLike, setIsLike] = useState(false)
@@ -31,7 +36,7 @@ export default function ConcertDetail(){
     const fetchDetailData = async () => {
 
         const concertDetailRequest = {
-            userSeq : 1
+            userSeq : userSeq
         }
         const response = await axios.get(`${API_BASE_URL}/concerts/${concertSeq}`, {params:concertDetailRequest});
         return response.data;
@@ -52,9 +57,13 @@ export default function ConcertDetail(){
       });
 
     const toggleIsLike = async () => {
+        if(userSeq==null){
+            return
+        }
+
         const likeRequest = {
             concertSeq: concertSeq,
-            userSeq : 1
+            userSeq : userSeq
         }
         const response = await axios.post(`${API_BASE_URL}/concerts/favorite`, likeRequest);
         setIsLike(response.data.favorite)
