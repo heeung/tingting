@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 
-module.exports = {
+import flowbitePlugin from 'flowbite/plugin';
+
+const tailwindConfig = {
   content: [
     'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
     "./src/**/*.{html,js,jsx,ts,tsx}"
@@ -9,6 +11,8 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require('flowbite/plugin') // 올바른 플러그인 경로로 수정
+    flowbitePlugin,
   ],
 };
+
+export default tailwindConfig;
