@@ -95,12 +95,6 @@ export default function MyPage(){
 
         const { isLoading: ispointLoading, data : pointData } = useQuery([ticketData], fetchPoint, {
         refetchOnWindowFocus: false,
-        // onSuccess: data => {
-        //   console.log(data);
-        // },
-        onError: e => {
-            console.log(e);
-        }
         });
 
     const handleObserver = useCallback(
