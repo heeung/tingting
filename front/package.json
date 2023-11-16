@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build cross-env NODE_ENV=production tailwindcss build styles.css output.css",
+    "build": "tsc && vite build cross-env NODE_ENV=production tailwindcss build styles.css -o output.css",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
