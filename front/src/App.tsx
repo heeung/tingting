@@ -9,6 +9,7 @@ import ConcertDetail from './pages/ConcertDetail.tsx'
 import ConcertReservation from './pages/ConcertReservation.tsx';
 import Redirection from './pages/Redirection.tsx';
 import "./index.css"
+import "./App.css"
 import {
   RecoilRoot,
   // atom,
