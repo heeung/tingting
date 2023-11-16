@@ -3,6 +3,9 @@ import styles from './BookingInfo.module.css'
 import { API_BASE_URL } from '../../constants'
 import axios from 'axios'
 import {useState} from "react"
+import { useRecoilValue } from 'recoil';
+import { userSeqState } from "../../recoil/UserAtom.tsx";
+
 
 interface Seat{
     ticketSeq:number;
@@ -32,11 +35,13 @@ interface BookingInfoProps {
   }
 
 export default function BookingInfo({ticket,setQueryKey}:BookingInfoProps){
-    const [isHover, setIsHover] = useState(false)
+    const [isHover, setIsHover] = useState(false);
+    const userSeq = useRecoilValue(userSeqState);
+
     
     const cancelTicket = async () => {
         const requestDto = {
-            userSeq : 1
+            userSeq : userSeq
         }
         axios.delete(`${API_BASE_URL}/book/${ticket.ticketSeq}`,{params:requestDto})
         .then(response => {
