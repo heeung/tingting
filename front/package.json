@@ -25,6 +25,7 @@
     "react-router-dom": "^6.17.0",
     "react-simply-carousel": "^9.0.5",
     "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
     "swiper": "^11.0.3"
   },
   "devDependencies": {
