@@ -15,19 +15,17 @@ interface Concert {
 interface Props {
   searchWord : string;
   props : {
-    concerts : Concert[];
-    currentPage : number;
-    totalPage : number;
+    concerts : Concert[]
   }
 }
 
 export default function ConcertList(props:Props) {
-  const concerts = props?.props?.concerts 
+  const concerts = props.props?.concerts 
   const searchWord = props.searchWord
 
   return (
     <div className={styles.container}>
-      {concerts && (concerts.length > 0) 
+      {concerts.length > 0 
       ? 
       (
         concerts?.map((concert: Concert, index) => (

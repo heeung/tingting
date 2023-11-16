@@ -70,7 +70,7 @@ function Home(){
 
 const observerElem = useRef(null);
 
-  const { data:concertData, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery(
       [queryKey],
       ({ pageParam = 1 }) => fetchData(pageParam),
@@ -115,14 +115,14 @@ const observerElem = useRef(null);
     };
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
-  const allPagesContent = concertData?.pages?.reduce(
+  const allPagesContent = data?.pages?.reduce(
     (acc, page) => {
       // 각 페이지의 내용을 합친다.
       if (page && page.concerts) {
         acc.concerts = acc.concerts.concat(page.concerts);
       }
       // 마지막 페이지의 totalPage와 currentPage만 유지한다.
-      if (page === concertData.pages[concertData.pages.length - 1]) {
+      if (page === data.pages[data.pages.length - 1]) {
         acc.totalPage = page.totalPage;
         acc.currentPage = page.currentPage;
       }
@@ -178,7 +178,7 @@ const observerElem = useRef(null);
                   animationData={animationLoading}/>
                 </div>
                 }
-                <div className={styles["loader"]} ref={observerElem}>
+                              <div className={styles["loader"]} ref={observerElem}>
                 {isFetchingNextPage && hasNextPage ?                 
                 <div>
                   <Lottie 
