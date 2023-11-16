@@ -182,6 +182,13 @@ public class UserService {
 
 			existUser = Optional.of(userRepository.save(user));
 
+			Point point = Point.builder()
+				.user(existUser.get())
+				.total(10000000)
+				.pay(10000000)
+				.build();
+
+			pointRepository.save(point);
 		}
 
 		LoginResponseDto loginResponseDto = LoginResponseDto.builder()
