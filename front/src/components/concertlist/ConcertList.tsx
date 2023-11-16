@@ -26,7 +26,7 @@ export default function ConcertList(props:Props) {
   const concerts = props?.props?.concerts 
   const searchWord = props.searchWord
   const isLiked = props.isLiked
-  console.log(isLiked)
+  
   return (
     <div className={styles.container}>
       {concerts && (concerts.length > 0) 
