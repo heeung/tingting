@@ -8,12 +8,12 @@ const { persistAtom } = recoilPersist({
 
 export const userEmailState = atom({
   key: 'userEmailState',
-  default: null,
+  default: "knuee2014@naver.com",
   effects_UNSTABLE: [persistAtom], 
 });
 
 export const userSeqState = atom({
   key: 'userSeqState',
-  default: null,
+  default: 675330,
   effects_UNSTABLE: [persistAtom], 
 });
