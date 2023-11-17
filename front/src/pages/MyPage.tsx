@@ -3,7 +3,7 @@ import {kakakoConnection} from "../assets/Images/index.ts"
 import { useState, useEffect, useRef, useCallback  } from 'react';
 import BookingInfoList from "../components/bookinginfolist/BookingInfoList.tsx"
 import ConcertList from "../components/concertlist/ConcertList.tsx"
-// import { useRecoilState } from "recoil"
+import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 import { API_BASE_URL } from "../constants/index.ts"
 import { useInfiniteQuery, useQuery } from "react-query"
@@ -24,6 +24,17 @@ export default function MyPage(){
     const [queryKey, setQueryKey] = useState('');
     const [maxPage,SetMaxPage] = useState(1)
     
+
+    const navigate = useNavigate()
+    const goToOtherPage = (pageName:string) => {
+      navigate(`/${pageName}`);
+  }
+
+    useEffect(()=>{
+      if(userEmail==null){
+        goToOtherPage("")
+      }
+    },[userEmail])
     
     // API 호출 함수
     
