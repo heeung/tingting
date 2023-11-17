@@ -21,7 +21,6 @@ const Redirection = () => {
     const login = async () => {
         await axios.post(`${API_BASE_URL}/users/kakao`, { code })
             .then((res) => {
-                console.log(res);
                 setUserEmail(res.data.userEmail)
                 setUserSeq(res.data.userSeq)
                 goToOtherPage('')
