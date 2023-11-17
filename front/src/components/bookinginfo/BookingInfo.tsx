@@ -35,6 +35,7 @@ interface BookingInfoProps {
   }
 
 export default function BookingInfo({ticket,setQueryKey}:BookingInfoProps){
+    const [seatHover, setSeatHover] = useState(false);
     const [isHover, setIsHover] = useState(false);
     const userSeq = useRecoilValue(userSeqState);
 
@@ -73,7 +74,9 @@ export default function BookingInfo({ticket,setQueryKey}:BookingInfoProps){
                 <div className={styles.paymentDate}>
                     {ticket.holdDate}
                 </div>
-                <div className={styles.seatCnt}>
+                <div className={styles.seatCnt}
+                onMouseEnter={()=>setSeatHover(true)}
+                onMouseLeave={()=>setSeatHover(false)}>
                     {ticket.seats ? ticket?.seats.length : 0}석
                 </div>
                 <div className={styles.paymentAmount}>
@@ -88,15 +91,7 @@ export default function BookingInfo({ticket,setQueryKey}:BookingInfoProps){
                     }
                 </div>
             </div>
-
-            {/* <div
-            className={styles.moreView}>
-                <img 
-                    className={styles.img}
-                    src={moreViewIcon} alt="moreViewIcon" />
-            </div> */}
             
-
             {
                 (ticket.deletedDate !== null) 
                 ?
@@ -138,6 +133,22 @@ export default function BookingInfo({ticket,setQueryKey}:BookingInfoProps){
                 </div>
             }
 
+                    {
+                        seatHover &&
+                        <div 
+                        className={styles["seat-info-box"]}>
+                            <ul
+                            className={styles["seat-info"]}>
+                            {ticket.seats.map(seat => (
+                            <li key={seat.ticketSeq}>
+                                <th>
+                                {seat.section}-{seat.seat} ({seat.price} KRW) - {seat.name}
+                                </th>
+                            </li>
+                            ))}
+                            </ul>
+                        </div>
+                    }
             
         </div>
     );

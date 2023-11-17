@@ -83,9 +83,7 @@ export default function ConcertReservation(){
     // 좌석 예약 가능여부 확인 API
     const checkSeats = async (selectedSeat: Seat[]) => {
       try {
-        // Check if selected seats array is empty
         if (!selectedSeat.length) {
-          console.log('No seats selected. Exiting checkSeats function.');
           return;
         }
     
@@ -94,7 +92,6 @@ export default function ConcertReservation(){
         const apiUrl = `${API_BASE_URL}/book/${seq}/seat?${seatSeqsQueryString}`;
   
         const response = await axios.get(apiUrl);
-        console.log('API Response:', response.data);
         if(response.data.message=='true'){
           setIsModal(true)
         }
