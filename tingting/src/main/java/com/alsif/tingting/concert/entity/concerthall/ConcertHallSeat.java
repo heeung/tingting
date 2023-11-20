@@ -23,7 +23,7 @@ public class ConcertHallSeat {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "concert_hall_seq", nullable = false)

@@ -23,7 +23,7 @@ public class Grade {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "concert_seq", nullable = false)
@@ -33,10 +33,10 @@ public class Grade {
 	private String name;
 
 	@Column(nullable = false)
-	private Long price;
+	private Integer price;
 
 	@Builder
-	public Grade(Concert concert, String name, Long price) {
+	public Grade(Concert concert, String name, Integer price) {
 		this.concert = concert;
 		this.name = name;
 		this.price = price;

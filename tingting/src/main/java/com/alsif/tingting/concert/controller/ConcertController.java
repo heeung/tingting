@@ -65,8 +65,8 @@ public class ConcertController {
 			content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 	})
 	@GetMapping("/{concertSeq}")
-	ResponseEntity<ConcertDetailResponseDto> findConcertDetail(@PathVariable("concertSeq") Long concertSeq,
-		@RequestParam(required = false) Long userSeq) {
+	ResponseEntity<ConcertDetailResponseDto> findConcertDetail(@PathVariable("concertSeq") Integer concertSeq,
+		@RequestParam(required = false) Integer userSeq) {
 		log.info("===== 콘서트 상세 정보 불러오기 요청 시작, url={}, concertSeq: {}, userSeq: {} =====",
 			"/concerts", concertSeq, userSeq);
 

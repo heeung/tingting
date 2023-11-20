@@ -42,7 +42,7 @@ public class ConcertDetailResponseDto extends ConcertBaseDto {
 	@Schema(description = "콘서트 공연 일시", type = "List<ConcertDetailBaseDto>")
 	private List<ConcertDetailBaseDto> concertDetails; // ConcertDetail
 
-	public ConcertDetailResponseDto(Long concertSeq, String name, LocalDateTime holdOpenDate,
+	public ConcertDetailResponseDto(Integer concertSeq, String name, LocalDateTime holdOpenDate,
 		LocalDateTime holdCloseDate,
 		String imageUrl, String concertHallName, String concertHallCity, String info, LocalDateTime bookOpenDate,
 		LocalDateTime bookCloseDate) {

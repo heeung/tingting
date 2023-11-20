@@ -19,8 +19,8 @@ import lombok.ToString;
 @Schema(description = "콘서트 정보")
 public class ConcertBaseDto {
 
-	@Schema(description = "콘서트 PK", type = "Long", example = "1")
-	private Long concertSeq;
+	@Schema(description = "콘서트 PK", type = "Integer", example = "1")
+	private Integer concertSeq;
 
 	@Schema(description = "콘서트 이름", type = "String", example = "임영웅 2023 겨울 콘서트 - 서울")
 	private String name;
@@ -40,7 +40,7 @@ public class ConcertBaseDto {
 	@Schema(description = "콘서트홀 시도", type = "String", example = "서울")
 	private String concertHallCity;
 
-	public ConcertBaseDto(Long concertSeq, String name, LocalDateTime holdOpenDate, LocalDateTime holdCloseDate,
+	public ConcertBaseDto(Integer concertSeq, String name, LocalDateTime holdOpenDate, LocalDateTime holdCloseDate,
 		String imageUrl,
 		String concertHallName, String concertHallCity) {
 		this.concertSeq = concertSeq;

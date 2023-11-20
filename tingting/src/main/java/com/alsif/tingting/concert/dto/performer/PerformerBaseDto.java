@@ -18,8 +18,8 @@ import lombok.ToString;
 @Schema(description = "가수 정보")
 public class PerformerBaseDto {
 
-	@Schema(description = "가수 PK", type = "Long", example = "1")
-	private Long seq;
+	@Schema(description = "가수 PK", type = "Integer", example = "1")
+	private Integer seq;
 
 	@Schema(description = "가수 이름", type = "String", example = "임영웅")
 	private String performerName;

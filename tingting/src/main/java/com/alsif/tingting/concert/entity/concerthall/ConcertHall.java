@@ -24,7 +24,7 @@ public class ConcertHall {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@Column(nullable = false, length = 50)
 	private String name;

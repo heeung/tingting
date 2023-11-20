@@ -53,8 +53,16 @@ public class ConcertSeatInfo {
 		this.book = book;
 	}
 
-	public void updateBook() {
-		this.book = !this.book;
+	private ConcertSeatInfo(Long seq) {
+		this.seq = seq;
+	}
+
+	public static ConcertSeatInfo constructBySeq(Long seq) {
+		return new ConcertSeatInfo(seq);
+	}
+
+	public void updateBook(boolean book) {
+		this.book = book;
 	}
 
 	@Override

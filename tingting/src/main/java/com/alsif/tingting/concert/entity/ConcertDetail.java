@@ -28,7 +28,7 @@ public class ConcertDetail {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "concert_seq", nullable = false)
@@ -41,6 +41,14 @@ public class ConcertDetail {
 	public ConcertDetail(Concert concert, LocalDateTime holdDate) {
 		this.concert = concert;
 		this.holdDate = holdDate;
+	}
+
+	public static ConcertDetail seqOf(Integer seq) {
+		return new ConcertDetail(seq);
+	}
+
+	private ConcertDetail(Integer seq) {
+		this.seq = seq;
 	}
 
 	public static ConcertDetailBaseDto convertToConcertDetailBaseDto(ConcertDetail concertDetail) {

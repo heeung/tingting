@@ -20,6 +20,6 @@ import lombok.ToString;
 @Schema(description = "좌석 예매 요청")
 public class ConcertSeatBookRequestDto {
 
-	@Schema(description = "선택 좌석 PK 목록", type = "List<Long>", example = "[154002,154003,154009]")
+	@Schema(description = "선택 좌석 PK 목록", type = "List<Integer>", example = "[154002,154003,154009]")
 	private List<Long> seatSeqs;
 }

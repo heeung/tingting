@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.alsif.tingting.user.entity.Point;
 
 @Repository
-public interface PointRepository extends JpaRepository<Point, Long> {
-	Optional<Point> findTop1ByUser_SeqOrderBySeqDesc(Long userSeq);
+public interface PointRepository extends JpaRepository<Point, Integer> {
+	Optional<Point> findTop1ByUser_SeqOrderBySeqDesc(Integer userSeq);
 }

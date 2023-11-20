@@ -18,7 +18,7 @@ import lombok.ToString;
 @Schema(description = "섹션(좌석코드 대분류)별 좌석 정보")
 public class ConcertSectionSeatInfoResponseDto {
 
-	@Schema(description = "좌석 PK", type = "Long", example = "1")
+	@Schema(description = "좌석 PK", type = "Integer", example = "1")
 	private Long concertSeatInfoSeq;
 
 	@Schema(description = "좌석코드 대분류", type = "String", example = "A")
@@ -32,4 +32,7 @@ public class ConcertSectionSeatInfoResponseDto {
 
 	@Schema(description = "좌석 등급 이름", type = "String", example = "일반 / VIP")
 	private String grade;
+
+	@Schema(description = "좌석 등급 가격", type = "Integer", example = "88000")
+	private Integer price;
 }

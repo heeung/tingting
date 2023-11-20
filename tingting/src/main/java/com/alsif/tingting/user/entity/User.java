@@ -24,7 +24,7 @@ public class User extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	private Integer seq;
 
 	@Column(unique = true, nullable = false)
 	private String email;
@@ -36,11 +36,11 @@ public class User extends BaseEntity {
 		this.email = email;
 	}
 
-	public static User constructBySeq(Long seq) {
+	public static User seqOf(Integer seq) {
 		return new User(seq);
 	}
 
-	private User(Long seq) {
+	private User(Integer seq) {
 		this.seq = seq;
 	}
 
