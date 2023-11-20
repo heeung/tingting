@@ -1,0 +1,52 @@
+.container{
+ width: 92%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ flex-wrap: wrap;
+ margin: 0 auto;
+ margin-bottom: 5%;
+
+ color: var(--_, #444);
+ font-family: Gmarket Sans TTF;
+ font-size: 1.25rem;
+ font-style: normal;
+ font-weight: 500;
+ line-height: 1.5rem; /* 120% */
+ letter-spacing: 0.03125rem;
+}
+
+.concertList{
+    width: 100%;
+}
+
+
+.header{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+    margin-bottom: 1rem;
+
+    color: var(--_, #444);
+    font-family: Gmarket Sans TTF;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 1000;
+    line-height: 1.5rem; /* 120% */
+    letter-spacing: 0.03125rem;
+}
+
+.date,.time{
+    text-align: center;
+}
+
+.date{
+     width: 30%;
+}
+
+.time{
+    width: 43%;
+
+}

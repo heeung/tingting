@@ -1,0 +1,28 @@
+.container {
+    width: 100%;
+    min-height: 2.5rem;
+
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+    background: rgba(217, 217, 217, 0.12);
+    display: flex;
+
+    justify-content: space-around;
+    align-items: center;
+
+    /* 상단바 폰트 */
+    color: var(--_, #444);
+    font-family: Gmarket Sans TTF;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    
+}
+
+.logo {
+    margin: 0.5rem;
+}
+
+.logo:hover{
+    cursor: pointer;
+}

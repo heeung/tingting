@@ -1,0 +1,36 @@
+.container, .searchBar{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchBar {
+    margin: 3% auto;
+}
+
+.concertList {
+    width: 100%;
+}
+
+.loading{
+    width: 100%;
+    height: 100%;
+}
+
+.loading-box{
+    margin: 20% auto;
+    /* width: 20%; */
+    /* height: 20%; */
+    width: 15rem;
+    height: 15rem;
+}
+
+.loader {
+    height: 4rem;
+}
+
+.w100{
+    width: 100%;
+}

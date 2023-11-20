@@ -1,26 +1,67 @@
-import styles from './ConcertList.module.css'
-import ConcertInfo from '../concertinfo/ConcertInfo'
+import styles from './ConcertList.module.css';
+import ConcertInfo from '../concertinfo/ConcertInfo';
+import {deactivatedLogo} from '../../assets/Images/index'
 
+interface Concert {
+  concertSeq: number;
+  name: string;
+  holdOpenDate: string;
+  holdCloseDate: string;
+  imageUrl: string;
+  concertHallName: string;
+  concertHallCity: string;
+}
 
+interface Props {
+  searchWord : string;
+  props : {
+    concerts : Concert[];
+    currentPage : number;
+    totalPage : number;
+  }
+  isLiked? : boolean
+}
 
-export default function ConcertList(){
-    // 티켓 판매 사이트에서는 한 줄의 개수보다 작은 경우에는 더미 이미지를 만들어서 랜더링 해줌 
-    const lst = [1,2,3,4,5,6,7,8,9,10]
-    return(
+export default function ConcertList(props:Props) {
+  const concerts = props?.props?.concerts 
+  const searchWord = props.searchWord
+  const isLiked = props.isLiked
+  
+  return (
+    <div className={styles.container}>
+      {concerts && (concerts.length > 0) 
+      ? 
+      (
+        concerts?.map((concert: Concert, index) => (
+          <div className={styles.concertList} key={`${concert.concertSeq}-${index}`}>
+            <ConcertInfo
+              concert={concert}
+            />
+          </div>
+        ))
+      ) : 
+      ( 
         <div
-            className={styles.container}>    
-            {lst.map((item:number)=>{
-                return <div 
-                className={styles.concertList}
-                key={item}
-                >
-                    <ConcertInfo
-                    />
-                </div>
-
-            })}
-         
+        className={styles['comment-background']}
+        >
+          <div>
+          <img 
+          className={styles.img}
+          src={deactivatedLogo} alt="deactivatedLogo" />
+          </div>
+          {
+            isLiked 
+            ?
+            <div
+            className={styles.comment}
+            >찜한 공연이 없습니다</div>            
+            :
+            <div
+            className={styles.comment}
+            >"{searchWord}"로 검색한 결과가 없습니다.</div>
+          }
         </div>
-
-    )
+      )}
+    </div>
+  );
 }

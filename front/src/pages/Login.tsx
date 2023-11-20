@@ -1,6 +1,8 @@
-import { kakaoLoginButton, loginBackground, loginLogo, loginLogo2} from "/src/assets/images/index.js"
+import { kakaoLoginButton, loginBackground, loginLogo, loginLogo2} from '../assets/Images'
 import styles from "./Login.module.css"
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {REST_API_KEY,REDIRECT_URI} from '../constants'
 
 function Login(){
  
@@ -17,9 +19,17 @@ function Login(){
     };
   }, []); // 마운트될 때 한 번만 실행
 
-  const ClickLogin = ()=>{
-    alert("영업 안해요")
+  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  
+  const loginHandler = () => {
+    window.location.href = link;
+  };
+
+  const navigate = useNavigate()
+  const goToOtherPage = (pageName:string) => {
+      navigate(`/${pageName}`);
   }
+
 
     return(
         <div
@@ -34,13 +44,14 @@ function Login(){
           <div
             className={styles.logobox}>
             <img
+            onClick={()=>goToOtherPage('')}
             className={styles.logo}
             src={isTrue ? loginLogo : loginLogo2} alt="loginLogo" />
           </div>  
           <div
             className={styles.buttonbox}>
             <img
-            onClick={ClickLogin}
+            onClick={loginHandler}
             className={styles.button}
             src={kakaoLoginButton} alt="kakaoLoginButton" />  
           </div>
