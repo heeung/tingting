@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://velog.velcdn.com/images/heeung/post/d8c5eec1-d4dc-4835-b967-510eb2594c32/image.png" width="400px" align="Center">
+<img src="https://velog.velcdn.com/images/heeung/post/d8c5eec1-d4dc-4835-b967-510eb2594c32/image.png" width="500px" align="Center">
 
 ### 🎫 티케팅 시뮬레이션 서비스 🎫
 
@@ -40,9 +40,9 @@
 
 <br>
 
-| ![](https://velog.velcdn.com/images/heeung/post/44934abd-f32b-48e6-9311-dfaa555ecf4c/image.jpg){ width="400" } | ![](https://velog.velcdn.com/images/heeung/post/182129be-d09e-4740-9e96-c42479d90c04/image.jpg) | ![](https://velog.velcdn.com/images/heeung/post/6114f312-271b-4639-82b6-d7aefbd68802/image.jpg) |
+| ![](https://velog.velcdn.com/images/heeung/post/44934abd-f32b-48e6-9311-dfaa555ecf4c/image.jpg){ width="400" } | ![](https://velog.velcdn.com/images/heeung/post/182129be-d09e-4740-9e96-c42479d90c04/image.jpg){ width="400" } | ![](https://velog.velcdn.com/images/heeung/post/6114f312-271b-4639-82b6-d7aefbd68802/image.jpg){ width="400" } |
 | ---------------- | --------------- | ---------------- |
-| ![](https://velog.velcdn.com/images/heeung/post/bc73ceda-9cbd-499a-87b7-b767ced70ee9/image.jpg) | ![](https://velog.velcdn.com/images/heeung/post/f8329709-190c-4f8d-a5b4-0499eecd80d6/image.jpg) | |
+| ![](https://velog.velcdn.com/images/heeung/post/bc73ceda-9cbd-499a-87b7-b767ced70ee9/image.jpg){ width="400" } | ![](https://velog.velcdn.com/images/heeung/post/f8329709-190c-4f8d-a5b4-0499eecd80d6/image.jpg){ width="400" } | |
 
 <br>
 
