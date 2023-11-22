@@ -1,7 +1,7 @@
 <div align="center">
 <img src="https://velog.velcdn.com/images/heeung/post/d8c5eec1-d4dc-4835-b967-510eb2594c32/image.png" width="500px" align="Center">
 
-### 🎫 티케팅 시뮬레이션 서비스 🎫
+### 🎫 티켓팅 시뮬레이션 서비스 🎫
 
 </div>
 <br>
