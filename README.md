@@ -63,7 +63,7 @@
 
 ### Frontend
 
-![](https://velog.velcdn.com/images/heeung/post/ca009418-8f45-4434-b71f-3a501399e3bd/image.png){ width="400" }
+![](https://velog.velcdn.com/images/heeung/post/a6579524-1763-4bb6-b167-95d1ea2cf00e/image.png){ width="400" }
 
 ### Backend
 
@@ -85,7 +85,7 @@
 
 ## 🔎 시스템 구조도
 
-![](res/Architecture.png){ width="800" }
+![](https://velog.velcdn.com/images/heeung/post/51c286a9-4eab-48aa-8262-2e6500825f96/image.png){ width="800" }
 
 <br>
 
